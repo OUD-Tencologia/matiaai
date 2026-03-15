@@ -1,0 +1,44 @@
+<p-toolbar styleClass="matia-toolbar">
+
+  <!-- ESQUERDA: Logo + Nome -->
+  <div class="p-toolbar-group-start">
+    <div class="brand-group">
+      <div class="logo-circle">
+        <img src="logomatia.png" alt="MATIA" class="logo-img">
+      </div>
+      <span class="brand-name">MATIA</span>
+    </div>
+  </div>
+
+  <!-- CENTRO: Search -->
+  <div class="p-toolbar-group-center">
+    <div class="search-wrap">
+      <i class="pi pi-search search-icon"></i>
+      <input
+        pInputText
+        type="text"
+        placeholder="Buscar leis, decretos..."
+        class="search-input"/>
+    </div>
+  </div>
+
+  <!-- DIREITA: Usuário + Logout -->
+  <div class="p-toolbar-group-end">
+    <div class="user-info">
+      <span class="user-name">Francisco Naifa</span>
+      <span class="user-role">Administrador</span>
+    </div>
+    <p-avatar
+      icon="pi pi-user"
+      shape="circle"
+      size="large"
+      styleClass="user-avatar"/>
+    <p-button
+      icon="pi pi-sign-out"
+      [text]="true"
+      styleClass="logout-btn"
+      pTooltip="Sair"
+      tooltipPosition="bottom"/>
+  </div>
+
+</p-toolbar>

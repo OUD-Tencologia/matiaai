@@ -1,0 +1,315 @@
+@use 'variables' as *;
+
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  font-family: $font-body;
+  background: $navy-deep;
+  overflow: hidden;
+}
+
+// ── PAINEL ESQUERDO ────────────────────────────────────
+.left-panel {
+  width: 52%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $navy-deep;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 30% 40%, rgba(26,50,100,0.9) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 50% at 70% 70%, rgba(201,162,39,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+}
+
+.geo-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.12;
+  }
+}
+
+.brand-block {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  animation: fadeUp 0.9s ease both;
+}
+
+.robot-icon {
+  width: 130px;
+  height: auto;
+  margin-bottom: 28px;
+  filter: drop-shadow(0 0 30px rgba(201, 162, 39, 0.35));
+  animation: float 4s ease-in-out infinite;
+}
+
+.brand-title {
+  font-family: $font-display;
+  font-size: 5.5rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  margin-bottom: 12px;
+  background: $gradient-gold;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, $gold, transparent);
+  margin: 20px auto;
+}
+
+.brand-tagline {
+  font-size: 0.72rem;
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  color: $text-muted;
+  text-transform: uppercase;
+  line-height: 1.8;
+}
+
+// ── PAINEL DIREITO ─────────────────────────────────────
+.right-panel {
+  width: 48%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #162b56 0%, #0f1e3b 100%);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 162, 39, 0.1);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 162, 39, 0.07);
+    pointer-events: none;
+  }
+}
+
+.login-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 400px;
+  padding: 52px 48px;
+  animation: fadeUp 0.9s 0.2s ease both;
+  opacity: 0;
+}
+
+// ── HEADER ─────────────────────────────────────────────
+.card-header {
+  margin-bottom: 38px;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-family: $font-display;
+  font-size: 2.1rem;
+  font-weight: 400;
+  color: $cream;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+// ── CAMPOS ─────────────────────────────────────────────
+.field {
+  margin-bottom: 22px;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $text-muted;
+  margin-bottom: 9px;
+  font-weight: 500;
+}
+
+.input-wrap {
+  position: relative;
+
+  .pi {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(201, 162, 39, 0.5);
+    z-index: 1;
+    transition: color 0.3s;
+    pointer-events: none;
+  }
+}
+
+.custom-input.p-inputtext {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(201, 162, 39, 0.18) !important;
+  border-radius: 6px !important;
+  padding: 14px 16px 14px 44px !important;
+  font-family: $font-body !important;
+  font-size: 0.9rem !important;
+  font-weight: 300 !important;
+  color: $cream !important;
+  letter-spacing: 0.03em !important;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s !important;
+
+  &::placeholder {
+    color: rgba(245, 240, 232, 0.25) !important;
+  }
+
+  &:focus {
+    border-color: $gold !important;
+    background: rgba(201, 162, 39, 0.06) !important;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.08) !important;
+  }
+}
+
+// ── ESQUECEU A SENHA ───────────────────────────────────
+.forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -10px;
+  margin-bottom: 28px;
+}
+
+.forgot-btn.p-button.p-button-text {
+  color: $gold !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.06em !important;
+  padding: 4px 0 !important;
+  font-family: $font-body !important;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    background: transparent !important;
+    text-decoration: underline;
+  }
+}
+
+// ── BOTÃO ENTRAR ───────────────────────────────────────
+:host ::ng-deep .btn-login.p-button {
+  background: linear-gradient(135deg, $gold 0%, $gold-light 50%, $gold 100%) !important;
+  background-size: 200% auto !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-family: $font-body !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.22em !important;
+  color: $navy-deep !important;
+  padding: 15px !important;
+  transition: background-position 0.4s, box-shadow 0.3s, transform 0.2s !important;
+  margin-bottom: 28px;
+
+  &:hover {
+    background-position: right center !important;
+    box-shadow: 0 6px 28px rgba(201, 162, 39, 0.3) !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ── DIVIDER ────────────────────────────────────────────
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+
+  span {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $text-muted;
+    white-space: nowrap;
+  }
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201, 162, 39, 0.15);
+  }
+}
+
+// ── BOTÃO CADASTRAR ────────────────────────────────────
+:host ::ng-deep .btn-register.p-button {
+  background: transparent !important;
+  border: 1px solid rgba(201, 162, 39, 0.3) !important;
+  border-radius: 6px !important;
+  font-family: $font-body !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.18em !important;
+  color: $gold-light !important;
+  padding: 14px !important;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s !important;
+
+  &:hover {
+    border-color: $gold !important;
+    background: rgba(201, 162, 39, 0.07) !important;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.07) !important;
+  }
+}
+
+// ── ANIMAÇÕES ──────────────────────────────────────────
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+// ── RESPONSIVO ─────────────────────────────────────────
+@media (max-width: 768px) {
+  .login-wrapper { flex-direction: column; overflow: auto; }
+  .left-panel { width: 100%; padding: 56px 24px 40px; }
+  .right-panel { width: 100%; padding: 0 0 60px; }
+  .brand-title { font-size: 3.8rem; }
+  .login-card { padding: 40px 28px; }
+}

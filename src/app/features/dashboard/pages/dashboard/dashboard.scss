@@ -1,0 +1,315 @@
+@use 'variables' as *;
+
+.dashboard-page {
+  font-family: $font-body;
+  color: $cream;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── TOPBAR ─────────────────────────────────────────────
+.page-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-family: $font-display;
+  font-size: 2rem;
+  font-weight: 400;
+  color: $cream;
+  letter-spacing: 0.04em;
+  margin: 0 0 4px;
+}
+
+.page-sub {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: $text-muted;
+  letter-spacing: 0.1em;
+}
+
+.period-selector {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid $gold-border;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.period-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: $font-body;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  border: none;
+  cursor: pointer;
+  color: $text-muted;
+  background: transparent;
+  transition: all 0.2s;
+
+  &.active {
+    background: $gold;
+    color: $navy-deep;
+  }
+
+  &:hover:not(.active) {
+    color: $cream;
+    background: $gold-glow;
+  }
+}
+
+// ── SUMMARY ────────────────────────────────────────────
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid $gold-border;
+  border-radius: 12px;
+  padding: 20px;
+  transition: border-color 0.3s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $gold, transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  &:hover {
+    border-color: rgba(201,162,39,0.4);
+    transform: translateY(-2px);
+    &::before { opacity: 1; }
+  }
+}
+
+.card-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+
+  &.icon-blue   { background: rgba(26,50,100,0.6);   border: 1px solid rgba(201,162,39,0.2); }
+  &.icon-gold   { background: rgba(201,162,39,0.15);  border: 1px solid rgba(201,162,39,0.3); }
+  &.icon-green  { background: rgba(16,185,129,0.15);  border: 1px solid rgba(16,185,129,0.3); }
+  &.icon-purple { background: rgba(139,92,246,0.15);  border: 1px solid rgba(139,92,246,0.3); }
+}
+
+.card-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $text-muted;
+  margin-bottom: 6px;
+}
+
+.card-value {
+  font-family: $font-display;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: $cream;
+  line-height: 1;
+  margin-bottom: 8px;
+
+  span {
+    font-size: 1rem;
+    font-weight: 300;
+    color: $text-muted;
+  }
+}
+
+.card-trend {
+  font-size: 0.72rem;
+  font-weight: 500;
+
+  &.trend-up      { color: #10b981; }
+  &.trend-down    { color: #f87171; }
+  &.trend-neutral { color: $text-muted; }
+}
+
+// ── CHARTS ─────────────────────────────────────────────
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.chart-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid $gold-border;
+  border-radius: 12px;
+  padding: 22px;
+}
+
+.chart-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.chart-card-title {
+  font-family: $font-display;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: $cream;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: $gold;
+  }
+}
+
+.chart-card-sub {
+  font-size: 0.68rem;
+  color: $text-faint;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+
+  &.donut-wrap { height: 160px; }
+}
+
+// ── LEGENDA ────────────────────────────────────────────
+.area-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+
+.legend-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: $cream;
+}
+
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-pct {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $text-muted;
+}
+
+.legend-bar-wrap {
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+.legend-bar {
+  height: 100%;
+  border-radius: 2px;
+}
+
+// ── TABELA ─────────────────────────────────────────────
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $gold;
+    padding: 8px 12px;
+    border-bottom: 1px solid $gold-border;
+    text-align: left;
+  }
+
+  td {
+    padding: 11px 12px;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: $cream;
+    border-bottom: 1px solid rgba(201,162,39,0.07);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: $gold-glow; }
+}
+
+.td-muted { color: $text-muted !important; font-size: 0.75rem !important; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+
+  &.badge-tributario     { background: rgba(201,162,39,0.15); color: $gold-light;  border: 1px solid rgba(201,162,39,0.25); }
+  &.badge-trabalhista    { background: rgba(16,185,129,0.12); color: #6ee7b7;      border: 1px solid rgba(16,185,129,0.25); }
+  &.badge-civil          { background: rgba(139,92,246,0.12); color: #c4b5fd;      border: 1px solid rgba(139,92,246,0.25); }
+  &.badge-administrativo { background: rgba(59,130,246,0.12); color: #93c5fd;      border: 1px solid rgba(59,130,246,0.25); }
+  &.badge-penal          { background: rgba(248,113,113,0.12); color: #fca5a5;     border: 1px solid rgba(248,113,113,0.25); }
+}
+
+// ── RESPONSIVO ─────────────────────────────────────────
+@media (max-width: 1100px) {
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .main-grid    { grid-template-columns: 1fr; }
+  .bottom-grid  { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .summary-grid  { grid-template-columns: 1fr; }
+  .page-topbar   { flex-direction: column; align-items: flex-start; gap: 14px; }
+}

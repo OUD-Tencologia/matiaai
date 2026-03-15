@@ -1,0 +1,157 @@
+<div class="chat-page">
+
+  <!-- TOPO -->
+  <div class="chat-topbar">
+    <h1 class="chat-title">
+      <i class="pi pi-comments"></i>
+      Matia
+    </h1>
+    <div class="chat-topbar-actions">
+      <p-button
+        label="Enviar Documentos"
+        icon="pi pi-file-arrow-up"
+        styleClass="btn-upload"
+        [outlined]="true"/>
+      <p-button
+        label="Nova Conversa"
+        icon="pi pi-plus"
+        styleClass="btn-new-chat"
+        (onClick)="novaConversa()"/>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="chat-loading">
+      <p-progressSpinner styleClass="gold-spinner" strokeWidth="3"/>
+    </div>
+  }
+
+  <!-- BOAS VINDAS -->
+  @if (!loading && !chatIniciado) {
+    <div class="chat-welcome">
+      <div class="welcome-hero">
+        <h2 class="welcome-title">Como posso ajudar hoje?</h2>
+        <p class="welcome-subtitle">Faça uma pergunta, envie um documento ou escolha um dos atalhos abaixo</p>
+      </div>
+
+      <div class="welcome-cards">
+
+        <!-- RECENTES -->
+        <div class="welcome-card">
+          <div class="welcome-card-header">
+            <i class="pi pi-history"></i>
+            <span>Recentes</span>
+          </div>
+          <div class="welcome-card-items">
+            @for (item of recentes; track item.id) {
+              <button class="welcome-card-item" (click)="iniciarConsulta(item.titulo)">
+                {{ item.titulo }}
+              </button>
+            }
+            @if (recentes.length === 0) {
+              <span class="welcome-card-empty">Nenhuma consulta recente</span>
+            }
+          </div>
+        </div>
+
+        <!-- FREQUENTE -->
+        <div class="welcome-card">
+          <div class="welcome-card-header">
+            <i class="pi pi-chart-line"></i>
+            <span>Frequente</span>
+          </div>
+          <div class="welcome-card-items">
+            @for (item of frequentes; track item.id) {
+              <button class="welcome-card-item" (click)="iniciarConsulta(item.titulo)">
+                {{ item.titulo }}
+              </button>
+            }
+            @if (frequentes.length === 0) {
+              <span class="welcome-card-empty">Nenhuma consulta frequente</span>
+            }
+          </div>
+        </div>
+
+        <!-- RECOMENDADO -->
+        <div class="welcome-card">
+          <div class="welcome-card-header">
+            <i class="pi pi-lightbulb"></i>
+            <span>Recomendado</span>
+          </div>
+          <div class="welcome-card-items">
+            @for (item of recomendados; track item.id) {
+              <button class="welcome-card-item" (click)="iniciarConsulta(item.titulo)">
+                {{ item.titulo }}
+              </button>
+            }
+            @if (recomendados.length === 0) {
+              <span class="welcome-card-empty">Nenhuma recomendação</span>
+            }
+          </div>
+        </div>
+
+      </div>
+    </div>
+  }
+
+  <!-- MENSAGENS -->
+  @if (!loading && chatIniciado) {
+    <div class="chat-messages" #messagesContainer>
+      @for (msg of mensagens; track msg.id) {
+        <div class="chat-message" [class.user]="msg.tipo === 'user'" [class.ai]="msg.tipo === 'ai'">
+          @if (msg.tipo === 'ai') {
+            <div class="msg-avatar">
+              <i class="pi pi-android"></i>
+            </div>
+          }
+          <div class="msg-bubble">{{ msg.texto }}</div>
+          @if (msg.tipo === 'user') {
+            <div class="msg-avatar user-avatar">
+              <i class="pi pi-user"></i>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- INPUT -->
+  <div class="chat-input-area">
+    <div class="chat-input-wrap">
+      <input
+        pInputText
+        type="text"
+        placeholder="Digite sua pergunta jurídica..."
+        class="chat-input"
+        [(ngModel)]="pergunta"
+        (keyup.enter)="enviarPergunta()"
+        [disabled]="enviando"/>
+      <div class="chat-input-actions">
+        <p-button
+          icon="pi pi-microphone"
+          [text]="true"
+          styleClass="input-action-btn"
+          pTooltip="Áudio"
+          tooltipPosition="top"/>
+        <p-button
+          icon="pi pi-paperclip"
+          [text]="true"
+          styleClass="input-action-btn"
+          pTooltip="Anexar arquivo"
+          tooltipPosition="top"/>
+        <p-button
+          icon="pi pi-send"
+          styleClass="input-send-btn"
+          (onClick)="enviarPergunta()"
+          [disabled]="!pergunta.trim() || enviando"
+          pTooltip="Enviar"
+          tooltipPosition="top"/>
+      </div>
+    </div>
+    <div class="chat-input-hint">
+      Suporte a texto, áudio e PDF &nbsp;|&nbsp; Máx. 20MB por arquivo
+    </div>
+  </div>
+
+</div>

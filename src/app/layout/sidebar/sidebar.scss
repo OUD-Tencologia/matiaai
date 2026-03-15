@@ -1,0 +1,189 @@
+@use 'variables' as *;
+
+.matia-sidebar {
+  width: 260px;
+  height: 100%;
+  background: linear-gradient(180deg, $navy-deep 0%, #0d1a30 100%);
+  border-right: 1px solid $gold-border;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: $font-body;
+}
+
+// ── BUSCA ──────────────────────────────────────────────
+.sidebar-search {
+  position: relative;
+  padding: 14px 12px;
+  border-bottom: 1px solid $gold-border;
+
+  .sidebar-search-icon {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-muted;
+    font-size: 0.78rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.sidebar-search-input.p-inputtext {
+  width: 100% !important;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid $gold-border !important;
+  border-radius: 16px !important;
+  padding: 8px 12px 8px 34px !important;
+  font-family: $font-body !important;
+  font-size: 0.78rem !important;
+  font-weight: 300 !important;
+  color: $cream !important;
+
+  &::placeholder {
+    color: $text-muted !important;
+    font-size: 0.75rem !important;
+  }
+
+  &:focus {
+    border-color: $gold !important;
+    background: rgba(201,162,39,0.05) !important;
+    box-shadow: 0 0 0 2px $gold-glow !important;
+  }
+}
+
+// ── SEÇÕES ─────────────────────────────────────────────
+.sidebar-section {
+  padding: 14px 12px 6px;
+  flex-shrink: 0;
+}
+
+.sidebar-scrollable {
+  overflow-y: auto;
+  max-height: 160px;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: $gold-border;
+    border-radius: 3px;
+  }
+}
+
+.sidebar-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201,162,39,0.8);
+  padding: 0 8px;
+  margin-bottom: 6px;
+
+  .pi { font-size: 0.7rem; }
+}
+
+// ── MENU ───────────────────────────────────────────────
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: $cream;
+  font-size: 0.85rem;
+  font-weight: 400;
+  transition: background 0.2s, color 0.2s;
+  margin-bottom: 2px;
+
+  .pi {
+    font-size: 0.95rem;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: rgba(201,162,39,0.08);
+    color: $cream;
+  }
+
+  &.active {
+    background: rgba(201,162,39,0.12);
+    color: $gold;
+    border-left: 2px solid $gold;
+    padding-left: 8px;
+
+    .pi { color: $gold; }
+  }
+}
+
+// ── RECENTES ───────────────────────────────────────────
+.sidebar-item-recent {
+  align-items: flex-start !important;
+  padding: 8px 10px !important;
+
+  .recent-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .recent-title {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: $cream;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s;
+  }
+
+  .recent-time {
+    display: block;
+    font-size: 0.65rem;
+    color: rgba(245,240,232,0.4);
+    margin-top: 2px;
+  }
+
+  .recent-star {
+    font-size: 0.75rem !important;
+    color: rgba(201,162,39,0.3) !important;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: color 0.2s;
+
+    &.starred { color: $gold !important; }
+  }
+
+  &:hover .recent-title { color: $gold-light; }
+}
+
+// ── RODAPÉ ─────────────────────────────────────────────
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid $gold-border;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-item-logout {
+  &:hover {
+    background: rgba(248,113,113,0.08) !important;
+    color: #f87171 !important;
+
+    .pi { color: #f87171 !important; }
+  }
+}

@@ -1,0 +1,213 @@
+<div class="perfil-page">
+
+  <!-- TOPBAR -->
+  <div class="page-topbar">
+    <div>
+      <h1 class="page-title">👤 Meu Perfil</h1>
+      <p class="page-sub">Gerencie seus dados pessoais, senha e permissões de acesso</p>
+    </div>
+  </div>
+
+  <div class="page-layout">
+
+    <!-- COLUNA ESQUERDA: CARD DE PERFIL -->
+    <div class="profile-col">
+      <div class="profile-card">
+        <div class="profile-cover"></div>
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar">FN</div>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name">Francisco Naifa</div>
+          <div class="profile-email">francisco&#64;matia.mt.gov.br</div>
+          <div class="profile-badge">⭐ Administrador</div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="stat-val">1.284</div>
+              <div class="stat-lbl">Consultas</div>
+            </div>
+            <div class="profile-stat">
+              <div class="stat-val">43</div>
+              <div class="stat-lbl">Dias ativo</div>
+            </div>
+            <div class="profile-stat">
+              <div class="stat-val">2,1M</div>
+              <div class="stat-lbl">Tokens</div>
+            </div>
+            <div class="profile-stat">
+              <div class="stat-val">R$186</div>
+              <div class="stat-lbl">Custo</div>
+            </div>
+          </div>
+          <div class="profile-divider"></div>
+          <div class="profile-meta-item">🏛 Área: <span>Todas as áreas</span></div>
+          <div class="profile-meta-item">📅 Desde: <span>15/05/2025</span></div>
+          <div class="profile-meta-item">🕐 Último acesso: <span>Hoje, 14h22</span></div>
+          <div class="profile-meta-item">🔐 2FA: <span>Ativado</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: SEÇÕES -->
+    <div class="sections-col">
+
+      <!-- DADOS PESSOAIS -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">📋 Dados Pessoais</span>
+        </div>
+        <div class="section-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Nome</label>
+              <input pInputText type="text" class="field-input" value="Francisco"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Sobrenome</label>
+              <input pInputText type="text" class="field-input" value="Naifa"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">E-mail</label>
+              <input pInputText type="email" class="field-input" value="francisco@matia.mt.gov.br"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Telefone</label>
+              <input pInputText type="tel" class="field-input" value="(65) 99999-0000"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Cargo</label>
+              <input pInputText type="text" class="field-input" value="Assessor Jurídico Sênior"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Área Jurídica</label>
+              <select class="field-select">
+                <option>Todas as áreas</option>
+                <option>Tributário</option>
+                <option>Trabalhista</option>
+                <option>Civil</option>
+                <option>Administrativo</option>
+                <option>Penal</option>
+              </select>
+            </div>
+          </div>
+          <div class="section-actions">
+            <p-button label="Cancelar" styleClass="btn-outline" [outlined]="true"/>
+            <p-button label="💾 Salvar Dados" styleClass="btn-primary" (onClick)="salvar('Dados pessoais atualizados!')"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALTERAR SENHA -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">🔒 Alterar Senha</span>
+        </div>
+        <div class="section-body">
+          <div class="form-grid">
+            <div class="field-group span2">
+              <label class="field-label">Senha Atual</label>
+              <div class="pw-wrap">
+                <input pInputText [type]="showAtual ? 'text' : 'password'" class="field-input" placeholder="••••••••••"/>
+                <button class="pw-toggle" (click)="showAtual = !showAtual">
+                  <i class="pi" [class.pi-eye]="!showAtual" [class.pi-eye-slash]="showAtual"></i>
+                </button>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Nova Senha</label>
+              <div class="pw-wrap">
+                <input pInputText [type]="showNova ? 'text' : 'password'" class="field-input" placeholder="••••••••••" (input)="checarForca($event)"/>
+                <button class="pw-toggle" (click)="showNova = !showNova">
+                  <i class="pi" [class.pi-eye]="!showNova" [class.pi-eye-slash]="showNova"></i>
+                </button>
+              </div>
+              <div class="pw-strength">
+                <div class="pw-bar" [class]="forca >= 1 ? 'pw-bar ' + forcaClasse : 'pw-bar'"></div>
+                <div class="pw-bar" [class]="forca >= 2 ? 'pw-bar ' + forcaClasse : 'pw-bar'"></div>
+                <div class="pw-bar" [class]="forca >= 3 ? 'pw-bar ' + forcaClasse : 'pw-bar'"></div>
+                <span class="pw-label" [style.color]="forcaCor">{{ forcaLabel }}</span>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Confirmar Nova Senha</label>
+              <div class="pw-wrap">
+                <input pInputText [type]="showConfirm ? 'text' : 'password'" class="field-input" placeholder="••••••••••"/>
+                <button class="pw-toggle" (click)="showConfirm = !showConfirm">
+                  <i class="pi" [class.pi-eye]="!showConfirm" [class.pi-eye-slash]="showConfirm"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="section-actions">
+            <p-button label="🔒 Alterar Senha" styleClass="btn-primary" (onClick)="salvar('Senha alterada com sucesso!')"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- RBAC -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">🛡 Permissões por Área Jurídica</span>
+          <span class="section-sub">RBAC — Controle por domínio</span>
+        </div>
+        <div class="section-body">
+          <div class="rbac-grid">
+            @for (area of areas; track area.nome) {
+              <div class="rbac-area">
+                <div class="rbac-area-header">
+                  <div class="rbac-area-name">
+                    <div class="rbac-dot" [style.background]="area.cor"></div>
+                    {{ area.nome }}
+                  </div>
+                  <div class="toggle" [class.on]="area.ativo" (click)="area.ativo = !area.ativo"></div>
+                </div>
+                <div class="rbac-perms">
+                  @for (perm of area.permissoes; track perm.label) {
+                    <label class="perm-item">
+                      <div class="perm-check" [class.checked]="perm.ativo" (click)="perm.ativo = !perm.ativo">
+                        @if (perm.ativo) { ✓ }
+                      </div>
+                      <span class="perm-text">{{ perm.label }}</span>
+                    </label>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+          <div class="section-actions">
+            <p-button label="🛡 Salvar Permissões" styleClass="btn-primary" (onClick)="salvar('Permissões atualizadas!')"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTÓRICO -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">🕐 Histórico de Atividades</span>
+          <span class="section-sub">Últimas 10 ações</span>
+        </div>
+        <div class="section-body">
+          <div class="activity-list">
+            @for (item of atividades; track item.id) {
+              <div class="activity-item">
+                <div class="activity-icon" [class]="'activity-icon ' + item.tipo">{{ item.icone }}</div>
+                <div class="activity-content">
+                  <div class="activity-title">{{ item.titulo }}</div>
+                  <div class="activity-detail">{{ item.detalhe }}</div>
+                </div>
+                <div class="activity-time">{{ item.tempo }}</div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" [class.show]="toastVisible">
+    ✅ {{ toastMsg }}
+  </div>
+
+</div>

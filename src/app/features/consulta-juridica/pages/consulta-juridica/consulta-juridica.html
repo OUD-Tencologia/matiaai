@@ -1,0 +1,156 @@
+<div class="consulta-page">
+
+  <!-- TOPBAR -->
+  <div class="page-topbar">
+    <div>
+      <h1 class="page-title">⚖️ Consulta Jurídica</h1>
+      <p class="page-sub">Busque leis, decretos e normas vigentes de Mato Grosso e esfera federal</p>
+    </div>
+  </div>
+
+  <!-- HERO DE BUSCA -->
+  <div class="search-hero">
+    <div class="search-hero-title">🔍 Busca de Legislação</div>
+    <div class="search-hero-sub">Pesquise por número da lei, tema jurídico, palavras-chave ou ementa</div>
+
+    <div class="search-main-wrap">
+      <div class="search-input-wrap">
+        <i class="pi pi-search search-icon"></i>
+        <input
+          pInputText
+          type="text"
+          class="search-input"
+          placeholder="Ex: Lei 14.129/2021, LGPD, contrato de trabalho..."
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="buscar()"/>
+      </div>
+      <p-button
+        label="Buscar"
+        icon="pi pi-search"
+        styleClass="btn-buscar"
+        (onClick)="buscar()"/>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filters-row">
+      <span class="filter-label">Área:</span>
+      @for (f of filtros; track f.value) {
+        <button
+          class="filter-chip"
+          [class.active]="filtroAtivo === f.value"
+          (click)="filtroAtivo = f.value; buscar()">
+          {{ f.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- LAYOUT PRINCIPAL -->
+  <div class="main-layout">
+
+    <!-- RESULTADOS -->
+    <div class="results-col">
+
+      <!-- HEADER RESULTADOS -->
+      @if (buscaRealizada) {
+        <div class="results-header">
+          <span class="results-count">
+            Exibindo <strong>{{ resultados.length }}</strong> resultados para "<strong>{{ termoBuscado }}</strong>"
+          </span>
+          <button class="clear-btn" (click)="limparBusca()">✕ Limpar</button>
+        </div>
+      }
+
+      <!-- LOADING -->
+      @if (loading) {
+        <div class="skeleton-list">
+          @for (s of [1,2,3]; track s) {
+            <div class="result-card skeleton-card">
+              <div class="skeleton" style="height:20px;width:60%;margin-bottom:10px"></div>
+              <div class="skeleton" style="height:14px;width:40%;margin-bottom:14px"></div>
+              <div class="skeleton" style="height:14px;width:100%;margin-bottom:6px"></div>
+              <div class="skeleton" style="height:14px;width:80%"></div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ESTADO INICIAL -->
+      @if (!loading && !buscaRealizada) {
+        <div class="empty-state">
+          <div class="empty-icon">⚖️</div>
+          <h3 class="empty-title">Inicie uma consulta</h3>
+          <p class="empty-sub">Digite o número da lei, tema jurídico ou<br>palavras-chave para encontrar a legislação.</p>
+        </div>
+      }
+
+      <!-- RESULTADOS -->
+      @if (!loading && buscaRealizada) {
+        @for (r of resultados; track r.id) {
+          <div class="result-card">
+            <div class="result-top">
+              <div class="result-title" [innerHTML]="destacar(r.titulo)"></div>
+              <div class="result-badges">
+                <span class="badge" [class]="'badge-' + r.area">{{ r.areaNome }}</span>
+                <span class="badge" [class]="r.status === 'vigente' ? 'badge-vigente' : 'badge-revogada'">
+                  {{ r.status === 'vigente' ? '● Vigente' : '○ Revogada' }}
+                </span>
+              </div>
+            </div>
+            <div class="result-meta">
+              <span class="meta-item">📋 {{ r.numero }}</span>
+              <span class="meta-item">📅 {{ r.data }}</span>
+              <span class="meta-item">🏛 {{ r.orgao }}</span>
+            </div>
+            <div class="result-resumo" [class.collapsed]="!r.expandido">
+              {{ r.resumo }}
+            </div>
+            <div class="result-actions">
+              <a class="action-btn" [href]="r.link" target="_blank">🔗 Ver fonte oficial</a>
+              <a class="action-btn pdf" href="#">📄 Baixar PDF</a>
+              <button class="expand-btn" (click)="r.expandido = !r.expandido">
+                {{ r.expandido ? 'Ver menos ▴' : 'Ver mais ▾' }}
+              </button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-col">
+
+      <!-- HISTÓRICO -->
+      <div class="side-card">
+        <div class="side-card-header">🕐 Histórico de Consultas</div>
+        <div class="side-card-body">
+          @for (h of historico; track h.id) {
+            <div class="history-item" (click)="preencherBusca(h.termo)">
+              <span class="history-icon">📋</span>
+              <div>
+                <div class="history-title">{{ h.titulo }}</div>
+                <div class="history-time">{{ h.tempo }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- FONTES OFICIAIS -->
+      <div class="side-card">
+        <div class="side-card-header">🔗 Fontes Oficiais</div>
+        <div class="side-card-body">
+          @for (f of fontes; track f.nome) {
+            <a class="source-item" [href]="f.url" target="_blank">
+              <div class="source-dot" [style.background]="f.cor"></div>
+              <span class="source-name">{{ f.nome }}</span>
+              <span class="source-link">↗</span>
+            </a>
+          }
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

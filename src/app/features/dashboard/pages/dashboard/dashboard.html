@@ -1,0 +1,123 @@
+<div class="dashboard-page">
+
+  <!-- TOPBAR -->
+  <div class="page-topbar">
+    <div>
+      <h1 class="page-title">📊 Dashboard</h1>
+      <p class="page-sub">Visão geral do sistema MATIA — métricas e auditoria</p>
+    </div>
+    <div class="period-selector">
+      @for (p of periodos; track p.value) {
+        <button class="period-btn" [class.active]="periodoAtivo === p.value" (click)="periodoAtivo = p.value">
+          {{ p.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- CARDS DE RESUMO -->
+  <div class="summary-grid">
+    @for (card of summaryCards; track card.label) {
+      <div class="summary-card">
+        <div class="card-icon" [class]="card.iconClass">{{ card.icon }}</div>
+        <div class="card-label">{{ card.label }}</div>
+        <div class="card-value">{{ card.value }}<span>{{ card.suffix }}</span></div>
+        <div class="card-trend" [class]="card.trendClass">{{ card.trend }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- GRID PRINCIPAL -->
+  <div class="main-grid">
+
+    <!-- CONSULTAS POR DIA -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><span class="dot"></span>Consultas por Dia</div>
+          <div class="chart-card-sub">Últimos 30 dias</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="consultasChart"></canvas>
+      </div>
+    </div>
+
+    <!-- ÁREA JURÍDICA -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><span class="dot"></span>Por Área Jurídica</div>
+          <div class="chart-card-sub">Distribuição de consultas</div>
+        </div>
+      </div>
+      <div class="chart-wrap donut-wrap">
+        <canvas id="areaChart"></canvas>
+      </div>
+      <div class="area-legend">
+        @for (item of areaLegend; track item.label) {
+          <div class="legend-item">
+            <div class="legend-left">
+              <div class="legend-dot" [style.background]="item.cor"></div>
+              {{ item.label }}
+            </div>
+            <span class="legend-pct">{{ item.pct }}%</span>
+          </div>
+          <div class="legend-bar-wrap">
+            <div class="legend-bar" [style.width]="item.pct + '%'" [style.background]="item.cor"></div>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRID INFERIOR -->
+  <div class="bottom-grid">
+
+    <!-- TOKENS & CUSTO -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><span class="dot"></span>Tokens & Custo</div>
+          <div class="chart-card-sub">Consumo mensal</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="tokensChart"></canvas>
+      </div>
+    </div>
+
+    <!-- HISTÓRICO -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title"><span class="dot"></span>Histórico de Interações</div>
+          <div class="chart-card-sub">Últimas consultas realizadas</div>
+        </div>
+      </div>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Usuário</th>
+            <th>Área</th>
+            <th>Tokens</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of historico; track item.id) {
+            <tr>
+              <td>{{ item.usuario }}</td>
+              <td><span class="badge" [class]="item.badgeClass">{{ item.area }}</span></td>
+              <td>{{ item.tokens }}</td>
+              <td class="td-muted">{{ item.data }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>

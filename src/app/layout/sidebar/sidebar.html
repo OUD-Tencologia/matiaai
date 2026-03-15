@@ -1,0 +1,99 @@
+<div class="matia-sidebar">
+
+
+  <!-- BUSCA -->
+  <div class="sidebar-search">
+    <i class="pi pi-search sidebar-search-icon"></i>
+    <input pInputText type="text" placeholder="Buscar consultas antigas..." class="sidebar-search-input"/>
+  </div>
+
+  <!-- MENU PRINCIPAL -->
+  <div class="sidebar-section">
+    <span class="sidebar-section-title">Menu Principal</span>
+    <ul class="sidebar-menu">
+      <li>
+        <a routerLink="/matia/chat" routerLinkActive="active" class="sidebar-item">
+          <i class="pi pi-comments"></i>
+          <span>Matia Chat</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/matia/dashboard" routerLinkActive="active" class="sidebar-item">
+          <i class="pi pi-chart-bar"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/matia/consulta-juridica" routerLinkActive="active" class="sidebar-item">
+          <i class="pi pi-book"></i>
+          <span>Consulta Jurídica</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/matia/usuarios" routerLinkActive="active" class="sidebar-item">
+          <i class="pi pi-users"></i>
+          <span>Usuários</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/matia/llm-config" routerLinkActive="active" class="sidebar-item">
+          <i class="pi pi-microchip-ai"></i>
+          <span>Config. LLMs</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- RECENTES -->
+  <div class="sidebar-section sidebar-scrollable">
+    <span class="sidebar-section-title">
+      <i class="pi pi-history"></i> Recentes
+    </span>
+    <ul class="sidebar-menu">
+      @for (item of recentes; track item.id) {
+        <li>
+          <a class="sidebar-item sidebar-item-recent">
+            <div class="recent-info">
+              <span class="recent-title">{{ item.titulo }}</span>
+              <span class="recent-time">{{ item.tempo }}</span>
+            </div>
+            <i class="pi" [class.pi-star-fill]="item.favorito" [class.pi-star]="!item.favorito" class="recent-star" [class.starred]="item.favorito"></i>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- FAVORITOS -->
+  <div class="sidebar-section sidebar-scrollable">
+    <span class="sidebar-section-title">
+      <i class="pi pi-star-fill"></i> Favoritos
+    </span>
+    <ul class="sidebar-menu">
+      @for (item of favoritos; track item.id) {
+        <li>
+          <a class="sidebar-item sidebar-item-recent">
+            <div class="recent-info">
+              <span class="recent-title">{{ item.titulo }}</span>
+              <span class="recent-time">{{ item.tempo }}</span>
+            </div>
+            <i class="pi pi-star-fill recent-star starred"></i>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="sidebar-footer">
+    <a routerLink="/matia/perfil" routerLinkActive="active" class="sidebar-item">
+      <i class="pi pi-user"></i>
+      <span>Perfil</span>
+    </a>
+    <a class="sidebar-item sidebar-item-logout">
+      <i class="pi pi-sign-out"></i>
+      <span>Sair</span>
+    </a>
+  </div>
+
+</div>

@@ -1,0 +1,175 @@
+<div class="llm-page">
+
+  <!-- TOPBAR -->
+  <div class="page-topbar">
+    <div>
+      <h1 class="page-title">🤖 Configuração de LLMs</h1>
+      <p class="page-sub">Gerencie modelos de IA, chaves de API e controle de custos</p>
+    </div>
+    <p-button
+      label="+ Adicionar Modelo"
+      styleClass="btn-primary"
+      (onClick)="novoModelo()"/>
+  </div>
+
+  <!-- RESUMO DE CUSTOS -->
+  <div class="cost-bar">
+    @for (card of costCards; track card.label) {
+      <div class="cost-card">
+        <div class="cost-icon" [class]="card.iconClass">{{ card.icon }}</div>
+        <div>
+          <div class="cost-label">{{ card.label }}</div>
+          <div class="cost-value">{{ card.value }}</div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- LAYOUT PRINCIPAL -->
+  <div class="main-layout">
+
+    <!-- LISTA DE MODELOS -->
+    <div class="models-list">
+      <div class="section-label">Modelos Configurados</div>
+
+      @for (m of modelos; track m.id) {
+        <div class="model-card" [class.selected]="m.id === selectedId" (click)="selecionarModelo(m)">
+          <div class="model-card-top">
+            <div class="model-identity">
+              <div class="model-logo" [class]="m.logoClass">{{ m.logoText }}</div>
+              <div>
+                <div class="model-name">{{ m.nome }}</div>
+                <div class="model-provider">{{ m.provider }}</div>
+              </div>
+            </div>
+            <div class="model-badges">
+              @if (m.padrao) {
+                <span class="badge badge-default">⭐ Padrão</span>
+              }
+              <span class="badge" [class]="m.ativo ? 'badge-active' : 'badge-inactive'">
+                {{ m.ativo ? '● Ativo' : '○ Inativo' }}
+              </span>
+            </div>
+          </div>
+          <div class="model-stats">
+            <div class="model-stat">
+              <div class="stat-label">Custo/1K tokens</div>
+              <div class="stat-value">{{ m.custoPorToken }}</div>
+            </div>
+            <div class="model-stat">
+              <div class="stat-label">Uso este mês</div>
+              <div class="stat-value">{{ m.usoMes }}</div>
+            </div>
+            <div class="model-stat">
+              <div class="stat-label">Custo acumulado</div>
+              <div class="stat-value">{{ m.custoAcumulado }}</div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- PAINEL DE CONFIGURAÇÃO -->
+    <div class="config-panel">
+      <div class="panel-header">
+        <div class="panel-title">{{ selectedModelo ? selectedModelo.nome : 'Configurações' }}</div>
+        <div class="panel-subtitle">{{ selectedModelo ? selectedModelo.provider + ' — Configurações do modelo' : 'Selecione um modelo' }}</div>
+      </div>
+
+      @if (!selectedModelo) {
+        <div class="empty-panel">
+          <div class="empty-icon">🤖</div>
+          <p>Selecione um modelo<br>para configurar</p>
+        </div>
+      }
+
+      @if (selectedModelo) {
+        <div class="panel-body">
+
+          <!-- STATUS CONEXÃO -->
+          <div class="connection-status" [class]="connectionStatus">
+            {{ connectionMsg }}
+          </div>
+
+          <!-- CHAVE DE API -->
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label">Chave de API</label>
+              <span class="field-hint">Criptografada</span>
+            </div>
+            <div class="api-key-wrap">
+              <input
+                pInputText
+                [type]="showApiKey ? 'text' : 'password'"
+                class="field-input api-key-input"
+                [(ngModel)]="selectedModelo.apiKey"
+                placeholder="sk-..."/>
+              <button class="toggle-vis" (click)="showApiKey = !showApiKey">
+                <i class="pi" [class.pi-eye]="!showApiKey" [class.pi-eye-slash]="showApiKey"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-divider"></div>
+
+          <!-- TOGGLES -->
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-text">Definir como modelo padrão</div>
+              <div class="toggle-sub">Usado em todas as consultas jurídicas</div>
+            </div>
+            <div class="toggle" [class.on]="selectedModelo.padrao" (click)="selectedModelo.padrao = !selectedModelo.padrao"></div>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-text">Modelo ativo</div>
+              <div class="toggle-sub">Disponível para seleção pelos usuários</div>
+            </div>
+            <div class="toggle" [class.on]="selectedModelo.ativo" (click)="selectedModelo.ativo = !selectedModelo.ativo"></div>
+          </div>
+
+          <div class="panel-divider"></div>
+
+          <!-- LIMITE DE CUSTO -->
+          <div class="field-group">
+            <label class="field-label">Limite de custo mensal (R$)</label>
+            <input pInputText type="number" class="field-input" [(ngModel)]="selectedModelo.limiteCusto" placeholder="Ex: 250"/>
+          </div>
+
+          <!-- TOKENS -->
+          <div class="field-group">
+            <label class="field-label">Máx. tokens por consulta</label>
+            <div class="slider-value">{{ selectedModelo.maxTokens.toLocaleString('pt-BR') }} tokens</div>
+            <input type="range" class="slider" min="512" max="32768" step="512" [(ngModel)]="selectedModelo.maxTokens"/>
+            <div class="slider-labels"><span>512</span><span>32.768</span></div>
+          </div>
+
+          <!-- TEMPERATURA -->
+          <div class="field-group">
+            <label class="field-label">Temperatura</label>
+            <div class="slider-value">{{ selectedModelo.temperatura.toFixed(1) }} — {{ tempLabel }}</div>
+            <input type="range" class="slider" min="0" max="2" step="0.1" [(ngModel)]="selectedModelo.temperatura"/>
+            <div class="slider-labels"><span>0 Preciso</span><span>2 Criativo</span></div>
+          </div>
+
+          <!-- AÇÕES -->
+          <div class="panel-actions">
+            <p-button
+              label="🔌 Testar Conexão"
+              styleClass="btn-success"
+              [fluid]="true"
+              (onClick)="testarConexao()"/>
+            <p-button
+              label="💾 Salvar Configurações"
+              styleClass="btn-primary"
+              [fluid]="true"/>
+          </div>
+
+        </div>
+      }
+    </div>
+
+  </div>
+
+</div>

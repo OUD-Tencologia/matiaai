@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+@use "primeicons/primeicons.css";
+@use "primeflex/primeflex.css";
+@use 'variables' as *;
+
+:root {
+  --navy-deep:  #{$navy-deep};
+  --navy:       #{$navy};
+  --navy-mid:   #{$navy-mid};
+  --gold:       #{$gold};
+  --gold-light: #{$gold-light};
+  --gold-pale:  #{$gold-pale};
+  --cream:      #{$cream};
+  --text-muted: #{$text-muted};
+  --text-faint: #{$text-faint};
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}

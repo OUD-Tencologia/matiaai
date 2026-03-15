@@ -1,0 +1,521 @@
+@use 'variables' as *;
+
+.perfil-page {
+  font-family: $font-body;
+  color: $cream;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── TOPBAR ─────────────────────────────────────────────
+.page-topbar {
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-family: $font-display;
+  font-size: 2rem;
+  font-weight: 400;
+  color: $cream;
+  letter-spacing: 0.04em;
+  margin: 0 0 4px;
+}
+
+.page-sub {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: $text-muted;
+  letter-spacing: 0.1em;
+}
+
+// ── LAYOUT ─────────────────────────────────────────────
+.page-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+// ── PROFILE CARD ───────────────────────────────────────
+.profile-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid $gold-border;
+  border-radius: 14px;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+}
+
+.profile-cover {
+  height: 80px;
+  background: linear-gradient(135deg, $navy 0%, rgba(201,162,39,0.15) 100%);
+}
+
+.profile-avatar-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: -36px;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(201,162,39,0.15);
+  border: 3px solid $gold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: $gold;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+
+  &:hover { box-shadow: 0 0 0 4px rgba(201,162,39,0.2); }
+}
+
+.profile-info {
+  text-align: center;
+  padding: 14px 20px 20px;
+}
+
+.profile-name {
+  font-family: $font-display;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: $cream;
+  margin-bottom: 4px;
+}
+
+.profile-email {
+  font-size: 0.72rem;
+  color: $text-muted;
+  margin-bottom: 12px;
+}
+
+.profile-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  background: rgba(201,162,39,0.15);
+  color: $gold-light;
+  border: 1px solid rgba(201,162,39,0.3);
+  margin-bottom: 16px;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.profile-stat {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,162,39,0.08);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.stat-val {
+  font-family: $font-display;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $cream;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.stat-lbl {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $text-faint;
+}
+
+.profile-divider {
+  height: 1px;
+  background: $gold-border;
+  margin: 14px 0;
+}
+
+.profile-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: $text-muted;
+  margin-bottom: 8px;
+  text-align: left;
+
+  span { color: $cream; }
+}
+
+// ── SECTION CARD ───────────────────────────────────────
+.section-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid $gold-border;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.section-header {
+  padding: 16px 22px;
+  border-bottom: 1px solid $gold-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $gold;
+}
+
+.section-sub {
+  font-size: 0.68rem;
+  color: $text-muted;
+}
+
+.section-body { padding: 22px; }
+
+// ── FORM ───────────────────────────────────────────────
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+
+.field-group.span2 { grid-column: span 2; }
+
+.field-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $gold;
+  margin-bottom: 7px;
+  display: block;
+}
+
+.field-input.p-inputtext {
+  width: 100% !important;
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid $gold-border !important;
+  border-radius: 7px !important;
+  padding: 10px 13px !important;
+  font-family: $font-body !important;
+  font-size: 0.85rem !important;
+  font-weight: 300 !important;
+  color: $cream !important;
+
+  &:focus {
+    border-color: $gold !important;
+    box-shadow: 0 0 0 2px $gold-glow !important;
+  }
+
+  &::placeholder { color: $text-faint !important; }
+}
+
+.field-select {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid $gold-border;
+  border-radius: 7px;
+  padding: 10px 13px;
+  font-family: $font-body;
+  font-size: 0.85rem;
+  color: $cream;
+  outline: none;
+
+  &:focus { border-color: $gold; }
+  option { background: $navy-deep; }
+}
+
+// ── PASSWORD ───────────────────────────────────────────
+.pw-wrap {
+  position: relative;
+
+  .field-input { padding-right: 40px !important; }
+}
+
+.pw-toggle {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  color: $text-muted;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+
+  &:hover { color: $gold; }
+}
+
+.pw-strength {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.pw-bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.08);
+  transition: background 0.3s;
+
+  &.weak   { background: #f87171; }
+  &.medium { background: $gold; }
+  &.strong { background: #10b981; }
+}
+
+.pw-label {
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+// ── SECTION ACTIONS ────────────────────────────────────
+.section-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+:host ::ng-deep .btn-primary.p-button {
+  background: $gold !important;
+  border-color: $gold !important;
+  color: $navy-deep !important;
+  font-family: $font-body !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  border-radius: 8px !important;
+
+  &:hover {
+    background: $gold-light !important;
+    box-shadow: 0 4px 16px rgba(201,162,39,0.3) !important;
+  }
+}
+
+:host ::ng-deep .btn-outline.p-button {
+  border-color: $gold-border !important;
+  color: $cream !important;
+  font-family: $font-body !important;
+  font-size: 0.78rem !important;
+  border-radius: 8px !important;
+
+  &:hover {
+    border-color: $gold !important;
+    background: $gold-glow !important;
+  }
+}
+
+// ── RBAC ───────────────────────────────────────────────
+.rbac-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.rbac-area {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid $gold-border;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+
+  &:hover { border-color: rgba(201,162,39,0.35); }
+}
+
+.rbac-area-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(201,162,39,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rbac-area-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $cream;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rbac-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.rbac-perms {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.perm-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.perm-check {
+  width: 16px; height: 16px;
+  border-radius: 4px;
+  border: 1px solid $gold-border;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  color: $navy-deep;
+
+  &.checked {
+    background: $gold;
+    border-color: $gold;
+  }
+}
+
+.perm-text {
+  font-size: 0.75rem;
+  color: $cream;
+}
+
+// ── TOGGLE ─────────────────────────────────────────────
+.toggle {
+  width: 36px; height: 20px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid $gold-border;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex-shrink: 0;
+
+  &.on { background: $gold; border-color: $gold; }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    top: 2px; left: 2px;
+    transition: transform 0.3s;
+  }
+
+  &.on::after { transform: translateX(16px); }
+}
+
+// ── HISTÓRICO ──────────────────────────────────────────
+.activity-list { display: flex; flex-direction: column; }
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(201,162,39,0.07);
+
+  &:last-child { border-bottom: none; }
+}
+
+.activity-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+
+  &.consulta    { background: rgba(201,162,39,0.12); border: 1px solid rgba(201,162,39,0.2); }
+  &.login       { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2); }
+  &.config      { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); }
+  &.download    { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.2); }
+  &.senha       { background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.2); }
+}
+
+.activity-content { flex: 1; }
+
+.activity-title {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: $cream;
+  margin-bottom: 3px;
+}
+
+.activity-detail {
+  font-size: 0.72rem;
+  color: $text-muted;
+}
+
+.activity-time {
+  font-size: 0.68rem;
+  color: $text-faint;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+// ── TOAST ──────────────────────────────────────────────
+.toast {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  background: rgba(16,185,129,0.15);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #6ee7b7;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+  z-index: 100;
+  pointer-events: none;
+
+  &.show { opacity: 1; transform: translateY(0); }
+}
+
+// ── RESPONSIVO ─────────────────────────────────────────
+@media (max-width: 960px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .profile-card { position: static; }
+}
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .field-group.span2 { grid-column: span 1; }
+  .rbac-grid { grid-template-columns: 1fr; }
+}
