@@ -4,7 +4,7 @@
   width: 260px;
   height: 100%;
   background: linear-gradient(180deg, $navy-deep 0%, #0d1a30 100%);
-  border-right: 1px solid $gold-border;
+  border-right: 1px solid rgba(0,41,107,0.3); // borda azul sólida em vez de gold-border — transição mais suave com o cream
   display: flex;
   flex-direction: column;
   overflow: hidden;

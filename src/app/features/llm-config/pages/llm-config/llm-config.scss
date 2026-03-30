@@ -2,7 +2,7 @@
 
 .llm-page {
   font-family: $font-body;
-  color: $cream;
+  color: $text-dark;
   animation: fadeIn 0.5s ease;
 }
 
@@ -23,7 +23,7 @@
   font-family: $font-display;
   font-size: 2rem;
   font-weight: 400;
-  color: $cream;
+  color: $navy-deep;
   letter-spacing: 0.04em;
   margin: 0 0 4px;
 }
@@ -31,8 +31,8 @@
 .page-sub {
   font-size: 0.75rem;
   font-weight: 300;
-  color: $text-muted;
-  letter-spacing: 0.1em;
+  color: $text-gray;
+  letter-spacing: 0.06em;
 }
 
 :host ::ng-deep .btn-primary.p-button {
@@ -47,19 +47,19 @@
 
   &:hover {
     background: $gold-light !important;
-    box-shadow: 0 4px 16px rgba(201,162,39,0.3) !important;
+    box-shadow: 0 4px 16px rgba(254,198,1,0.3) !important;
   }
 }
 
 :host ::ng-deep .btn-success.p-button {
-  background: rgba(16,185,129,0.15) !important;
-  border: 1px solid rgba(16,185,129,0.3) !important;
-  color: #6ee7b7 !important;
+  background: rgba(5,150,105,0.1) !important;
+  border: 1px solid rgba(5,150,105,0.3) !important;
+  color: #065f46 !important;
   font-family: $font-body !important;
   font-size: 0.78rem !important;
   border-radius: 8px !important;
 
-  &:hover { background: rgba(16,185,129,0.25) !important; }
+  &:hover { background: rgba(5,150,105,0.18) !important; }
 }
 
 // ── COST BAR ───────────────────────────────────────────
@@ -71,16 +71,19 @@
 }
 
 .cost-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid $gold-border;
+  background: $white;
+  border: 1px solid rgba(0,41,107,0.12);
   border-radius: 10px;
   padding: 16px 20px;
   display: flex;
   align-items: center;
   gap: 14px;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 
-  &:hover { border-color: rgba(201,162,39,0.4); }
+  &:hover {
+    border-color: rgba(0,41,107,0.25);
+    box-shadow: 0 4px 14px rgba(0,41,107,0.07);
+  }
 }
 
 .cost-icon {
@@ -92,9 +95,9 @@
   font-size: 1rem;
   flex-shrink: 0;
 
-  &.icon-gold  { background: rgba(201,162,39,0.15); border: 1px solid rgba(201,162,39,0.25); }
-  &.icon-green { background: rgba(16,185,129,0.15);  border: 1px solid rgba(16,185,129,0.25); }
-  &.icon-blue  { background: rgba(59,130,246,0.15);  border: 1px solid rgba(59,130,246,0.25); }
+  &.icon-gold  { background: rgba(254,198,1,0.15); border: 1px solid rgba(254,198,1,0.3); }
+  &.icon-green { background: rgba(5,150,105,0.1);  border: 1px solid rgba(5,150,105,0.25); }
+  &.icon-blue  { background: rgba(0,63,136,0.1);   border: 1px solid rgba(0,63,136,0.2); }
 }
 
 .cost-label {
@@ -102,7 +105,7 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: $text-muted;
+  color: $text-gray;
   margin-bottom: 4px;
 }
 
@@ -110,7 +113,7 @@
   font-family: $font-display;
   font-size: 1.5rem;
   font-weight: 600;
-  color: $cream;
+  color: $navy-deep;
   line-height: 1;
 }
 
@@ -130,7 +133,7 @@
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: $gold;
+  color: $navy;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -139,13 +142,13 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: $gold-border;
+    background: rgba(0,41,107,0.15);
   }
 }
 
 .model-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid $gold-border;
+  background: $white;
+  border: 1px solid rgba(0,41,107,0.12);
   border-radius: 12px;
   padding: 18px 20px;
   cursor: pointer;
@@ -163,14 +166,15 @@
   }
 
   &:hover {
-    border-color: rgba(201,162,39,0.4);
+    border-color: rgba(0,41,107,0.25);
     transform: translateX(3px);
+    box-shadow: 0 4px 14px rgba(0,41,107,0.08);
     &::before { background: $gold; }
   }
 
   &.selected {
     border-color: $gold;
-    background: rgba(201,162,39,0.06);
+    background: rgba(254,198,1,0.04);
     &::before { background: $gold; }
   }
 }
@@ -198,14 +202,14 @@
   font-weight: 700;
   flex-shrink: 0;
 
-  &.logo-openai    { background: #000; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
-  &.logo-anthropic { background: #cc785c; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
-  &.logo-google    { background: #fff; color: #4285f4; border: 1px solid rgba(255,255,255,0.2); }
-  &.logo-mistral   { background: #f76b15; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+  &.logo-openai    { background: #000; color: #fff; border: 1px solid rgba(0,0,0,0.1); }
+  &.logo-anthropic { background: #cc785c; color: #fff; border: 1px solid rgba(204,120,92,0.3); }
+  &.logo-google    { background: #fff; color: #4285f4; border: 1px solid rgba(0,0,0,0.12); }
+  &.logo-mistral   { background: #f76b15; color: #fff; border: 1px solid rgba(247,107,21,0.3); }
 }
 
-.model-name     { font-size: 0.95rem; font-weight: 500; color: $cream; margin-bottom: 2px; }
-.model-provider { font-size: 0.7rem; color: $text-muted; letter-spacing: 0.06em; }
+.model-name     { font-size: 0.95rem; font-weight: 500; color: $text-dark; margin-bottom: 2px; }
+.model-provider { font-size: 0.7rem; color: $text-gray; letter-spacing: 0.06em; }
 
 .model-badges { display: flex; gap: 6px; align-items: center; }
 
@@ -217,9 +221,9 @@
   font-weight: 500;
   letter-spacing: 0.06em;
 
-  &.badge-default  { background: rgba(201,162,39,0.2);  color: $gold-light; border: 1px solid rgba(201,162,39,0.3);  }
-  &.badge-active   { background: rgba(16,185,129,0.12); color: #6ee7b7;     border: 1px solid rgba(16,185,129,0.25); }
-  &.badge-inactive { background: rgba(255,255,255,0.05); color: $text-muted; border: 1px solid rgba(255,255,255,0.1); }
+  &.badge-default  { background: rgba(254,198,1,0.15);  color: #92680a;  border: 1px solid rgba(254,198,1,0.3); }
+  &.badge-active   { background: rgba(5,150,105,0.1);   color: #065f46;  border: 1px solid rgba(5,150,105,0.25); }
+  &.badge-inactive { background: rgba(0,41,107,0.06);   color: $text-gray; border: 1px solid rgba(0,41,107,0.12); }
 }
 
 .model-stats {
@@ -229,19 +233,19 @@
 }
 
 .model-stat {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(201,162,39,0.08);
+  background: $cream;
+  border: 1px solid rgba(0,41,107,0.08);
   border-radius: 6px;
   padding: 8px 10px;
 }
 
-.stat-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: $text-faint; margin-bottom: 3px; }
-.stat-value { font-size: 0.82rem; font-weight: 400; color: $cream; }
+.stat-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: $text-gray; margin-bottom: 3px; }
+.stat-value { font-size: 0.82rem; font-weight: 400; color: $text-dark; }
 
 // ── PAINEL ─────────────────────────────────────────────
 .config-panel {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid $gold-border;
+  background: $white;
+  border: 1px solid rgba(0,41,107,0.12);
   border-radius: 12px;
   overflow: hidden;
   position: sticky;
@@ -250,25 +254,25 @@
 
 .panel-header {
   padding: 18px 20px;
-  border-bottom: 1px solid $gold-border;
+  border-bottom: 1px solid rgba(0,41,107,0.1);
 }
 
 .panel-title {
   font-family: $font-display;
   font-size: 1.1rem;
   font-weight: 400;
-  color: $cream;
+  color: $navy-deep;
   margin-bottom: 2px;
 }
 
-.panel-subtitle { font-size: 0.68rem; color: $text-muted; letter-spacing: 0.06em; }
+.panel-subtitle { font-size: 0.68rem; color: $text-gray; letter-spacing: 0.06em; }
 
 .empty-panel {
   padding: 52px 20px;
   text-align: center;
 
   .empty-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.3; }
-  p { font-size: 0.8rem; color: $text-faint; line-height: 1.7; }
+  p { font-size: 0.8rem; color: $text-gray; line-height: 1.7; }
 }
 
 .panel-body { padding: 20px; }
@@ -283,9 +287,9 @@
   font-size: 0.78rem;
   margin-bottom: 16px;
 
-  &.ok    { background: rgba(16,185,129,0.1);  border: 1px solid rgba(16,185,129,0.2);  color: #6ee7b7; }
-  &.error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); color: #fca5a5; }
-  &.idle  { background: rgba(255,255,255,0.04); border: 1px solid $gold-border;          color: $text-muted; }
+  &.ok    { background: rgba(5,150,105,0.08);  border: 1px solid rgba(5,150,105,0.2);  color: #065f46; }
+  &.error { background: rgba(220,38,38,0.08);  border: 1px solid rgba(220,38,38,0.2);  color: #991b1b; }
+  &.idle  { background: rgba(0,41,107,0.04);   border: 1px solid rgba(0,41,107,0.12);  color: $text-gray; }
 }
 
 // ── CAMPOS ─────────────────────────────────────────────
@@ -303,27 +307,27 @@
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: $gold;
+  color: $navy-deep;
   display: block;
   margin-bottom: 7px;
 }
 
-.field-hint { font-size: 0.65rem; color: $text-faint; }
+.field-hint { font-size: 0.65rem; color: $text-gray; }
 
 .field-input.p-inputtext {
   width: 100% !important;
-  background: rgba(255,255,255,0.04) !important;
-  border: 1px solid $gold-border !important;
+  background: $cream !important;
+  border: 1px solid rgba(0,41,107,0.2) !important;
   border-radius: 6px !important;
   padding: 9px 12px !important;
   font-family: $font-body !important;
   font-size: 0.83rem !important;
-  font-weight: 300 !important;
-  color: $cream !important;
+  font-weight: 400 !important;
+  color: $text-dark !important;
 
   &:focus {
-    border-color: $gold !important;
-    box-shadow: 0 0 0 2px $gold-glow !important;
+    border-color: $navy !important;
+    box-shadow: 0 0 0 2px rgba(0,41,107,0.08) !important;
   }
 }
 
@@ -336,15 +340,15 @@
   right: 10px; top: 50%;
   transform: translateY(-50%);
   background: none; border: none;
-  color: $text-muted;
+  color: $text-gray;
   cursor: pointer;
   font-size: 0.9rem;
   transition: color 0.2s;
 
-  &:hover { color: $gold; }
+  &:hover { color: $navy; }
 }
 
-.panel-divider { height: 1px; background: $gold-border; margin: 14px 0; }
+.panel-divider { height: 1px; background: rgba(0,41,107,0.1); margin: 14px 0; }
 
 // ── TOGGLES ────────────────────────────────────────────
 .toggle-row {
@@ -354,14 +358,14 @@
   margin-bottom: 12px;
 }
 
-.toggle-text { font-size: 0.8rem; color: $cream; }
-.toggle-sub  { font-size: 0.68rem; color: $text-muted; margin-top: 1px; }
+.toggle-text { font-size: 0.8rem; color: $text-dark; }
+.toggle-sub  { font-size: 0.68rem; color: $text-gray; margin-top: 1px; }
 
 .toggle {
   width: 36px; height: 20px;
   border-radius: 10px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid $gold-border;
+  background: rgba(0,41,107,0.1);
+  border: 1px solid rgba(0,41,107,0.15);
   position: relative;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -374,7 +378,7 @@
     position: absolute;
     width: 14px; height: 14px;
     border-radius: 50%;
-    background: #fff;
+    background: $white;
     top: 2px; left: 2px;
     transition: transform 0.3s;
   }
@@ -385,7 +389,7 @@
 // ── SLIDER ─────────────────────────────────────────────
 .slider-value {
   font-size: 0.78rem;
-  color: $gold;
+  color: $navy;
   font-weight: 500;
   margin-bottom: 6px;
   text-align: right;
@@ -396,7 +400,7 @@
   -webkit-appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: rgba(201,162,39,0.15);
+  background: rgba(0,41,107,0.12);
   outline: none;
   cursor: pointer;
 
@@ -405,8 +409,8 @@
     width: 16px; height: 16px;
     border-radius: 50%;
     background: $gold;
-    border: 2px solid $navy-deep;
-    box-shadow: 0 0 6px rgba(201,162,39,0.4);
+    border: 2px solid $white;
+    box-shadow: 0 0 6px rgba(254,198,1,0.4);
     cursor: pointer;
   }
 }
@@ -416,7 +420,7 @@
   justify-content: space-between;
   margin-top: 6px;
   font-size: 0.65rem;
-  color: $text-faint;
+  color: $text-gray;
 }
 
 // ── AÇÕES ──────────────────────────────────────────────

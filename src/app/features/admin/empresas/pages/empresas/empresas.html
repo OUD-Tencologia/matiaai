@@ -1,0 +1,377 @@
+<div class="empresas-page">
+
+  <!-- TOPBAR -->
+  <div class="page-topbar">
+    <div>
+      <h1 class="page-title">🏢 Gestão de Empresas</h1>
+      <p class="page-sub">Administre clientes SaaS, planos e acessos do sistema MATIA</p>
+    </div>
+    <p-button
+      label="Nova Empresa"
+      icon="pi pi-plus"
+      styleClass="btn-primary"
+      (onClick)="novaEmpresa()"/>
+  </div>
+
+  <!-- STATS CARDS -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-icon total">🏢</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ stats().total }}</div>
+        <div class="stat-label">Total Empresas</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon active">✅</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ stats().ativas }}</div>
+        <div class="stat-label">Ativas</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon inactive">⏸️</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ stats().inativas }}</div>
+        <div class="stat-label">Inativas</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon trial">🎯</div>
+      <div class="stat-info">
+        <div class="stat-value">{{ stats().trial }}</div>
+        <div class="stat-label">Em Trial</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT PRINCIPAL -->
+  <div class="main-layout">
+
+    <!-- LISTA DE EMPRESAS -->
+    <div class="list-col">
+      
+      <!-- FILTROS -->
+      <div class="filters-bar">
+        <div class="search-wrap">
+          <i class="pi pi-search search-icon"></i>
+          <input
+            pInputText
+            type="text"
+            class="search-input"
+            placeholder="Buscar por nome, código, CNPJ ou responsável..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event); aplicarFiltros()"/>
+        </div>
+        <div class="filter-chips">
+          <button 
+            class="filter-chip" 
+            [class.active]="statusFilter() === 'todas'"
+            (click)="statusFilter.set('todas'); aplicarFiltros()">
+            Todas
+          </button>
+          <button 
+            class="filter-chip" 
+            [class.active]="statusFilter() === 'ativas'"
+            (click)="statusFilter.set('ativas'); aplicarFiltros()">
+            Ativas
+          </button>
+          <button 
+            class="filter-chip" 
+            [class.active]="statusFilter() === 'inativas'"
+            (click)="statusFilter.set('inativas'); aplicarFiltros()">
+            Inativas
+          </button>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      @if (loading()) {
+        <div class="skeleton-list">
+          @for (s of [1,2,3]; track s) {
+            <div class="empresa-card skeleton-card">
+              <div class="skeleton" style="height:24px;width:40%;margin-bottom:12px"></div>
+              <div class="skeleton" style="height:16px;width:60%;margin-bottom:8px"></div>
+              <div class="skeleton" style="height:16px;width:30%"></div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- LISTA -->
+      @if (!loading()) {
+        <div class="empresas-list">
+          @for (empresa of filteredEmpresas(); track empresa.id) {
+            <div 
+              class="empresa-card" 
+              [class.selected]="selectedEmpresa()?.id === empresa.id"
+              [class.inactive]="!empresa.ativa"
+              (click)="selecionarEmpresa(empresa)">
+              
+              <div class="empresa-card-header">
+                <div class="empresa-identity">
+                  <div class="empresa-logo" [class]="empresa.ativa ? 'active' : 'inactive'">
+                    {{ empresa.codigo.substring(0, 2) }}
+                  </div>
+                  <div class="empresa-info">
+                    <div class="empresa-nome">{{ empresa.nome }}</div>
+                    <div class="empresa-meta">
+                      <span class="meta-tag">📋 {{ empresa.codigo }}</span>
+                      <span class="meta-tag">🏢 {{ empresa.cnpj }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="empresa-badges">
+                  <span class="badge" [class]="getPlanoClass(empresa.plano)">
+                    {{ formatarPlano(empresa.plano) }}
+                  </span>
+                  <span class="badge" [class]="empresa.ativa ? 'badge-active' : 'badge-inactive'">
+                    {{ empresa.ativa ? '● Ativa' : '○ Inativa' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="empresa-stats">
+                <div class="emp-stat">
+                  <i class="pi pi-users"></i>
+                  <span>{{ empresa.usuariosCount }} usuários</span>
+                </div>
+                <div class="emp-stat">
+                  <i class="pi pi-comments"></i>
+                  <span>{{ empresa.consultasMes }} consultas/mês</span>
+                </div>
+                <div class="emp-stat">
+                  <i class="pi pi-dollar"></i>
+                  <span>R$ {{ empresa.custoMes.toFixed(2) }}</span>
+                </div>
+                <div class="emp-stat">
+                  <i class="pi pi-calendar"></i>
+                  <span>Válido até {{ empresa.validade }}</span>
+                </div>
+              </div>
+
+              <div class="empresa-responsavel">
+                <div class="resp-info">
+                  <i class="pi pi-user"></i>
+                  <span>{{ empresa.responsavel }} • {{ empresa.email }}</span>
+                </div>
+                <div class="empresa-actions">
+                  <button 
+                    class="icon-btn" 
+                    (click)="editarEmpresa(empresa, $event)"
+                    pTooltip="Editar"
+                    tooltipPosition="top">
+                    <i class="pi pi-pencil"></i>
+                  </button>
+                  <button 
+                    class="icon-btn" 
+                    [class.warning]="empresa.ativa"
+                    (click)="toggleStatus(empresa, $event)"
+                    pTooltip="{{ empresa.ativa ? 'Desativar' : 'Ativar' }}"
+                    tooltipPosition="top">
+                    <i class="pi" [class.pi-ban]="empresa.ativa" [class.pi-check-circle]="!empresa.ativa"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+          
+          @if (filteredEmpresas().length === 0) {
+            <div class="empty-state">
+              <div class="empty-icon">🔍</div>
+              <h3>Nenhuma empresa encontrada</h3>
+              <p>Tente ajustar os filtros ou cadastre uma nova empresa</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- PAINEL DE DETALHES -->
+    <div class="detail-col">
+      @if (!selectedEmpresa()) {
+        <div class="empty-panel">
+          <div class="empty-icon">🏢</div>
+          <p>Selecione uma empresa<br>para ver detalhes completos<br>e gerenciar configurações</p>
+        </div>
+      }
+
+      @if (selectedEmpresa(); as emp) {
+        <div class="detail-card">
+          <div class="detail-header">
+            <div class="detail-logo" [class]="emp.ativa ? 'active' : 'inactive'">
+              {{ emp.codigo.substring(0, 2) }}
+            </div>
+            <div class="detail-title-group">
+              <h2 class="detail-title">{{ emp.nome }}</h2>
+              <span class="detail-subtitle">{{ emp.codigo }} • CNPJ: {{ emp.cnpj }}</span>
+            </div>
+          </div>
+
+          <div class="detail-status-bar">
+            <div class="status-item">
+              <span class="status-label">Status</span>
+              <span class="toggle" [class.on]="emp.ativa" (click)="toggleStatus(emp, $event)"></span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Plano</span>
+              <span class="badge" [class]="getPlanoClass(emp.plano)">{{ formatarPlano(emp.plano) }}</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-label">📊 Métricas do Mês</h3>
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-value">{{ emp.usuariosCount }}</div>
+                <div class="metric-label">Usuários Ativos</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-value">{{ emp.consultasMes }}</div>
+                <div class="metric-label">Consultas Realizadas</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-value">R$ {{ emp.custoMes.toFixed(2) }}</div>
+                <div class="metric-label">Custo Estimado</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-value">{{ (emp.custoMes / (emp.consultasMes || 1)).toFixed(3) }}</div>
+                <div class="metric-label">Custo/Consulta</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-label">👤 Responsável</h3>
+            <div class="responsavel-card">
+              <div class="resp-avatar">{{ getIniciais(emp.responsavel) }}</div>          
+              <div class="resp-details">
+                <div class="resp-name">{{ emp.responsavel }}</div>
+                <div class="resp-contact">{{ emp.email }}</div>
+                <div class="resp-contact">{{ emp.telefone }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-label">📅 Informações</h3>
+            <div class="info-list">
+              <div class="info-item">
+                <span class="info-label">Data de Cadastro</span>
+                <span class="info-value">{{ emp.dataCadastro }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Validade do Plano</span>
+                <span class="info-value">{{ emp.validade }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Dias até renovação</span>
+                <span class="info-value" [class.alert]="calcularDiasRestantes(emp.validade) < 30">
+                  {{ calcularDiasRestantes(emp.validade) }} dias
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <p-button 
+              label="✏️ Editar Empresa" 
+              styleClass="btn-primary" 
+              [fluid]="true"
+              (onClick)="editarEmpresa(emp, $event)"/>
+            <p-button 
+              label="👥 Ver Usuários" 
+              styleClass="btn-outline" 
+              [outlined]="true" 
+              [fluid]="true"/>
+            <p-button 
+              label="📊 Relatório Detalhado" 
+              styleClass="btn-outline" 
+              [outlined]="true" 
+              [fluid]="true"/>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+
+  <!-- MODAL NOVA/EDITAR EMPRESA -->
+  @if (modalAberto()) {
+    <div class="modal-overlay" (click)="fecharModal()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title">{{ modalMode === 'criar' ? 'Nova Empresa' : 'Editar Empresa' }}</span>
+          <button class="modal-close" (click)="fecharModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="field-group span2">
+              <label class="field-label">Nome da Empresa</label>
+              <input pInputText type="text" class="field-input" [(ngModel)]="empresaForm.nome" placeholder="Ex: Tribunal de Justiça de MT"/>
+            </div>
+            
+            <div class="field-group">
+              <label class="field-label">Código</label>
+              <input pInputText type="text" class="field-input" [(ngModel)]="empresaForm.codigo" placeholder="Ex: TJMT"/>
+            </div>
+            
+            <div class="field-group">
+              <label class="field-label">CNPJ</label>
+              <input pInputText type="text" class="field-input" [(ngModel)]="empresaForm.cnpj" placeholder="00.000.000/0000-00"/>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Responsável</label>
+              <input pInputText type="text" class="field-input" [(ngModel)]="empresaForm.responsavel" placeholder="Nome completo"/>
+            </div>
+            
+            <div class="field-group">
+              <label class="field-label">E-mail</label>
+              <input pInputText type="email" class="field-input" [(ngModel)]="empresaForm.email" placeholder="contato@empresa.com"/>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Telefone</label>
+              <input pInputText type="tel" class="field-input" [(ngModel)]="empresaForm.telefone" placeholder="(65) 99999-9999"/>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Plano</label>
+              <select class="field-select" [(ngModel)]="empresaForm.plano">
+                <option value="trial">Trial (30 dias)</option>
+                <option value="basico">Básico</option>
+                <option value="profissional">Profissional</option>
+                <option value="enterprise">Enterprise</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <div class="toggle-row-modal">
+                <div>
+                  <div class="toggle-text-modal">Empresa Ativa</div>
+                  <div class="toggle-sub-modal">Acesso permitido ao sistema</div>
+                </div>
+                <div class="toggle" [class.on]="empresaForm.ativa" (click)="empresaForm.ativa = !empresaForm.ativa"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <p-button 
+            label="Cancelar" 
+            styleClass="btn-outline" 
+            [outlined]="true" 
+            (onClick)="fecharModal()"/>
+          <p-button 
+            label="{{ modalMode === 'criar' ? '➕ Criar Empresa' : '💾 Salvar Alterações' }}" 
+            styleClass="btn-primary" 
+            (onClick)="salvarEmpresa()"/>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

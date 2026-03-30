@@ -4,47 +4,97 @@
   <div class="left-panel">
     <div class="geo-lines">
       <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="200" x2="600" y2="600" stroke="#c9a227" stroke-width="0.8"/>
-        <line x1="0" y1="400" x2="600" y2="200" stroke="#c9a227" stroke-width="0.5"/>
-        <line x1="150" y1="0" x2="450" y2="800" stroke="#c9a227" stroke-width="0.6"/>
-        <circle cx="300" cy="400" r="180" fill="none" stroke="#c9a227" stroke-width="0.6"/>
-        <circle cx="300" cy="400" r="280" fill="none" stroke="#c9a227" stroke-width="0.4"/>
-        <polygon points="300,120 520,560 80,560" fill="none" stroke="#c9a227" stroke-width="0.5"/>
+        <line x1="0" y1="200" x2="600" y2="600" stroke="#FEC601" stroke-width="0.8"/>
+        <line x1="0" y1="400" x2="600" y2="200" stroke="#FEC601" stroke-width="0.5"/>
+        <line x1="150" y1="0" x2="450" y2="800" stroke="#FEC601" stroke-width="0.6"/>
+        <circle cx="300" cy="400" r="180" fill="none" stroke="#FEC601" stroke-width="0.6"/>
+        <circle cx="300" cy="400" r="280" fill="none" stroke="#FEC601" stroke-width="0.4"/>
+        <polygon points="300,120 520,560 80,560" fill="none" stroke="#FEC601" stroke-width="0.5"/>
       </svg>
     </div>
 
     <div class="brand-block">
-      <svg class="robot-icon" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="60" y1="18" x2="60" y2="4" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="60" cy="3" r="3" fill="#c9a227"/>
-        <line x1="60" y1="10" x2="44" y2="2" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="43" cy="1.5" r="2.5" fill="#c9a227"/>
-        <line x1="60" y1="10" x2="76" y2="2" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="77" cy="1.5" r="2.5" fill="#c9a227"/>
-        <rect x="36" y="18" width="48" height="40" rx="12" fill="none" stroke="#c9a227" stroke-width="2.5"/>
-        <circle cx="50" cy="35" r="5" fill="#c9a227"/>
-        <circle cx="70" cy="35" r="5" fill="#c9a227"/>
-        <circle cx="51.5" cy="33.5" r="1.5" fill="#0f1e3b"/>
-        <circle cx="71.5" cy="33.5" r="1.5" fill="#0f1e3b"/>
-        <path d="M50 46 Q60 53 70 46" stroke="#c9a227" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <rect x="28" y="28" width="8" height="16" rx="4" fill="none" stroke="#c9a227" stroke-width="2"/>
-        <rect x="84" y="28" width="8" height="16" rx="4" fill="none" stroke="#c9a227" stroke-width="2"/>
-        <line x1="60" y1="58" x2="60" y2="74" stroke="#c9a227" stroke-width="2.5"/>
-        <line x1="28" y1="74" x2="92" y2="74" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="36" y1="74" x2="30" y2="90" stroke="#c9a227" stroke-width="1.8"/>
-        <line x1="44" y1="74" x2="50" y2="90" stroke="#c9a227" stroke-width="1.8"/>
-        <line x1="76" y1="74" x2="70" y2="90" stroke="#c9a227" stroke-width="1.8"/>
-        <line x1="84" y1="74" x2="90" y2="90" stroke="#c9a227" stroke-width="1.8"/>
-        <path d="M28 90 Q40 98 52 90" stroke="#c9a227" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M68 90 Q80 98 92 90" stroke="#c9a227" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <line x1="52" y1="110" x2="68" y2="110" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="60" y1="74" x2="60" y2="110" stroke="#c9a227" stroke-width="2.5"/>
-        <line x1="44" y1="118" x2="76" y2="118" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+
+      <!-- Ícone robô com balança (fiel ao Figma) -->
+      <svg class="robot-icon" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Antena central -->
+        <line x1="80" y1="28" x2="80" y2="10" stroke="#FEC601" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="80" cy="8" r="4" fill="#FEC601"/>
+
+        <!-- Headphone esquerdo -->
+        <path d="M44 55 Q44 30 80 30 Q116 30 116 55" stroke="#FEC601" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <rect x="36" y="52" width="12" height="22" rx="6" fill="none" stroke="#FEC601" stroke-width="2.5"/>
+        <!-- Headphone direito -->
+        <rect x="112" y="52" width="12" height="22" rx="6" fill="none" stroke="#FEC601" stroke-width="2.5"/>
+
+        <!-- Cabeça -->
+        <rect x="50" y="28" width="60" height="50" rx="14" fill="none" stroke="#FEC601" stroke-width="2.5"/>
+
+        <!-- Olhos -->
+        <circle cx="68" cy="48" r="6" fill="#FEC601"/>
+        <circle cx="92" cy="48" r="6" fill="#FEC601"/>
+        <circle cx="70" cy="46" r="2" fill="#1B0045"/>
+        <circle cx="94" cy="46" r="2" fill="#1B0045"/>
+
+        <!-- Sorriso -->
+        <path d="M68 62 Q80 71 92 62" stroke="#FEC601" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+        <!-- Pescoço -->
+        <line x1="80" y1="78" x2="80" y2="94" stroke="#FEC601" stroke-width="2.5"/>
+
+        <!-- Corpo (tronco) -->
+        <line x1="80" y1="94" x2="80" y2="130" stroke="#FEC601" stroke-width="2.5"/>
+        <line x1="52" y1="104" x2="108" y2="104" stroke="#FEC601" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- Braços -->
+        <line x1="52" y1="104" x2="38" y2="126" stroke="#FEC601" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="108" y1="104" x2="122" y2="126" stroke="#FEC601" stroke-width="2.2" stroke-linecap="round"/>
+
+        <!-- BALANÇA esquerda -->
+        <!-- haste horizontal esquerda -->
+        <line x1="18" y1="126" x2="58" y2="126" stroke="#FEC601" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- ponto central pivot esquerdo (mão) -->
+        <circle cx="38" cy="126" r="2" fill="#FEC601"/>
+        <!-- fios prato esquerdo -->
+        <line x1="22" y1="126" x2="18" y2="140" stroke="#FEC601" stroke-width="1.5"/>
+        <line x1="54" y1="126" x2="58" y2="140" stroke="#FEC601" stroke-width="1.5"/>
+        <!-- prato esquerdo -->
+        <path d="M14 140 Q38 148 62 140" stroke="#FEC601" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+        <!-- BALANÇA direita -->
+        <line x1="102" y1="126" x2="142" y2="126" stroke="#FEC601" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="122" cy="126" r="2" fill="#FEC601"/>
+        <line x1="106" y1="126" x2="102" y2="140" stroke="#FEC601" stroke-width="1.5"/>
+        <line x1="138" y1="126" x2="142" y2="140" stroke="#FEC601" stroke-width="1.5"/>
+        <path d="M98 140 Q122 148 146 140" stroke="#FEC601" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+        <!-- Pernas -->
+        <line x1="68" y1="130" x2="62" y2="158" stroke="#FEC601" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="92" y1="130" x2="98" y2="158" stroke="#FEC601" stroke-width="2.2" stroke-linecap="round"/>
+
+        <!-- Pés -->
+        <line x1="52" y1="158" x2="72" y2="158" stroke="#FEC601" stroke-width="3" stroke-linecap="round"/>
+        <line x1="88" y1="158" x2="108" y2="158" stroke="#FEC601" stroke-width="3" stroke-linecap="round"/>
       </svg>
 
       <h1 class="brand-title">MATIA</h1>
-      <div class="gold-line"></div>
-      <p class="brand-tagline">Sua fonte confiável de leis<br>e decretos de Mato Grosso</p>
+
+      <!-- Underline curvado (swash caligráfico) -->
+      <div class="brand-underline">
+        <svg viewBox="0 0 300 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 18 Q80 4 150 12 Q220 20 280 8" stroke="url(#goldGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="300" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="20%" stop-color="#FEC601"/>
+              <stop offset="80%" stop-color="#FFD500"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <p class="brand-tagline">Sua fonte confiável de leis e decretos<br>no Mato-Grosso</p>
     </div>
   </div>
 
@@ -53,48 +103,51 @@
     <div class="login-card">
 
       <div class="card-header">
+        <h2 class="card-title">Bem vindo(a) de volta</h2>
         <span class="eyebrow">Acesso ao sistema</span>
-        <h2 class="card-title">Bem-vindo de volta</h2>
       </div>
 
       <!-- EMAIL -->
       <div class="field">
-        <label class="field-label">E-mail</label>
+        <label class="field-label">Email</label>
         <div class="p-input-icon-left input-wrap">
           <i class="pi pi-envelope"></i>
-          <input pInputText type="email" placeholder="seu@email.com.br" class="w-full custom-input" autocomplete="email"/>
+          <input pInputText type="email" placeholder="Insira seu email" class="w-full custom-input" autocomplete="email"/>
         </div>
       </div>
 
       <!-- SENHA -->
       <div class="field">
         <label class="field-label">Senha</label>
-        <div class="p-input-icon-left input-wrap">
+        <div class="p-input-icon-left input-wrap password-wrap">
           <i class="pi pi-lock"></i>
-          <input pInputText type="password" placeholder="••••••••••" class="w-full custom-input" autocomplete="current-password"/>
+          <input pInputText [type]="showPassword ? 'text' : 'password'" placeholder="Insira sua senha" class="w-full custom-input" autocomplete="current-password"/>
+          <button type="button" class="toggle-password" (click)="showPassword = !showPassword">
+            <i [class]="showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+          </button>
         </div>
       </div>
 
       <!-- ESQUECEU A SENHA -->
       <div class="forgot-row">
-        <button pButton type="button" class="p-button-text forgot-btn">Esqueceu a senha?</button>
+        <button pButton type="button" class="p-button-text forgot-btn">Esqueceu sua senha?</button>
       </div>
 
       <!-- ENTRAR -->
       <p-button
-        label="ENTRAR"
+        label="Entrar"
         [fluid]="true"
         styleClass="btn-login"
         (onClick)="onLogin()"/>
 
       <!-- DIVIDER -->
       <div class="divider">
-        <span>ou</span>
+        <span>Ou</span>
       </div>
 
       <!-- CADASTRAR -->
       <p-button
-        label="CRIAR NOVA CONTA"
+        label="Criar nova conta"
         [fluid]="true"
         styleClass="btn-register"
         [outlined]="true"/>

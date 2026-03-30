@@ -13,6 +13,8 @@ import { RippleModule } from 'primeng/ripple';
 export class Login {
   private router = inject(Router);
 
+  showPassword = false;
+
   onLogin() {
     this.router.navigate(['/matia/chat']);
   }

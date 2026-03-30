@@ -35,6 +35,8 @@
   flex: 1;
   overflow-y: auto;
   padding: 28px;
+  background-color: $cream;
+   
 
   &::-webkit-scrollbar { width: 5px; }
   &::-webkit-scrollbar-track { background: transparent; }

@@ -4,18 +4,17 @@
   min-height: 100vh;
   display: flex;
   font-family: $font-body;
-  background: $navy-deep;
   overflow: hidden;
 }
 
 // ── PAINEL ESQUERDO ────────────────────────────────────
 .left-panel {
-  width: 52%;
+  width: 45%;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $navy-deep;
+  background: $gradient-purple;
   overflow: hidden;
 
   &::before {
@@ -23,8 +22,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 70% 60% at 30% 40%, rgba(26,50,100,0.9) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 50% at 70% 70%, rgba(201,162,39,0.08) 0%, transparent 60%);
+      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(45,0,96,0.8) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 80% 80%, rgba(0,41,107,0.6) 0%, transparent 60%);
     pointer-events: none;
   }
 }
@@ -37,7 +36,7 @@
   svg {
     width: 100%;
     height: 100%;
-    opacity: 0.12;
+    opacity: 0.08;
   }
 }
 
@@ -49,78 +48,62 @@
 }
 
 .robot-icon {
-  width: 130px;
+  width: 140px;   // ligeiramente maior que o original (era 120px)
   height: auto;
   margin-bottom: 28px;
-  filter: drop-shadow(0 0 30px rgba(201, 162, 39, 0.35));
+  filter: drop-shadow(0 0 30px rgba(254, 198, 1, 0.4));
   animation: float 4s ease-in-out infinite;
 }
 
 .brand-title {
   font-family: $font-display;
-  font-size: 5.5rem;
+  font-size: 6.5rem;   // maior, fiel ao Figma
   font-weight: 600;
   letter-spacing: 0.12em;
   line-height: 1;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   background: $gradient-gold;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.gold-line {
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, $gold, transparent);
-  margin: 20px auto;
+// Underline curvado (swash) abaixo do título
+.brand-underline {
+  width: 300px;
+  margin: 6px auto 20px;
+
+  svg {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .brand-tagline {
-  font-size: 0.72rem;
+  font-size: 1.25rem;;        // maior que antes (era 0.72rem)
   font-weight: 300;
-  letter-spacing: 0.22em;
-  color: $text-muted;
-  text-transform: uppercase;
-  line-height: 1.8;
+  letter-spacing: 0.04em;   // menos espaçamento que antes
+  color: white;
+  text-transform: none;      // sem uppercase — fiel ao Figma
+  line-height: 1.7;
 }
 
 // ── PAINEL DIREITO ─────────────────────────────────────
 .right-panel {
-  width: 48%;
+  width: 55%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, #162b56 0%, #0f1e3b 100%);
+  background: $cream;
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -120px; right: -120px;
-    width: 380px; height: 380px;
-    border-radius: 50%;
-    border: 1px solid rgba(201, 162, 39, 0.1);
-    pointer-events: none;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; left: -80px;
-    width: 260px; height: 260px;
-    border-radius: 50%;
-    border: 1px solid rgba(201, 162, 39, 0.07);
-    pointer-events: none;
-  }
 }
 
 .login-card {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
   padding: 52px 48px;
   animation: fadeUp 0.9s 0.2s ease both;
   opacity: 0;
@@ -128,40 +111,41 @@
 
 // ── HEADER ─────────────────────────────────────────────
 .card-header {
-  margin-bottom: 38px;
+  margin-bottom: 40px;
 }
 
+// Título principal — azul escuro, Barlow bold (fiel ao Figma)
+.card-title {
+  font-family: $font-body;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $navy-deep;         // #00296B
+  letter-spacing: 0.01em;
+  margin: 0 0 6px 0;
+}
+
+// Subtítulo abaixo do título (ordem invertida em relação ao código original)
 .eyebrow {
   display: block;
-  font-size: 0.65rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: $gold;
-  margin-bottom: 10px;
-}
-
-.card-title {
-  font-family: $font-display;
-  font-size: 2.1rem;
+  font-size: 1.25rem;
+  letter-spacing: 0.06em;
+  text-transform: none;      // sem uppercase — fiel ao Figma
+  color: $text-gray;         // #6B7280
   font-weight: 400;
-  color: $cream;
-  letter-spacing: 0.03em;
-  margin: 0;
 }
 
 // ── CAMPOS ─────────────────────────────────────────────
 .field {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .field-label {
   display: block;
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: $text-muted;
-  margin-bottom: 9px;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $navy-deep;
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
 }
 
 .input-wrap {
@@ -169,36 +153,71 @@
 
   .pi {
     position: absolute;
-    left: 14px;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: rgba(201, 162, 39, 0.5);
+    color: $navy;
     z-index: 1;
-    transition: color 0.3s;
+    transition: color 0.3s ease;
     pointer-events: none;
+    font-size: 1rem;
+  }
+}
+
+// Wrap específico para campo de senha (ícone de olho)
+.password-wrap {
+  .toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: $text-gray;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $navy;
+    }
+
+    .pi {
+      position: static;
+      transform: none;
+      pointer-events: auto;
+      font-size: 1rem;
+      color: inherit;
+    }
   }
 }
 
 .custom-input.p-inputtext {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(201, 162, 39, 0.18) !important;
-  border-radius: 6px !important;
+  background: $white !important;
+  border: 1.5px solid $navy !important;
+  border-radius: 10px !important;
   padding: 14px 16px 14px 44px !important;
   font-family: $font-body !important;
   font-size: 0.9rem !important;
   font-weight: 300 !important;
-  color: $cream !important;
-  letter-spacing: 0.03em !important;
-  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s !important;
+  color: #111827 !important;
+  letter-spacing: 0.02em !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+
+  // padding extra direito no campo senha (espaço pro ícone do olho)
+  .password-wrap & {
+    padding-right: 44px !important;
+  }
 
   &::placeholder {
-    color: rgba(245, 240, 232, 0.25) !important;
+    color: $text-gray !important;
   }
 
   &:focus {
-    border-color: $gold !important;
-    background: rgba(201, 162, 39, 0.06) !important;
-    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.08) !important;
+    border-color: $navy-mid !important;
+    box-shadow: 0 0 0 3px rgba(0,80,157,0.12) !important;
   }
 }
 
@@ -206,20 +225,19 @@
 .forgot-row {
   display: flex;
   justify-content: flex-end;
-  margin-top: -10px;
-  margin-bottom: 28px;
+  margin-top: -4px;
+  margin-bottom: 32px;   // mais espaço abaixo — fiel ao Figma
 }
 
 .forgot-btn.p-button.p-button-text {
   color: $gold !important;
-  font-size: 0.72rem !important;
-  letter-spacing: 0.06em !important;
+  font-size: 0.98rem !important;
+  letter-spacing: 0.03em !important;
   padding: 4px 0 !important;
   font-family: $font-body !important;
-  opacity: 0.8;
+  font-weight: 600 !important;
 
   &:hover {
-    opacity: 1;
     background: transparent !important;
     text-decoration: underline;
   }
@@ -227,22 +245,21 @@
 
 // ── BOTÃO ENTRAR ───────────────────────────────────────
 :host ::ng-deep .btn-login.p-button {
-  background: linear-gradient(135deg, $gold 0%, $gold-light 50%, $gold 100%) !important;
-  background-size: 200% auto !important;
+  background: $gold !important;
   border: none !important;
-  border-radius: 6px !important;
+  border-radius: 10px !important;
   font-family: $font-body !important;
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.22em !important;
-  color: $navy-deep !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  color: #111827 !important;
   padding: 15px !important;
-  transition: background-position 0.4s, box-shadow 0.3s, transform 0.2s !important;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease !important;
   margin-bottom: 28px;
 
   &:hover {
-    background-position: right center !important;
-    box-shadow: 0 6px 28px rgba(201, 162, 39, 0.3) !important;
+    background: $gold-light !important;
+    box-shadow: 0 6px 24px rgba(254,198,1,0.4) !important;
     transform: translateY(-1px);
   }
 
@@ -255,42 +272,42 @@
 .divider {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   margin-bottom: 24px;
 
   span {
-    font-size: 0.65rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: $text-muted;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: $text-gray;
     white-space: nowrap;
   }
 
+  // Linhas douradas — fiel ao Figma (eram cinzas)
   &::before, &::after {
     content: '';
     flex: 1;
-    height: 1px;
-    background: rgba(201, 162, 39, 0.15);
+    height: 1.5px;
+    background: $gold;
+    opacity: 0.5;
   }
 }
 
 // ── BOTÃO CADASTRAR ────────────────────────────────────
 :host ::ng-deep .btn-register.p-button {
   background: transparent !important;
-  border: 1px solid rgba(201, 162, 39, 0.3) !important;
-  border-radius: 6px !important;
+  border: 1.5px solid $gold !important;
+  border-radius: 10px !important;
   font-family: $font-body !important;
-  font-size: 0.75rem !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.18em !important;
-  color: $gold-light !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  color: $navy-deep !important;   // azul escuro — fiel ao Figma
   padding: 14px !important;
-  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s !important;
+  transition: background 0.3s ease, box-shadow 0.3s ease !important;
 
   &:hover {
-    border-color: $gold !important;
-    background: rgba(201, 162, 39, 0.07) !important;
-    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.07) !important;
+    background: rgba(254,198,1,0.08) !important;
+    box-shadow: 0 0 0 3px rgba(254,198,1,0.15) !important;
   }
 }
 
@@ -308,8 +325,9 @@
 // ── RESPONSIVO ─────────────────────────────────────────
 @media (max-width: 768px) {
   .login-wrapper { flex-direction: column; overflow: auto; }
-  .left-panel { width: 100%; padding: 56px 24px 40px; }
+  .left-panel { width: 100%; padding: 56px 24px 40px; min-height: 40vh; }
   .right-panel { width: 100%; padding: 0 0 60px; }
-  .brand-title { font-size: 3.8rem; }
+  .brand-title { font-size: 4.5rem; }
+  .brand-underline { width: 220px; }
   .login-card { padding: 40px 28px; }
 }

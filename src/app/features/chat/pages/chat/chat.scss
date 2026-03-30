@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 0 20px;
-  border-bottom: 1px solid $gold-border;
+  border-bottom: 1px solid rgba(0, 41, 107, 0.15);
   margin-bottom: 0;
   flex-shrink: 0;
 }
@@ -23,7 +23,7 @@
   font-family: $font-display;
   font-size: 1.5rem;
   font-weight: 400;
-  color: $cream;
+  color: $navy-deep;
   letter-spacing: 0.05em;
   display: flex;
   align-items: center;
@@ -39,16 +39,17 @@
 }
 
 :host ::ng-deep .btn-upload.p-button {
-  border-color: $gold-border !important;
-  color: $cream !important;
+  border-color: rgba(0,41,107,0.3) !important;
+  color: $navy-deep !important;
   font-family: $font-body !important;
   font-size: 0.8rem !important;
   letter-spacing: 0.06em !important;
   border-radius: 8px !important;
+  background: transparent !important;
 
   &:hover {
-    border-color: $gold !important;
-    background: $gold-hover !important;
+    border-color: $navy !important;
+    background: rgba(0,41,107,0.06) !important;
   }
 }
 
@@ -64,7 +65,7 @@
 
   &:hover {
     background: $gold-light !important;
-    box-shadow: 0 4px 16px rgba(201,162,39,0.3) !important;
+    box-shadow: 0 4px 16px rgba(254,198,1,0.35) !important;
   }
 }
 
@@ -99,17 +100,17 @@
 .welcome-title {
   font-family: $font-display;
   font-size: 2.2rem;
-  font-weight: 400;
-  color: $cream;
+  font-weight: 600;
+  color: $text-dark;
   margin: 0 0 10px;
   letter-spacing: 0.03em;
 }
 
 .welcome-subtitle {
-  font-size: 0.85rem;
-  font-weight: 300;
-  color: rgba(245, 240, 232, 0.75);
-  letter-spacing: 0.06em;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: $text-gray;
+  letter-spacing: 0.02em;
   margin: 0;
 }
 
@@ -126,13 +127,16 @@
 }
 
 .welcome-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid $gold-border;
+  background: $white;
+  border: 1px solid rgba(0,41,107,0.15);
   border-radius: 12px;
   padding: 20px;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 
-  &:hover { border-color: rgba(201,162,39,0.35); }
+  &:hover {
+    border-color: $navy;
+    box-shadow: 0 4px 16px rgba(0,41,107,0.08);
+  }
 }
 
 .welcome-card-header {
@@ -140,13 +144,13 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 14px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: $gold-light;
+  color: $navy-deep;
 
-  .pi { font-size: 0.85rem; }
+  .pi { font-size: 1rem; color: $navy; }
 }
 
 .welcome-card-items {
@@ -156,28 +160,28 @@
 }
 
 .welcome-card-item {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(201,162,39,0.1);
+  background: $cream;
+  border: 1px solid rgba(0,41,107,0.1);
   border-radius: 8px;
   padding: 10px 14px;
   font-family: $font-body;
   font-size: 0.82rem;
-  font-weight: 300;
-  color: $cream;
+  font-weight: 400;
+  color: $text-dark;
   text-align: left;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 
   &:hover {
-    background: rgba(201,162,39,0.08);
-    border-color: $gold-border;
-    color: $cream;
+    background: rgba(0,41,107,0.06);
+    border-color: $navy;
+    color: $navy-deep;
   }
 }
 
 .welcome-card-empty {
   font-size: 0.75rem;
-  color: rgba(245,240,232,0.2);
+  color: $text-gray;
   font-style: italic;
   padding: 8px 14px;
 }
@@ -193,7 +197,7 @@
 
   &::-webkit-scrollbar { width: 4px; }
   &::-webkit-scrollbar-track { background: transparent; }
-  &::-webkit-scrollbar-thumb { background: $gold-border; border-radius: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgba(0,41,107,0.15); border-radius: 4px; }
 }
 
 .chat-message {
@@ -207,18 +211,19 @@
 .msg-avatar {
   width: 34px; height: 34px;
   border-radius: 50%;
-  border: 1px solid $gold-border;
-  background: rgba(201,162,39,0.1);
+  border: 1px solid rgba(0,41,107,0.2);
+  background: rgba(0,41,107,0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 
-  .pi { font-size: 0.85rem; color: $gold; }
+  .pi { font-size: 0.85rem; color: $navy; }
 
   &.user-avatar {
-    background: rgba(255,255,255,0.08);
-    .pi { color: $cream; }
+    background: $gold;
+    border-color: $gold;
+    .pi { color: $navy-deep; }
   }
 }
 
@@ -227,42 +232,44 @@
   padding: 12px 16px;
   border-radius: 12px;
   font-size: 0.88rem;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.6;
-  color: $cream;
+  color: $text-dark;
 
   .ai & {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid $gold-border;
+    background: $white;
+    border: 1px solid rgba(0,41,107,0.15);
     border-top-left-radius: 2px;
   }
 
   .user & {
-    background: rgba(201,162,39,0.15);
-    border: 1px solid rgba(201,162,39,0.25);
+    background: $gold;
+    border: 1px solid $gold;
     border-top-right-radius: 2px;
+    color: $navy-deep;
+    font-weight: 500;
   }
 }
 
 // ── INPUT ──────────────────────────────────────────────
 .chat-input-area {
   padding: 16px 0 0;
-  border-top: 1px solid $gold-border;
+  border-top: 1px solid rgba(0,41,107,0.15);
   flex-shrink: 0;
 }
 
 .chat-input-wrap {
   display: flex;
   align-items: center;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid $gold-border;
+  background: $white;
+  border: 1px solid rgba(0,41,107,0.2);
   border-radius: 12px;
   padding: 6px 8px 6px 16px;
   transition: border-color 0.3s, box-shadow 0.3s;
 
   &:focus-within {
-    border-color: $gold;
-    box-shadow: 0 0 0 3px $gold-glow;
+    border-color: $navy;
+    box-shadow: 0 0 0 3px rgba(0,41,107,0.08);
   }
 }
 
@@ -273,11 +280,11 @@
   padding: 8px 0 !important;
   font-family: $font-body !important;
   font-size: 0.9rem !important;
-  font-weight: 300 !important;
-  color: $cream !important;
+  font-weight: 400 !important;
+  color: $text-dark !important;
   box-shadow: none !important;
 
-  &::placeholder { color: $text-muted !important; }
+  &::placeholder { color: $text-gray !important; }
   &:focus { box-shadow: none !important; }
 }
 
@@ -288,14 +295,14 @@
 }
 
 :host ::ng-deep .input-action-btn.p-button {
-  color: $text-muted !important;
+  color: $text-gray !important;
   width: 34px !important;
   height: 34px !important;
   border-radius: 8px !important;
 
   &:hover {
-    color: $gold !important;
-    background: $gold-hover !important;
+    color: $navy !important;
+    background: rgba(0,41,107,0.06) !important;
   }
 }
 
@@ -310,7 +317,7 @@
 
   &:hover:not(:disabled) {
     background: $gold-light !important;
-    box-shadow: 0 0 12px rgba(201,162,39,0.35) !important;
+    box-shadow: 0 0 12px rgba(254,198,1,0.4) !important;
   }
 
   &:disabled { opacity: 0.4 !important; }
@@ -319,7 +326,7 @@
 .chat-input-hint {
   text-align: center;
   font-size: 0.65rem;
-  color: rgba(245,240,232,0.5);
+  color: $text-dark;
   letter-spacing: 0.08em;
   margin-top: 10px;
 }

@@ -27,6 +27,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/dashboard/pages/dashboard/dashboard').then(m => m.Dashboard)
       },
       {
+        path: 'admin',
+        loadComponent: () => import('./features/admin/empresas/pages/empresas/empresas').then(m => m.Empresas)
+      },
+      {
         path: 'consulta-juridica',
         loadComponent: () => import('./features/consulta-juridica/pages/consulta-juridica/consulta-juridica').then(m => m.ConsultaJuridica)
       },
