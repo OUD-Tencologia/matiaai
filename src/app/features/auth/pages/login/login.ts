@@ -63,7 +63,7 @@ export class Login {
             detail: 'Login realizado com sucesso.',
             life: 3000
           });
-          this.router.navigate(['/matia/dashboard']); 
+          this.router.navigate(['/matia/chat']); 
         }
       },
       error: (error) => {

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Company } from '../../../../../core/services/company';
 import { Router } from '@angular/router';
+import { CompanyService } from '../../../../../core/services/company-service';
 // PrimeNG Imports (Adicione conforme seu uso)
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -49,8 +49,8 @@ export class Empresas implements OnInit {
 
   //injection dependencies
   private router = inject(Router);
-  private companyService = inject(Company);
   private messageService = inject(MessageService);
+  private _companyService = inject(CompanyService);
   private fb = inject(NonNullableFormBuilder);
   // Signals
   empresas = signal<Empresa[]>([]);

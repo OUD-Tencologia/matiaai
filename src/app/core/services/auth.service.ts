@@ -108,8 +108,10 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('matia_token');
-    localStorage.removeItem('matia_user');
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Reseta os Signals para o estado inicial absoluto
     this.currentUser.set(null);
     this.isAuthenticated.set(false);
     this.preAuthToken.set(null);
@@ -121,7 +123,12 @@ export class AuthService {
       life: 3000
     });
 
-    this.router.navigate(['/login']);
+    // Navega para o login
+    this.router.navigate(['/login']).then(() => {
+      //Recarregar a página garante que TODAS as variáveis 
+      // de todos os componentes e services sejam destruídas da memória.
+      window.location.reload();
+    });
   }
 
   // 1. Pede o QR Code e garante que a resposta terá o formato Setup2FAResponse
