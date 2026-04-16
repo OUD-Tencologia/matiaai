@@ -1,23 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
-@use "primeicons/primeicons.css";
-@use "primeflex/primeflex.css";
-@use 'variables' as *;
-
-:root {
-  --navy-deep:  #{$navy-deep};
-  --navy:       #{$navy};
-  --navy-mid:   #{$navy-mid};
-  --gold:       #{$gold};
-  --gold-light: #{$gold-light};
-  --gold-pale:  #{$gold-pale};
-  --cream:      #{$cream};
-  --text-muted: #{$text-muted};
-  --text-faint: #{$text-faint};
+/* ==========================================
+   Correção Global do InputMask do PrimeNG
+   ========================================== */
+p-inputmask .p-inputtext,
+p-inputMask .p-inputtext {
+  width: 100% !important;
+  background-color: #ffffff !important; 
+  border: 1px solid #e0e6ed !important; 
+  border-radius: 6px !important;
+  padding: 0.75rem !important;
+  color: #334155 !important; 
+  font-family: inherit !important;
+  font-size: 1rem !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+p-inputmask .p-inputtext:focus,
+p-inputMask .p-inputtext:focus {
+  border-color: var(--navy-mid) !important; /* Usando a sua variável de cor! */
+}
+
+/* ==========================================
+   O "Esmagador" do Tema Aura (Modal MATIA)
+   ========================================== */
+html body {
+  .p-dialog.p-confirm-dialog {
+    background-color: #ffffff !important; /* Força o fundo da caixa inteira */
+    border: none !important;
+
+    /* 1. Cabeçalho */
+    .p-dialog-header {
+      background-color: var(--navy-deep) !important;
+      border-bottom: 2px solid var(--gold) !important;
+      
+      .p-dialog-title {
+        color: #ffffff !important;
+      }
+      
+      .p-dialog-header-icon {
+        color: #ffffff !important;
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+      }
+    }
+
+    /* 2. Corpo do Modal (Onde estava ficando preto) */
+    .p-dialog-content {
+      background-color: #ffffff !important;
+      
+      .p-confirm-dialog-message {
+        color: #334155 !important; /* Texto cinza escuro blindado */
+      }
+      
+      .p-confirm-dialog-icon {
+        color: #eab308 !important;
+      }
+    }
+
+    /* 3. Rodapé */
+    .p-dialog-footer {
+      background-color: #f8fafc !important;
+      border-top: 1px solid #e2e8f0 !important;
+    }
+  }
 }
