@@ -17,8 +17,6 @@ export class Header {
   authService = inject(AuthService);
   user = this.authService.currentUser;
 
-  logout() {
-    this.authService.logout();
-  }
+ 
 
 }

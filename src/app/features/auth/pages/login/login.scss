@@ -137,6 +137,7 @@
 // ── CAMPOS ─────────────────────────────────────────────
 .field {
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .field-label {
@@ -150,6 +151,7 @@
 
 .input-wrap {
   position: relative;
+  width: 100%;
 
   .pi {
     position: absolute;
@@ -166,6 +168,8 @@
 
 // Wrap específico para campo de senha (ícone de olho)
 .password-wrap {
+  position: relative;
+  width: 100%;
   .toggle-password {
     position: absolute;
     right: 14px;
@@ -193,8 +197,14 @@
     }
   }
 }
+:host ::ng-deep p-password,
+:host ::ng-deep p-password > div {
+  width: 100% !important;
+  display: block;
+}
 
 .custom-input.p-inputtext {
+  width: 100% !important;
   background: $white !important;
   border: 1.5px solid $navy !important;
   border-radius: 10px !important;
@@ -245,6 +255,7 @@
 
 // ── BOTÃO ENTRAR ───────────────────────────────────────
 :host ::ng-deep .btn-login.p-button {
+  width: 100% !important;
   background: $gold !important;
   border: none !important;
   border-radius: 10px !important;
@@ -304,6 +315,7 @@
 
 // ── BOTÃO CADASTRAR ────────────────────────────────────
 :host ::ng-deep .btn-register.p-button {
+  width: 100% !important;
   background: transparent !important;
   border: 1.5px solid $gold !important;
   border-radius: 10px !important;

@@ -1,3 +1,24 @@
+@use 'variables' as *;
+
+/* ==========================================
+   Receita Universal para Full-Height Layout
+   ========================================== */
+// 1. O fundamental: diz ao navegador que a página inteira ocupa 100% de altura.
+// O 'overflow: hidden' no body é crucial para impedir que a página como um todo role, 
+// forçando o scrolling apenas dentro das caixas que queremos.
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; 
+}
+
+// 2. O Angular injeta o 'app-root' aqui. Ele também precisa ter 100% de altura.
+app-root {
+  height: 100%;
+  display: block; // Garante que o Angular se comporte como um contêiner de altura
+}
+
 /* ==========================================
    Correção Global do InputMask do PrimeNG
    ========================================== */
@@ -21,47 +42,119 @@ p-inputMask .p-inputtext:focus {
 }
 
 /* ==========================================
-   O "Esmagador" do Tema Aura (Modal MATIA)
+   MODAIS MATIA (Estilo Global Premium)
    ========================================== */
-html body {
-  .p-dialog.p-confirm-dialog {
-    background-color: #ffffff !important; /* Força o fundo da caixa inteira */
-    border: none !important;
 
-    /* 1. Cabeçalho */
-    .p-dialog-header {
-      background-color: var(--navy-deep) !important;
-      border-bottom: 2px solid var(--gold) !important;
-      
-      .p-dialog-title {
-        color: #ffffff !important;
-      }
-      
-      .p-dialog-header-icon {
-        color: #ffffff !important;
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.1) !important;
-        }
-      }
-    }
+/* 1. Estrutura principal da Caixa */
+.p-dialog {
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 41, 107, 0.15) !important; /* Sombra elegante com tom Navy */
+  overflow: hidden;
+}
 
-    /* 2. Corpo do Modal (Onde estava ficando preto) */
-    .p-dialog-content {
-      background-color: #ffffff !important;
-      
-      .p-confirm-dialog-message {
-        color: #334155 !important; /* Texto cinza escuro blindado */
-      }
-      
-      .p-confirm-dialog-icon {
-        color: #eab308 !important;
-      }
-    }
+/* 2. Cabeçalho (Título e X de fechar) */
+.p-dialog-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.2) !important; /* Linha dourada bem suave separando */
+  padding: 1.5rem !important;
 
-    /* 3. Rodapé */
-    .p-dialog-footer {
-      background-color: #f8fafc !important;
-      border-top: 1px solid #e2e8f0 !important;
+  .p-dialog-title {
+    font-family: $font-display, sans-serif !important; 
+    font-weight: 700 !important;
+    color: $navy-deep !important;
+    font-size: 1.3rem !important;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Efeito no botão de Fechar (X) */
+.p-dialog-header-icons .p-dialog-header-close {
+  color: $text-muted !important;
+  transition: background 0.3s, color 0.3s !important;
+
+  &:hover {
+    background: rgba(248, 113, 113, 0.1) !important;
+    color: #f87171 !important;
+  }
+}
+
+/* 3. Corpo do Modal (Onde vai o texto ou formulário 2FA) */
+.p-dialog-content {
+  background: #ffffff !important;
+  padding: 1.5rem !important;
+  font-family: $font-body, sans-serif !important;
+  color: #374151 !important;
+  line-height: 1.6;
+}
+
+/* 4. Rodapé (Área dos Botões) */
+.p-dialog-footer {
+  background: #f8fafc !important; /* Fundo levemente acinzentado para destacar os botões */
+  border-top: 1px solid #e2e8f0 !important;
+  padding: 1rem 1.5rem !important;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ==========================================
+   BOTÕES PADRONIZADOS DENTRO DOS MODAIS
+   ========================================== */
+
+/* ==========================================
+   Botão Cancelar (Neutro e Visível)
+   ========================================== */
+.p-dialog-footer .p-button-text {
+  background: transparent !important;
+  border: none !important;
+  color: #475569 !important; /* Cinza escuro para garantir leitura imediata */
+  font-weight: 600 !important;
+
+  /* Força a cor na tag interna de texto do PrimeNG */
+  .p-button-label, .p-button-icon {
+    color: #475569 !important;
+    transition: color 0.3s ease !important;
+  }
+
+  &:hover {
+    background: rgba(107, 114, 128, 0.1) !important;
+    color: #00296b !important; /* Seu Azul Navy */
+
+    .p-button-label, .p-button-icon {
+      color: #00296b !important; 
     }
+  }
+}
+
+/* Botão de Exclusão (Perigo) - O PrimeNG já injeta 'p-button-danger' via TypeScript */
+.p-dialog-footer .p-button-danger {
+  background: #ef4444 !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: #dc2626 !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+    transform: translateY(-1px);
+  }
+}
+
+/* Botão de Ação Positiva (Ex: Ativar 2FA) - Use styleClass="btn-modal-gold" no seu HTML */
+.p-dialog-footer .btn-modal-gold {
+  background: $gold !important;
+  border: none !important;
+  color: #111827 !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: $gold-light !important;
+    box-shadow: 0 4px 12px rgba(254, 198, 1, 0.3) !important;
+    transform: translateY(-1px);
   }
 }
