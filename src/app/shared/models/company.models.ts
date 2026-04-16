@@ -1,6 +1,7 @@
 // Shared Models: src/app/shared/models/company.models.ts
 
 export interface CompanyData {
+  id?: string;
   name: string;
   code: string;
   cnpj: string;
@@ -8,6 +9,7 @@ export interface CompanyData {
   phone: string;
   plano: string;
   active: boolean;
+  created_at?: string;
 }
 
 export interface AdminData {

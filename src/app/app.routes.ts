@@ -33,7 +33,7 @@ export const routes: Routes = [
       },
       {
         path: 'admin',
-        loadComponent: () => import('./features/admin/empresas/pages/empresas/empresas').then(m => m.Empresas)
+        loadComponent: () => import('./features/admin/empresas/pages/empresas/empresas').then(m => m.EmpresasComponent)
       },
       {
         path: 'consulta-juridica',

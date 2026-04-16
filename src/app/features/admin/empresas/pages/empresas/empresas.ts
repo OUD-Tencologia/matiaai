@@ -1,33 +1,22 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TooltipModule } from 'primeng/tooltip';
-import { NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CompanyService } from '../../../../../core/services/company-service';
-// PrimeNG Imports (Adicione conforme seu uso)
+
+// PrimeNG Imports
+import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
-interface Empresa {
-  id: string;
-  nome: string;
-  codigo: string;
-  cnpj: string;
-  responsavel: string;
-  email: string;
-  telefone: string;
-  ativa: boolean;
-  dataCadastro: string;
-  usuariosCount: number;
-  consultasMes: number;
-  custoMes: number;
-  plano: 'trial' | 'basico' | 'profissional' | 'enterprise';
-  validade: string;
-}
+// Services e Models
+import { CompanyService } from '../../../../../core/services/company-service';
+import { CompanyData, RegisterCompanyRequest, RegisterCompanyResponse, AdminData } from '../../../../../shared/models/company.models';
 
 @Component({
   selector: 'app-empresas',
@@ -40,40 +29,45 @@ interface Empresa {
     TooltipModule,
     PasswordModule,
     InputMaskModule,
-    ReactiveFormsModule,
+    ConfirmDialogModule,
+    ToastModule
+    
   ],
+  providers: [MessageService], // Necessário para os Toasts (alertas) funcionarem
   templateUrl: './empresas.html',
   styleUrl: './empresas.scss',
 })
-export class Empresas implements OnInit {
+export class EmpresasComponent implements OnInit {
 
-  //injection dependencies
+  // Injeção de Dependências
   private router = inject(Router);
   private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
   private _companyService = inject(CompanyService);
-  private fb = inject(NonNullableFormBuilder);
-  // Signals
-  empresas = signal<Empresa[]>([]);
-  filteredEmpresas = signal<Empresa[]>([]);
-  selectedEmpresa = signal<Empresa | null>(null);
+  
+  // Signals principais da listagem
+  empresas = signal<CompanyData[]>([]);
+  filteredEmpresas = signal<CompanyData[]>([]);
+  selectedEmpresa = signal<CompanyData | null>(null);
+  
+  // Signals de Filtro e UI
   searchTerm = signal('');
   statusFilter = signal<'todas' | 'ativas' | 'inativas'>('todas');
-  
-  // UI States
   loading = signal(true);
   modalAberto = signal(false);
-  modalMode: 'criar' | 'editar' = 'criar';
+  editando = signal(false); // Substituiu o modalMode para facilitar o bind no HTML
   
-  // Form
-  empresaForm: Partial<Empresa> = {};
+  // Objetos do Formulário
+  novaEmpresa: Partial<CompanyData> = {};
+  novoAdmin: Partial<AdminData> = {};
   
-  // Stats
+  // Computed: Estatísticas dinâmicas
   stats = computed(() => {
     const lista = this.empresas();
     return {
       total: lista.length,
-      ativas: lista.filter(e => e.ativa).length,
-      inativas: lista.filter(e => !e.ativa).length,
+      ativas: lista.filter(e => e.active).length,
+      inativas: lista.filter(e => !e.active).length,
       trial: lista.filter(e => e.plano === 'trial').length
     };
   });
@@ -82,145 +76,198 @@ export class Empresas implements OnInit {
     this.carregarEmpresas();
   }
 
+  // ==========================================
+  // INTEGRAÇÃO COM A API (MÉTODOS REAIS)
+  // ==========================================
+
   carregarEmpresas() {
     this.loading.set(true);
     
-    // TODO: Substituir por chamada real à API
-    setTimeout(() => {
-      const mock: Empresa[] = [
-        {
-          id: '1',
-          nome: 'Tribunal de Justiça de MT',
-          codigo: 'TJMT',
-          cnpj: '03.456.789/0001-23',
-          responsavel: 'Dr. Carlos Mendes',
-          email: 'admin@tjmt.jus.br',
-          telefone: '(65) 3613-5000',
-          ativa: true,
-          dataCadastro: '15/01/2025',
-          usuariosCount: 45,
-          consultasMes: 1250,
-          custoMes: 2450.00,
-          plano: 'enterprise',
-          validade: '15/01/2026'
-        },
-        {
-          id: '2',
-          nome: 'Procuradoria Geral do Estado',
-          codigo: 'PGE-MT',
-          cnpj: '04.567.890/0001-34',
-          responsavel: 'Dra. Ana Paula Silva',
-          email: 'contato@pge.mt.gov.br',
-          telefone: '(65) 3613-8000',
-          ativa: true,
-          dataCadastro: '20/02/2025',
-          usuariosCount: 28,
-          consultasMes: 890,
-          custoMes: 1200.00,
-          plano: 'profissional',
-          validade: '20/02/2026'
-        },
-        {
-          id: '3',
-          nome: 'Advocacia Oliveira & Associados',
-          codigo: 'OLIVEIRA-ADV',
-          cnpj: '12.345.678/0001-90',
-          responsavel: 'Dr. Roberto Oliveira',
-          email: 'roberto@oliveiraadv.com.br',
-          telefone: '(65) 99999-1111',
-          ativa: false,
-          dataCadastro: '10/03/2025',
-          usuariosCount: 5,
-          consultasMes: 0,
-          custoMes: 0,
-          plano: 'basico',
-          validade: '10/03/2026'
-        },
-        {
-          id: '4',
-          nome: 'Defensoria Pública',
-          codigo: 'DEF-MT',
-          cnpj: '05.678.901/0001-45',
-          responsavel: 'Dra. Maria Santos',
-          email: 'defensoria@def.mt.gov.br',
-          telefone: '(65) 3613-9000',
-          ativa: true,
-          dataCadastro: '05/01/2025',
-          usuariosCount: 32,
-          consultasMes: 567,
-          custoMes: 890.50,
-          plano: 'profissional',
-          validade: '05/01/2026'
-        }
-      ];
-      
-      this.empresas.set(mock);
-      this.aplicarFiltros();
-      this.loading.set(false);
-    }, 800);
+    this._companyService.getCompanies().subscribe({
+      next: (resposta: any) => {
+        // 🔥 O truque: Se a resposta for um array, usa direto. 
+        // Se for objeto, procura dentro de 'data' ou 'empresas' (ajuste se seu backend usar outro nome).
+        const dados = Array.isArray(resposta) ? resposta : (resposta.data || resposta.empresas || []);
+        
+        this.empresas.set(dados);
+        this.aplicarFiltros();
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.mostrarMensagem('error', 'Erro', 'Falha ao buscar empresas do servidor.');
+        this.loading.set(false);
+      }
+    });
   }
+
+  salvarCadastro() {
+    // ==========================================
+    // ✏️ MODO EDIÇÃO (PUT)
+    // ==========================================
+    if (this.editando()) {
+      const idEmpresa = this.novaEmpresa.id;
+      if (!idEmpresa) return;
+
+      // O Schema de Update do Fastify só aceita estes 5 campos. 
+      // Se mandar CNPJ ou Code, o additionalProperties: false vai bloquear.
+      const payloadUpdate = {
+        name: this.novaEmpresa.name,
+        email: this.novaEmpresa.email,
+        phone: this.novaEmpresa.phone,
+        plano: this.novaEmpresa.plano,
+        active: this.novaEmpresa.active
+      };
+      
+      this._companyService.updateCompany(idEmpresa, payloadUpdate).subscribe({
+        next: () => {
+          this.mostrarMensagem('success', 'Sucesso', 'Empresa atualizada com sucesso!');
+          this.fecharModal();
+          this.carregarEmpresas();
+        },
+        error: () => this.mostrarMensagem('error', 'Erro', 'Falha ao atualizar a empresa.')
+      });
+      return;
+    }
+
+    // ==========================================
+    // ➕ MODO CRIAÇÃO (POST)
+    // ==========================================
+    
+    // 1. Validação básica de campos obrigatórios (evita bater no Fastify à toa)
+    if (!this.novaEmpresa.name || !this.novaEmpresa.cnpj || !this.novoAdmin.nome || !this.novoAdmin.profile_password) {
+      this.mostrarMensagem('error', 'Campos Incompletos', 'Preencha todos os campos obrigatórios da Empresa e do Administrador.');
+      return;
+    }
+
+    // 2. Monta o Payload exatamente com a assinatura que o Fastify exige
+    // O operador || '' garante que, se algo estiver vazio, envia string vazia em vez de undefined
+    const payload: RegisterCompanyRequest = {
+      company: {
+        name: this.novaEmpresa.name || '',
+        code: this.novaEmpresa.code || '',
+        cnpj: this.novaEmpresa.cnpj || '',
+        email: this.novaEmpresa.email || '',
+        phone: this.novaEmpresa.phone || '',
+        plano: (this.novaEmpresa.plano as any) || 'trial',
+        active: this.novaEmpresa.active ?? true
+      },
+      admin: {
+        nome: this.novoAdmin.nome || '',
+        email: this.novoAdmin.email || '',
+        cpf: this.novoAdmin.cpf || '',
+        telefone: this.novoAdmin.telefone || '',
+        data_nascimento: this.novoAdmin.data_nascimento || '',
+        profile_password: this.novoAdmin.profile_password || ''
+      }
+    };
+
+    this._companyService.registerCompany(payload).subscribe({
+      next: () => {
+        this.mostrarMensagem('success', 'Sucesso', 'Empresa e Administrador cadastrados!');
+        this.fecharModal();
+        this.carregarEmpresas();
+      },
+      error: (err) => {
+        console.error('Erro detalhado do Fastify:', err);
+        this.mostrarMensagem('error', 'Erro no Cadastro', 'Verifique os dados e tente novamente.');
+      }
+    });
+  }
+
+  excluir(id?: string) {
+    if (!id) return;
+
+    this.confirmationService.confirm({
+      header: 'Confirmar Exclusão',
+      message: 'Tem certeza que deseja excluir esta empresa? Esta ação não pode ser desfeita e todos os usuários vinculados perderão o acesso.',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim, Excluir',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'p-button-danger', // Deixa o botão de confirmar vermelho
+      rejectButtonStyleClass: 'p-button-text',   // Deixa o botão de cancelar discreto
+      accept: () => {
+        this._companyService.deleteCompany(id).subscribe({
+          next: () => {
+            this.mostrarMensagem('success', 'Excluído', 'Empresa removida com sucesso.');
+            this.carregarEmpresas();
+            this.selectedEmpresa.set(null);
+          },
+          error: () => this.mostrarMensagem('error', 'Erro', 'Não foi possível excluir a empresa.')
+        });
+      }
+    });
+  }
+
+  toggleStatus(empresa: any, event: Event) {
+    event.stopPropagation();
+    const novoStatus = !empresa.active;
+    
+    this._companyService.updateCompany(empresa.id, { active: novoStatus }).subscribe({
+      next: () => {
+        empresa.active = novoStatus;
+        this.mostrarMensagem('success', 'Atualizado', `Status alterado para ${novoStatus ? 'Ativo' : 'Inativo'}.`);
+        this.carregarEmpresas(); // Força a re-renderização dos Signals
+      },
+      error: () => this.mostrarMensagem('error', 'Erro', 'Falha ao mudar o status da empresa.')
+    });
+  }
+
+  // ==========================================
+  // CONTROLES DE INTERFACE E FILTROS
+  // ==========================================
 
   aplicarFiltros() {
     let resultado = this.empresas();
     
-    // Filtro de busca
+    // Filtro de busca (usando os campos em inglês da API)
     const termo = this.searchTerm().toLowerCase();
     if (termo) {
       resultado = resultado.filter(e => 
-        e.nome.toLowerCase().includes(termo) ||
-        e.codigo.toLowerCase().includes(termo) ||
-        e.responsavel.toLowerCase().includes(termo) ||
-        e.cnpj.includes(termo)
+        e.name?.toLowerCase().includes(termo) ||
+        e.code?.toLowerCase().includes(termo) ||
+        e.cnpj?.includes(termo)
       );
     }
     
     // Filtro de status
     if (this.statusFilter() === 'ativas') {
-      resultado = resultado.filter(e => e.ativa);
+      resultado = resultado.filter(e => e.active);
     } else if (this.statusFilter() === 'inativas') {
-      resultado = resultado.filter(e => !e.ativa);
+      resultado = resultado.filter(e => !e.active);
     }
     
     this.filteredEmpresas.set(resultado);
   }
 
-  selecionarEmpresa(empresa: Empresa) {
+  selecionarEmpresa(empresa: CompanyData) {
     this.selectedEmpresa.set(empresa);
   }
 
-  novaEmpresa() {
-    this.modalMode = 'criar';
-    this.empresaForm = {
-      ativa: true,
-      plano: 'trial'
-    };
+  abrirModalNovo() {
+    this.editando.set(false);
+    this.novaEmpresa = { active: true, plano: 'trial' };
+    this.novoAdmin = {}; // Zera os dados do admin
     this.modalAberto.set(true);
   }
 
-  editarEmpresa(empresa: Empresa, event: Event) {
+  editarEmpresa(empresa: CompanyData, event: Event) {
     event.stopPropagation();
-    this.modalMode = 'editar';
-    this.empresaForm = { ...empresa };
+    this.editando.set(true);
+    this.novaEmpresa = { ...empresa }; // Clona os dados para não editar direto na lista antes de salvar
     this.modalAberto.set(true);
   }
 
   fecharModal() {
     this.modalAberto.set(false);
-    this.empresaForm = {};
   }
 
-  salvarEmpresa() {
-    // TODO: Implementar chamada API
-    console.log('Salvando:', this.empresaForm);
-    this.fecharModal();
-    this.carregarEmpresas();
+  mostrarMensagem(tipo: string, titulo: string, detalhe: string) {
+    this.messageService.add({ severity: tipo, summary: titulo, detail: detalhe });
   }
 
-  toggleStatus(empresa: Empresa, event: Event) {
-    event.stopPropagation();
-    empresa.ativa = !empresa.ativa;
-    // TODO: Chamar API para atualizar status
-  }
+  // ==========================================
+  // HELPERS DE FORMATAÇÃO VISUAL
+  // ==========================================
 
   formatarPlano(plano: string): string {
     const map: Record<string, string> = {
@@ -233,24 +280,19 @@ export class Empresas implements OnInit {
   }
 
   getIniciais(nome: string): string {
-  if (!nome) return '';
-  return nome
-    .split(' ')
-    .map(n => n[0])
-    .join('')
-    .substring(0, 2)
-    .toUpperCase();
-}
+    if (!nome) return '';
+    return nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  }
 
   getPlanoClass(plano: string): string {
     return `badge-plano-${plano}`;
   }
 
   calcularDiasRestantes(validade: string): number {
+    if (!validade) return 0;
     const [dia, mes, ano] = validade.split('/').map(Number);
     const dataValidade = new Date(ano, mes - 1, dia);
-    const hoje = new Date();
-    const diff = dataValidade.getTime() - hoje.getTime();
+    const diff = dataValidade.getTime() - new Date().getTime();
     return Math.ceil(diff / (1000 * 3600 * 24));
   }
 }
