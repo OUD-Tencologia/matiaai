@@ -129,14 +129,20 @@ export class Usuarios {
     const usuarioAtual = this.selectedUser();
     if (!usuarioAtual) return;
 
-    // Removemos os campos que não devem ir no PUT (como ID, empresa_id, etc)
-    // Ajuste o payload de atualização de acordo com as regras do seu Fastify
+    // 🔄 TRADUÇÃO DA DATA PARA O BANCO (Português -> Inglês)
+    let dataParaBanco = usuarioAtual.data_nascimento;
+    if (dataParaBanco && dataParaBanco.includes('/')) {
+      const [dia, mes, ano] = dataParaBanco.split('/');
+      dataParaBanco = `${ano}-${mes}-${dia}`; // Volta para "2005-02-02"
+    }
+
+    // Monta o payload com a data convertida
     const payloadUpdate = {
       nome: usuarioAtual.nome,
       email: usuarioAtual.email,
       cpf: usuarioAtual.cpf,
       telefone: usuarioAtual.telefone,
-      data_nascimento: usuarioAtual.data_nascimento,
+      data_nascimento: dataParaBanco, // 👈 Aqui vai a data tratada
       role: usuarioAtual.role,
       area_juridica: usuarioAtual.area_juridica,
       status: usuarioAtual.status,
@@ -203,8 +209,20 @@ export class Usuarios {
 
   selecionarUsuario(usuario: ProfileData) {
     // Clonamos o objeto para evitar que a edição "ao vivo" altere a lista 
-    // antes de clicar em salvar
-    this.selectedUser.set({ ...usuario });
+    const usuarioParaEdicao = { ...usuario };
+
+    // 🔄 TRADUÇÃO DA DATA PARA A TELA (Inglês -> Português)
+    if (usuarioParaEdicao.data_nascimento) {
+      // Pega só a parte YYYY-MM-DD caso venha com hora (T00:00:00.000Z)
+      const dataString = String(usuarioParaEdicao.data_nascimento).split('T')[0]; 
+      
+      if (dataString.includes('-')) {
+        const [ano, mes, dia] = dataString.split('-');
+        usuarioParaEdicao.data_nascimento = `${dia}/${mes}/${ano}`; // Fica "02/02/2005"
+      }
+    }
+
+    this.selectedUser.set(usuarioParaEdicao);
   }
 
   alternarStatus() {
