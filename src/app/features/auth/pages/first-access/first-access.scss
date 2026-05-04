@@ -1,0 +1,147 @@
+@use 'variables' as *;
+
+/* =======================================================
+   MAGIA PARA CENTRALIZAR A TELA 
+======================================================= */
+:host {
+  display: block;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: $cream; /* Garante o fundo premium na tela toda */
+}
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 1rem;
+}
+
+/* =======================================================
+   ESTILOS DO CARD E FORMULÁRIO (Seu código mantido)
+======================================================= */
+
+/* O card branco do formulário */
+:host ::ng-deep .auth-card {
+  width: 100%;
+  max-width: 450px;
+  background: $white;
+  border-radius: 12px;
+  /* Sombra levemente azulada para harmonizar com o Navy */
+  box-shadow: 0 8px 24px rgba(0, 41, 107, 0.08); 
+  border: 1px solid rgba($navy, 0.05);
+
+  .p-card-body {
+    padding: 2.5rem;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Título com a fonte clássica Serif */
+h2 {
+  font-family: $font-display;
+  color: $navy-deep;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: $text-gray;
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+  font-family: $font-body;
+}
+
+/* Labels dos campos */
+.field {
+  margin-bottom: 1.25rem; /* Adicionado para dar um respiro entre os campos */
+  
+  label {
+    font-family: $font-body;
+    color: $text-dark;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+}
+
+/* Ajustes nos inputs de senha do PrimeNG */
+:host ::ng-deep p-password,
+:host ::ng-deep .p-password {
+  width: 100%;
+  display: block;
+  
+  .p-password-input {
+    width: 100%;
+    font-family: $font-body;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba($navy, 0.2);
+    border-radius: 6px;
+    color: $text-dark;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    /* Efeito de foco usando as variáveis Gold */
+    &:enabled:focus {
+      outline: none;
+      border-color: $gold;
+      box-shadow: 0 0 0 3px $gold-glow;
+    }
+  }
+
+  /* Ajuste do ícone do olhinho */
+  .p-icon-wrapper {
+    color: $text-gray;
+    margin-right: 0.5rem;
+  }
+}
+
+/* Mensagem de erro */
+.p-error {
+  color: $red-error;
+  font-size: 0.85rem;
+  font-family: $font-body;
+  margin-top: 0.25rem;
+}
+
+/* Botão principal usando o Gradiente Navy */
+:host ::ng-deep .p-button-primary {
+  background: $gradient-navy !important; /* !important garante que sobrescreve o PrimeNG */
+  border: none !important;
+  width: 100%; /* Força o botão a ocupar toda a largura */
+  justify-content: center; /* Centraliza o texto */
+  padding: 0.9rem;
+  font-family: $font-body;
+  font-weight: 600;
+  font-size: 1.05rem;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+
+  &:enabled:hover {
+    background: $navy-deep !important; /* Fica ligeiramente mais escuro no hover */
+    box-shadow: 0 4px 12px rgba(0, 41, 107, 0.25);
+    transform: translateY(-1px); /* Leve efeito de elevação */
+  }
+
+  &:enabled:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: #e2e8f0 !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed;
+    opacity: 1;
+  }
+}

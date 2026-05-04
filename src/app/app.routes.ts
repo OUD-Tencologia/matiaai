@@ -30,6 +30,11 @@ export const routes: Routes = [
     canActivate: [guestGuard],
     loadComponent: () => import('./features/auth/pages/forgot-password/forgot-password').then(m => m.ForgotPassword)
   },
+  {
+    path: 'first-access',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/auth/pages/first-access/first-access').then(m => m.FirstAccess)
+  },
 
   // Sistema (com layout) - Área Protegida
   {

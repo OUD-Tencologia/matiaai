@@ -188,7 +188,7 @@ export class Usuarios {
 
     this.confirmationService.confirm({
       header: 'Confirmar Exclusão',
-      message: 'Tem certeza que deseja remover este usuário? O acesso dele ao sistema será revogado imediatamente.',
+      message: `Tem certeza que deseja remover o usuário <strong>${this.selectedUser()?.nome || 'este usuário'}</strong>? O acesso dele ao sistema será revogado imediatamente.`,
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sim, Remover',
       rejectLabel: 'Cancelar',

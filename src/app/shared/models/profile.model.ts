@@ -1,5 +1,5 @@
 // As opções que o seu backend aceita
-export type ProfileRole = 'ADMIN' | 'USER';
+export type ProfileRole = 'ADMIN' | 'USER' | 'SUPER-ADMIN';
 export type ProfileStatus = 'ativo' | 'inativo';
 
 // O modelo que o backend DEVOLVE quando buscamos a lista (GET)

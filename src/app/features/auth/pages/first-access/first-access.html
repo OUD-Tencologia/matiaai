@@ -1,0 +1,78 @@
+<p-toast></p-toast>
+
+<div class="auth-container">
+  <p-card styleClass="auth-card">
+    
+    <div class="text-center mb-4">
+      <h2>Bem-vindo ao Matia Legal AI!</h2>
+      <p class="subtitle">Para sua segurança, defina uma nova senha neste primeiro acesso.</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #firstAccessForm="ngForm" class="p-fluid">
+      
+      <!-- Senha Atual -->
+      <div class="field mb-4">
+        <label for="senhaAtual" class="block mb-2 font-medium">Senha Atual</label>
+        <p-password 
+          id="senhaAtual" 
+          name="senhaAtual" 
+          [(ngModel)]="senhaAtual" 
+          [toggleMask]="true" 
+          [feedback]="false"
+          placeholder="Digite a senha temporária"
+          required>
+        </p-password>
+      </div>
+
+      <!-- Nova Senha -->
+      <div class="field mb-4">
+        <label for="novaSenha" class="block mb-2 font-medium">Nova Senha</label>
+        <p-password 
+          id="novaSenha" 
+          name="novaSenha" 
+          [(ngModel)]="novaSenha" 
+          [toggleMask]="true" 
+          [feedback]="true"
+          promptLabel="Digite uma senha"
+          weakLabel="Fraca"
+          mediumLabel="Média"
+          strongLabel="Forte"
+          placeholder="Crie uma nova senha segura"
+          required
+          [minlength]="6">
+        </p-password>
+      </div>
+
+      <!-- Confirmar Nova Senha -->
+      <div class="field mb-4">
+        <label for="confirmarSenha" class="block mb-2 font-medium">Confirmar Nova Senha</label>
+        <p-password 
+          id="confirmarSenha" 
+          name="confirmarSenha" 
+          [(ngModel)]="confirmarSenha" 
+          [toggleMask]="true" 
+          [feedback]="false"
+          placeholder="Repita a nova senha"
+          required>
+        </p-password>
+        
+        @if (novaSenha && confirmarSenha && novaSenha !== confirmarSenha) {
+          <small class="p-error block mt-1">As senhas não coincidem.</small>
+        }
+      </div>
+
+      <!-- Botão Submit -->
+      <div class="mt-5">
+        <!-- 🌟 Adicionado o [loading]="isLoading" e mantido o seu controle de [disabled] excelente -->
+        <p-button 
+          type="submit" 
+          label="Salvar e Acessar o Sistema" 
+          styleClass="w-full p-button-primary"
+          [disabled]="firstAccessForm.invalid || (novaSenha !== confirmarSenha)"
+          [loading]="isLoading">
+        </p-button>
+      </div>
+
+    </form>
+  </p-card>
+</div>

@@ -9,6 +9,7 @@ export interface UserPayload {
   empresa_id: string;
   avatar_url?: string | null;
   created_at?: string;
+  primeiro_acesso: boolean;
 }
 
 // Representação exata do perfil retornado pela API (sem a senha e a secret)

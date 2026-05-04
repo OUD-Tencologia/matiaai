@@ -160,6 +160,11 @@ export class AuthService {
     return this.http.post<ApiResponse>(`${this.API_URL}/change-password`, data);
   }
 
+  // Adicione este método no seu AuthService
+  changeFirstAccessPassword(data: ChangePasswordRequest): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(`${this.API_URL}/first-access`, data);
+  }
+
   logout(): void {
     localStorage.clear();
     sessionStorage.clear();
@@ -205,6 +210,16 @@ export class AuthService {
   disable2FA(token: string): Observable<ApiResponse> {
     // Seguindo a mesma lógica da ativação, enviamos o código para validar a remoção
     return this.http.post<ApiResponse>(`${this.API_URL}/disable-2fa`, { token });
+  }
+
+  // Retorna o objeto do usuário atual (ou null se não estiver logado)
+  getUser(): UserPayload | null {
+    return this.currentUser();
+  }
+
+  // Retorna se o usuário está logado
+  isLoggedIn(): boolean {
+    return this.isAuthenticated();
   }
 
   getToken(): string | null {

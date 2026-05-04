@@ -134,10 +134,25 @@
 
         <div class="field-group">
           <label class="field-label">Perfil de Acesso</label>
-          <select class="field-select" [(ngModel)]="selectedUser()!.role">
+          <select class="field-select" [(ngModel)]="selectedUser()!.role"
+            [disabled]="selectedUser()?.role === 'SUPER-ADMIN'"
+            [style.cursor]="selectedUser()?.role === 'SUPER-ADMIN' ? 'not-allowed' : 'pointer'"
+            [style.opacity]="selectedUser()?.role === 'SUPER-ADMIN' ? '0.7' : '1'">
+
+            <!-- Opção oculta que só aparece se for Super-Admin -->
+            @if (selectedUser()?.role === 'SUPER-ADMIN') {
+            <option value="SUPER_ADMIN">Super Administrador (SUPER_ADMIN)</option>
+            }
+
             <option value="ADMIN">Administrador (ADMIN)</option>
             <option value="USER">Usuário (USER)</option>
           </select>
+
+          @if (selectedUser()?.role === 'SUPER-ADMIN') {
+          <small style="color: #64748b; margin-top: 4px; display: block;">
+            Contas de nível Super-Admin não podem ter o perfil alterado.
+          </small>
+          }
         </div>
         <div class="field-group">
           <label class="field-label">Área Jurídica</label>

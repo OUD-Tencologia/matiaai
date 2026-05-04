@@ -138,13 +138,13 @@
           }
         </div>
       </div>
-
-      <div class="section-card">
+<div class="section-card">
         <div class="section-header">
           <span class="section-title">📱 Autenticação em Duas Etapas (2FA)</span>
           <span class="section-sub">Segurança extra para sua conta</span>
         </div>
         <div class="section-body">
+          <!-- Card de Status Principal -->
           <div class="form-grid"
             style="align-items: center; display: flex; justify-content: space-between; background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
             <div>
@@ -159,13 +159,39 @@
             </div>
             <div class="section-actions" style="margin: 0;">
               @if (is2FAEnabled) {
-              <p-button label="Desativar 2FA" styleClass="btn-outline" [outlined]="true"
-                (onClick)="abrirDesativar2FA()"></p-button>
+                <p-button label="Desativar 2FA" styleClass="btn-outline" [outlined]="true" (onClick)="abrirDesativar2FA()"></p-button>
               } @else {
-              <p-button label="🛡️ Ativar 2FA" styleClass="btn-primary" (onClick)="abrirSetup2FA()"></p-button>
+                <p-button label="🛡️ Ativar 2FA" styleClass="btn-primary" (onClick)="abrirSetup2FA()"></p-button>
               }
             </div>
           </div>
+
+          <!-- 🌟 NOVO: CAIXA DE ORIENTAÇÃO DINÂMICA -->
+          <div style="margin-top: 1rem;">
+            @if (!is2FAEnabled) {
+              <!-- Instruções de Ativação -->
+              <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 0 8px 8px 0;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #1e3a8a; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="pi pi-info-circle"></i> Como ativar o 2FA?
+                </h4>
+                <ol style="margin: 0; padding-left: 1.5rem; color: #1e40af; font-size: 0.85rem; line-height: 1.6;">
+                  <li>Baixe um aplicativo autenticador no seu celular (ex: <strong>Microsoft Authenticator</strong>, <strong>Google Authenticator</strong> ou <strong>Authy</strong>).</li>
+                  <li>Clique no botão <strong>"Ativar 2FA"</strong> acima.</li>
+                  <li>Escaneie o QR Code que aparecerá na tela usando o aplicativo.</li>
+                  <li>Digite o código de 6 dígitos gerado pelo app para confirmar a ativação.</li>
+                </ol>
+              </div>
+            } @else {
+              <!-- Mensagem de Confirmação e Uso -->
+              <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 1rem; border-radius: 0 8px 8px 0;">
+                <p style="margin: 0; color: #166534; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="pi pi-check-circle" style="font-size: 1.1rem;"></i> 
+                  <span><strong>Tudo certo!</strong> No seu próximo login, basta abrir o seu aplicativo autenticador no celular e digitar o código gerado para acessar o sistema.</span>
+                </p>
+              </div>
+            }
+          </div>
+
         </div>
       </div>
 

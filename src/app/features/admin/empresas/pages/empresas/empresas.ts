@@ -172,7 +172,7 @@ getIniciais(nome?: string): string {
     if (!id) return;
     this.confirmationService.confirm({
       header: 'Confirmar Exclusão',
-      message: 'Tem certeza que deseja excluir esta empresa? Todos os dados serão perdidos.',
+      message: `Tem certeza que deseja excluir a empresa <strong>${this.selectedEmpresa()?.name}</strong>? Todos os dados serão perdidos.`,
       acceptLabel: 'Sim, excluir',
       rejectLabel: 'Cancelar',
       
@@ -207,7 +207,7 @@ getIniciais(nome?: string): string {
 
   salvarCadastro() {
     if (this.editando()) {
-      // ✏️ Atualização
+      // Atualização
       this._companyService.updateCompany(this.novaEmpresa.id!, this.novaEmpresa).subscribe({
         next: () => { 
           this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa atualizada com sucesso!' });
