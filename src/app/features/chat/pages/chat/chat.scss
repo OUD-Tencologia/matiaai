@@ -200,6 +200,41 @@
   &::-webkit-scrollbar-thumb { background: rgba(0,41,107,0.15); border-radius: 4px; }
 }
 
+/* Animação de Digitando (Typing Indicator) */
+.digitando {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.7;
+
+  .texto-pensando {
+    font-size: 0.9rem;
+    color: #666; /* Ajuste para a cor do seu tema */
+    font-style: italic;
+  }
+
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+
+    span {
+      width: 8px;
+      height: 8px;
+      background-color: #c9a227; /* O dourado da Matia que vi no seu print! */
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    span:nth-child(1) { animation-delay: -0.32s; }
+    span:nth-child(2) { animation-delay: -0.16s; }
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
 .chat-message {
   display: flex;
   align-items: flex-start;
@@ -226,6 +261,8 @@
     .pi { color: $navy-deep; }
   }
 }
+
+
 
 .msg-bubble {
   max-width: 65%;

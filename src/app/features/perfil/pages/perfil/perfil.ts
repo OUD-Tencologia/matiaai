@@ -1,7 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, Validators, 
+  AbstractControl, ValidationErrors } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
@@ -20,6 +21,7 @@ import { Setup2FAResponse } from '../../../../shared/models/auth.models';
 // Imports do PrimeNG
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
 import { InputOtpModule } from 'primeng/inputotp';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
@@ -58,7 +60,8 @@ interface Atividade {
     ToastModule,
     BrDatePipe,
     BrlCurrencyPipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SkeletonModule
   
   ],
   templateUrl: './perfil.html',

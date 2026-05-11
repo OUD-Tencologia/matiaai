@@ -6,31 +6,33 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
+  const FIRST_ACCESS = '/first-access';
+  const CHAT = '/matia/chat';
 
- // 1. Verifica se o usuário está logado
+
+  const currentUrl = state.url.split('?')[0].split('#')[0];
+
+  // 1. Verifica se o usuário está logado
   if (!authService.isLoggedIn()) {
-    // Se não estiver, manda pro login
-    router.navigate(['/login']);
-    return false;
+    return router.createUrlTree(['/login']);
   }
 
-  // 2. Pega os dados do usuário
   const user = authService.getUser();
-
-  // 3. A TRAVA DO PRIMEIRO ACESSO!
-  // Se ele estiver tentando ir para qualquer página (que não seja a de trocar senha)
-  // e a flag primeiro_acesso for TRUE, nós bloqueamos e mandamos ele pra tela obrigatória!
-  if (user?.primeiro_acesso && state.url !== '/first-access') {
-    router.navigate(['/first-access']);
-    return false;
+  if (!user) {
+    return router.createUrlTree(['/login']);
   }
 
-  // 4. Trava inversa: Se ele já trocou a senha (primeiro_acesso: false) 
-  // e tentar acessar a tela de /first-access digitando na URL, a gente manda ele pro dashboard
-  if (!user?.primeiro_acesso && state.url === '/first-access') {
-    router.navigate(['/matia/chat']);
-    return false;
+  const isFirstAccess = user?.primeiro_acesso;
+  const isFirstAccessRoute = currentUrl === FIRST_ACCESS;
+
+  // 2. Força ir para first-access se for primeiro acesso
+  if (isFirstAccess && !isFirstAccessRoute) {
+    return router.createUrlTree([FIRST_ACCESS]);
   }
-  // Se passou por todas as travas, o acesso está liberado!
+
+  // 3. Impede voltar para first-access depois
+  if (!isFirstAccess && isFirstAccessRoute) {
+    return router.createUrlTree([CHAT]);
+  }
   return true;
 };

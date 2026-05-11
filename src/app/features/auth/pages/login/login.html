@@ -111,9 +111,10 @@
       <form [formGroup]="loginForm" (ngSubmit)=" onSubmit()">
 
         <div class="field">
-          <label class="field-label">Email</label>
-          <div class="p-input-icon-left input-wrap">
-            <i class="pi pi-envelope"></i>
+          <label class="field-label">E-mail</label>
+          <div class="input-wrap">
+            <span class="material-symbols-outlined icon-left">mail</span>
+
             <input pInputText type="email" formControlName="email" placeholder="Insira seu email"
               class="w-full custom-input" autocomplete="email" />
           </div>
@@ -124,14 +125,19 @@
 
         <div class="field">
           <label class="field-label">Senha</label>
-          <div class="p-input-icon-left input-wrap password-wrap">
-            <i class="pi pi-lock"></i>
+          <div class="input-wrap password-wrap">
+            <span class="material-symbols-outlined icon-left">lock</span>
+
             <input pInputText [type]="showPassword ? 'text' : 'password'" formControlName="profile_password"
               placeholder="Insira sua senha" class="w-full custom-input" autocomplete="current-password" />
+
             <button type="button" class="toggle-password" (click)="showPassword = !showPassword">
-              <i [class]="showPassword ? 'pi pi-eye' : 'pi pi-eye-slash'"></i>
+              <span class="material-symbols-outlined">
+                {{ showPassword ? 'visibility' : 'visibility_off' }}
+              </span>
             </button>
           </div>
+
           @if (loginForm.get('profile_password')?.invalid && loginForm.get('profile_password')?.touched) {
           <small class="p-error block mt-1 msg-erro">A senha deve ter no mínimo 6 caracteres.</small>
           }
@@ -154,14 +160,6 @@
         </p-button>
 
       </form>
-
-      <!-- DIVIDER -->
-      <div class="divider">
-        <span>Ou</span>
-      </div>
-
-      <!-- CADASTRAR -->
-      <p-button label="Criar nova conta" [fluid]="true" styleClass="btn-register" [outlined]="true" />
 
     </div>
   </div>

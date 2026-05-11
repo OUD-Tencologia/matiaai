@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 // PrimeNG Imports
 import { TooltipModule } from 'primeng/tooltip';
+import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -29,7 +30,8 @@ import { CompanyData, RegisterCompanyRequest, AdminData } from '../../../../../s
     PasswordModule,
     InputMaskModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    SkeletonModule
   ],
   // 🌟 Garante que os serviços de alerta e confirmação funcionem
   providers: [MessageService, ConfirmationService], 

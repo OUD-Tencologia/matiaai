@@ -1,6 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
 
 interface Modelo {
@@ -22,7 +23,7 @@ interface Modelo {
 
 @Component({
   selector: 'app-llm-config',
-  imports: [FormsModule, ButtonModule, InputTextModule],
+  imports: [FormsModule, ButtonModule, InputTextModule, SkeletonModule],
   templateUrl: './llm-config.html',
   styleUrl: './llm-config.scss',
 })

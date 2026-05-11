@@ -17,21 +17,9 @@
         </a>
       </li>
       <li>
-        <a routerLink="/matia/dashboard" routerLinkActive="active" class="sidebar-item">
-          <span class="material-symbols-outlined">dashboard</span>
-          <span>Dashboard</span>
-        </a>
-      </li>
-      <li>
         <a routerLink="/matia/consulta-juridica" routerLinkActive="active" class="sidebar-item">
           <span class="material-symbols-outlined">menu_book</span>
           <span>Consulta Jurídica</span>
-        </a>
-      </li>
-      <li>
-        <a routerLink="/matia/usuarios" routerLinkActive="active" class="sidebar-item">
-          <span class="material-symbols-outlined">group</span>
-          <span>Usuários</span>
         </a>
       </li>
       <li>
@@ -44,11 +32,26 @@
   </div>
 
   <!-- ADMINISTRAÇÃO -->
+  @if (hasAdminAccess()) {
   <div class="sidebar-section">
     <span class="sidebar-section-title">⚙️ Administração</span>
     <ul class="sidebar-menu">
 
-    @if (isAdmin()) {
+      <li>
+        <a routerLink="/matia/dashboard" routerLinkActive="active" class="sidebar-item">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li>
+        <a routerLink="/matia/usuarios" routerLinkActive="active" class="sidebar-item">
+          <span class="material-symbols-outlined">group</span>
+          <span>Usuários</span>
+        </a>
+      </li>
+
+      @if (isAdmin()) {
       <li>
         <a routerLink="/matia/admin"
            routerLinkActive="active"
@@ -58,10 +61,11 @@
           <span>Empresas</span>
         </a>
       </li>
-    }
+      }
 
-  </ul>
+    </ul>
   </div>
+  }
 
   <!-- RECENTES -->
   <div class="sidebar-section sidebar-scrollable">

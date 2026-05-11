@@ -5,6 +5,7 @@ import { UserRole } from '../../shared/models/user.models';
 export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const CHAT = '/matia/chat';
 
   const user = authService.currentUser();
   const allowedRoles: UserRole[] = route.data['roles'] ?? [];
@@ -12,6 +13,5 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state) =
   if (user && allowedRoles.includes(user.role)) {
     return true;
   }
-  router.navigate(['/matia/chat']);
-  return false;
+  return router.createUrlTree([CHAT]);
 };

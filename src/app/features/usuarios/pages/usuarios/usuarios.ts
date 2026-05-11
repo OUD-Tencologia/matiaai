@@ -6,6 +6,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
+import { SkeletonModule } from 'primeng/skeleton';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { CompanyService } from '../../../../core/services/company-service';
 import { ProfileService } from '../../../../core/services/profile-service';
@@ -21,7 +22,8 @@ import { ProfileData, CreateProfilePayload } from '../../../../shared/models/pro
     InputTextModule,
     InputMaskModule,
     ToastModule,
-    ConfirmDialogModule],
+    ConfirmDialogModule,
+    SkeletonModule],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.scss',
 })

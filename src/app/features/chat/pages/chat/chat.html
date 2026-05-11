@@ -90,6 +90,7 @@
   <!-- MENSAGENS -->
   @if (!loading && chatIniciado) {
   <div class="chat-messages" #messagesContainer>
+
     @for (msg of mensagens; track msg.id) {
     <div class="chat-message" [class.user]="msg.tipo === 'user'" [class.ai]="msg.tipo === 'ai'">
       @if (msg.tipo === 'ai') {
@@ -105,6 +106,20 @@
       }
     </div>
     }
+
+    @if (enviando) {
+    <div class="chat-message ai digitando">
+      <div class="msg-avatar">
+        <i class="pi pi-android"></i>
+      </div>
+      <div class="msg-bubble indicator-bubble">
+        <div class="typing-indicator">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+    }
+
   </div>
   }
 
@@ -118,9 +133,14 @@
       <div class="chat-input-actions">
 
         <!-- ÁUDIO -->
-        <p-button [text]="true" styleClass="input-action-btn" pTooltip="Áudio" tooltipPosition="top">
+        <p-button [text]="true" styleClass="input-action-btn" pTooltip="Áudio" tooltipPosition="top"
+          (onClick)="toggleGravacao()">
 
-          <span class="material-symbols-outlined">mic</span>
+          <span class="material-symbols-outlined" [class.gravando]="isRecording"
+            [style.color]="isRecording ? '#ef4444' : 'inherit'">
+            {{ isRecording ? 'mic_off' : 'mic' }}
+          </span>
+
         </p-button>
 
         <!-- ANEXO -->

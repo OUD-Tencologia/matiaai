@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { SkeletonModule } from 'primeng/skeleton';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface Resultado {
@@ -33,7 +34,7 @@ interface Fonte {
 
 @Component({
   selector: 'app-consulta-juridica',
-  imports: [FormsModule, ButtonModule, InputTextModule],
+  imports: [FormsModule, ButtonModule, InputTextModule, SkeletonModule],
   templateUrl: './consulta-juridica.html',
   styleUrl: './consulta-juridica.scss',
 })

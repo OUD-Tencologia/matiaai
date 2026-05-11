@@ -1,6 +1,7 @@
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
+import { SkeletonModule } from 'primeng/skeleton';
 import { AuthService } from '../../core/services/auth.service';
 
 interface ConsultaRecente {
@@ -12,7 +13,7 @@ interface ConsultaRecente {
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterModule, InputTextModule],
+  imports: [RouterModule, InputTextModule, SkeletonModule],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
@@ -38,6 +39,11 @@ export class Sidebar {
 
 isAdmin(): boolean {
   return this.authService.currentUser()?.role === 'SUPER-ADMIN';
+}
+
+hasAdminAccess(): boolean {
+  const role = this.authService.currentUser()?.role;
+  return role === 'SUPER-ADMIN' || role === 'ADMIN';
 }
 
   logout() {

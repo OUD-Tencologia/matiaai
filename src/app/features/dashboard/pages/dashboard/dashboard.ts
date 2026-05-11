@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { SkeletonModule } from 'primeng/skeleton';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -30,7 +31,7 @@ interface Historico {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [SkeletonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
