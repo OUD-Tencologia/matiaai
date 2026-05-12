@@ -336,10 +336,21 @@
   width: 34px !important;
   height: 34px !important;
   border-radius: 8px !important;
+  transition: background-color 0.3s, color 0.3s !important;
 
   &:hover {
     color: $navy !important;
     background: rgba(0,41,107,0.06) !important;
+  }
+
+  &.is-recording {
+    animation: pulse-red 1.5s infinite !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: #ef4444 !important; 
+    
+    &:hover {
+      background-color: rgba(239, 68, 68, 0.15) !important;
+    }
   }
 }
 
@@ -359,6 +370,8 @@
 
   &:disabled { opacity: 0.4 !important; }
 }
+
+
 
 .chat-input-hint {
   text-align: center;

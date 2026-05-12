@@ -31,7 +31,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         !req.url.includes('auth/login') && 
         !req.url.includes('auth/refresh')
       ) {
-        return handle401Error(authReq, next, authService);
+        return handle401Error(req, next, authService);
       }
       
       // Se for outro erro, apenas repassa

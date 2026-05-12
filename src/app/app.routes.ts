@@ -40,6 +40,7 @@ export const routes: Routes = [
   {
     path: 'matia',
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     loadComponent: () => import('./layout/main-layout/main-layout').then(m => m.MainLayout),
     children: [
       // Rota padrão → chat

@@ -136,7 +136,6 @@ export class Perfil implements OnInit {
         }
         this.userProfile = user;
         this.is2FAEnabled = user.two_factor_enabled;
-        console.log('Dados formatados para a tela:', this.userProfile);
       },
       error: (err) => {
         console.error('Erro 400 detalhado:', err);
@@ -226,7 +225,7 @@ export class Perfil implements OnInit {
   // Garanta que o AuthService.get2FASetup() também retorne Observable<Setup2FAResponse>
   this.authService.get2FASetup().subscribe({
     next: (res: Setup2FAResponse) => {
-      console.log('Resposta do Setup:', res);
+     
       
       // Se o backend enviar 'qrCodeDataUrl', mas sua interface diz 'qrcode',
       // você pode fazer essa pequena validação:

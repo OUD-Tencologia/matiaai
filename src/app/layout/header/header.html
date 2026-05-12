@@ -1,11 +1,8 @@
 <p-toolbar styleClass="matia-toolbar">
 
   <div class="p-toolbar-group-start">
-
     <p-button [text]="true" styleClass="mobile-menu-btn" (click)="toggleMenu.emit()">
-
       <span class="material-symbols-outlined">menu</span>
-
     </p-button>
 
     <div class="brand-group">
@@ -23,16 +20,30 @@
     </div>
   </div>
 
-  <div class="p-toolbar-group-end">
-    <div class="user-info">
-      <span class="user-name">{{ user()?.nome || 'Usuário' }}</span>
-      <span class="user-role">{{ user()?.role }}</span>
-    </div>
-    <p-avatar icon="pi pi-user" shape="circle" size="large" styleClass="user-avatar" />
+  <div class="p-toolbar-group-end flex align-items-center gap-3">
+    
+    @if (!user()) {
+      <div class="user-info flex flex-column gap-2" style="align-items: flex-end;">
+        <p-skeleton width="8rem" height="1.2rem"></p-skeleton>
+        <p-skeleton width="5rem" height="0.8rem"></p-skeleton>
+      </div>
+      <p-skeleton shape="circle" size="3rem" styleClass="user-avatar"></p-skeleton>
+      
+      <p-skeleton width="2.5rem" height="2.5rem" borderRadius="8px"></p-skeleton>
+    } 
+    @else {
+      <div class="user-info">
+        <span class="user-name">{{ user()?.nome }}</span>
+        <span class="user-role">{{ user()?.role }}</span>
+      </div>
+      
+      <p-avatar icon="pi pi-user" shape="circle" size="large" styleClass="user-avatar" />
 
-    <p-button [text]="true" styleClass="logout-btn" title="Sair do sistema" (click)="logout()" >
-      <span class="material-symbols-outlined">logout</span>
-    </p-button>
+      <p-button [text]="true" styleClass="logout-btn" title="Sair do sistema" (click)="logout()" >
+        <span class="material-symbols-outlined">logout</span>
+      </p-button>
+    }
+
   </div>
 
 </p-toolbar>

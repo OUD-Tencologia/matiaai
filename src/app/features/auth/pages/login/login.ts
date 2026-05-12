@@ -1,25 +1,28 @@
 import { Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router'; // Import simplificado
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { PasswordModule } from 'primeng/password';
-import { AuthService } from '../../../../core/services/auth.service';
 import { MessageService } from 'primeng/api';
-import { LoginRequest, AuthResponse } from '../../../../shared/models/auth.models'; // Importamos AuthResponse
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
+
+import { AuthService } from '../../../../core/services/auth.service';
+import { LoginRequest, AuthResponse } from '../../../../shared/models/auth.models';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ButtonModule,
+  imports: [
+    ButtonModule,
     RouterModule,
     InputTextModule,
-    RippleModule, ReactiveFormsModule,
+    RippleModule,
+    ReactiveFormsModule,
     PasswordModule,
-    ToastModule],
+    ToastModule
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -30,7 +33,6 @@ export class Login {
   private router = inject(Router);
 
   showPassword = false;
-
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
@@ -48,17 +50,21 @@ export class Login {
     const credentials = this.loginForm.value as LoginRequest;
 
     this.authService.login(credentials).subscribe({
-      // Usamos o tipo genérico AuthResponse para aceitar ambas as respostas
       next: (response: AuthResponse) => {
         this.isLoading.set(false);
-        // Deixamos a inteligência de saber "pra onde ir" no Componente,
-        // mas baseada na resposta que o Service repassa.
 
         // Cenário 1: O usuário TEM 2FA ativado
         if ('requires_2fa' in response) {
-          // O AuthService já salvou o preAuthToken. O MessageService avisa.
-          // Só mandamos ele pra tela do código.
-          this.router.navigate(['/login-two-factor']);
+          this.messageService.add({
+            severity: 'info',
+            summary: '2FA Necessário',
+            detail: 'Por favor, insira o código do seu autenticador.',
+            life: 3000
+          });
+
+          // Usando UrlTree para navegação programática
+          const tree = this.router.createUrlTree(['/login-two-factor']);
+          this.router.navigateByUrl(tree);
         }
 
         // Cenário 2: O usuário NÃO TEM 2FA ativado (Entrada Direta)
@@ -69,12 +75,17 @@ export class Login {
             detail: 'Login realizado com sucesso.',
             life: 3000
           });
-          this.router.navigate(['/matia/chat']);
+
+          // Criamos a árvore e navegamos substituindo a URL atual no histórico
+          const tree = this.router.createUrlTree(['/matia/chat']);
+          this.router.navigateByUrl(tree, { replaceUrl: true });
         }
       },
       error: (error) => {
         this.isLoading.set(false);
-        this.errorMessage.set(error.error?.message || 'Erro ao tentar fazer login. Verifique suas credenciais.');
+        this.errorMessage.set(
+          error.error?.message || 'Erro ao tentar fazer login. Verifique suas credenciais.'
+        );
         console.error('Erro no login:', error);
       }
     });

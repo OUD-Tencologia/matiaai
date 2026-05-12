@@ -1,6 +1,5 @@
 <div class="chat-page">
 
-  <!-- TOPO -->
   <div class="chat-topbar">
     <h1 class="chat-title">
       <i class="pi pi-comments"></i>
@@ -12,14 +11,12 @@
     </div>
   </div>
 
-  <!-- LOADING -->
   @if (loading) {
   <div class="chat-loading">
     <p-progressSpinner styleClass="gold-spinner" strokeWidth="3" />
   </div>
   }
 
-  <!-- BOAS VINDAS -->
   @if (!loading && !chatIniciado) {
   <div class="chat-welcome">
     <div class="welcome-hero">
@@ -29,7 +26,6 @@
 
     <div class="welcome-cards">
 
-      <!-- RECENTES -->
       <div class="welcome-card">
         <div class="welcome-card-header">
           <i class="pi pi-history"></i>
@@ -47,7 +43,6 @@
         </div>
       </div>
 
-      <!-- FREQUENTE -->
       <div class="welcome-card">
         <div class="welcome-card-header">
           <i class="pi pi-chart-line"></i>
@@ -65,7 +60,6 @@
         </div>
       </div>
 
-      <!-- RECOMENDADO -->
       <div class="welcome-card">
         <div class="welcome-card-header">
           <i class="pi pi-lightbulb"></i>
@@ -87,7 +81,6 @@
   </div>
   }
 
-  <!-- MENSAGENS -->
   @if (!loading && chatIniciado) {
   <div class="chat-messages" #messagesContainer>
 
@@ -108,14 +101,14 @@
     }
 
     @if (enviando) {
-    <div class="chat-message ai digitando">
+    <div class="chat-message ai">
       <div class="msg-avatar">
         <i class="pi pi-android"></i>
       </div>
-      <div class="msg-bubble indicator-bubble">
-        <div class="typing-indicator">
-          <span></span><span></span><span></span>
-        </div>
+      <div class="msg-bubble" style="width: 100%; max-width: 65%;">
+        <p-skeleton width="100%" height="1rem" [style]="{'margin-bottom': '10px'}"></p-skeleton>
+        <p-skeleton width="85%" height="1rem" [style]="{'margin-bottom': '10px'}"></p-skeleton>
+        <p-skeleton width="60%" height="1rem"></p-skeleton>
       </div>
     </div>
     }
@@ -123,7 +116,6 @@
   </div>
   }
 
-  <!-- INPUT -->
   <div class="chat-input-area">
     <div class="chat-input-wrap">
 
@@ -132,27 +124,20 @@
 
       <div class="chat-input-actions">
 
-        <!-- ÁUDIO -->
-        <p-button [text]="true" styleClass="input-action-btn" pTooltip="Áudio" tooltipPosition="top"
-          (onClick)="toggleGravacao()">
-
-          <span class="material-symbols-outlined" [class.gravando]="isRecording"
-            [style.color]="isRecording ? '#ef4444' : 'inherit'">
-            {{ isRecording ? 'mic_off' : 'mic' }}
+        <p-button [text]="true" styleClass="input-action-btn" [class.is-recording]="audioService.isRecording()"
+          [pTooltip]="audioService.isRecording() ? 'Parar Gravação' : 'Gravar Áudio'" tooltipPosition="top"
+          (onClick)="toggleRecording()">
+          <span class="material-symbols-outlined" [class.text-red-500]="audioService.isRecording()">
+            {{ audioService.isRecording() ? 'stop_circle' : 'mic' }}
           </span>
-
         </p-button>
 
-        <!-- ANEXO -->
         <p-button [text]="true" styleClass="input-action-btn" pTooltip="Anexar arquivo" tooltipPosition="top">
-
           <span class="material-symbols-outlined">attach_file</span>
         </p-button>
 
-        <!-- ENVIAR -->
         <p-button styleClass="input-send-btn" (click)="enviarPergunta()" [disabled]="!pergunta.trim() || enviando"
           pTooltip="Enviar" tooltipPosition="top">
-
           <span class="material-symbols-outlined">send</span>
         </p-button>
 

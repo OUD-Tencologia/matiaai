@@ -73,27 +73,20 @@ export class AuthService {
 
   // 1. Mude o retorno para Observable<AuthResponse>
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    // 2. Mude o post para <AuthResponse>
-    return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials).pipe(
-      tap((response) => {
-        // Cenário A: Verificamos se a propriedade exclusiva do 2FA existe no objeto
-        if ('requires_2fa' in response) {
-          this.preAuthToken.set(response.preAuthToken);
-          this.messageService.add({
-            severity: 'info',
-            summary: '2FA Necessário',
-            detail: 'Por favor, insira o código do seu autenticador.'
-          });
-          this.router.navigate(['/login-2fa']);
-        }
-        // Cenário B: Se não caiu no IF acima, o TS agora entende que é um LoginResponse
-        // Usamos 'token' in response para garantir a tipagem no else if
-        else if ('token' in response) {
-          this.finalizeLogin(response);
-        }
-      })
-    );
-  }
+  return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials).pipe(
+    tap((response) => {
+      // O Service agora APENAS gerencia o estado (Signals/Storage)
+      if ('requires_2fa' in response) {
+        // Guarda o token temporário para a próxima etapa
+        this.preAuthToken.set(response.preAuthToken);
+      } 
+      else if ('token' in response) {
+        // Grava token e user no LocalStorage via finalizeLogin
+        this.finalizeLogin(response);
+      }
+    })
+  );
+}
 
   // Adicione este método no seu AuthService
   updateCurrentUser(user: UserPayload) {
@@ -221,6 +214,20 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.isAuthenticated();
   }
+
+  isTokenExpired(): boolean {
+  const token = localStorage.getItem('matia_token');
+  if (!token) return true;
+
+  try {
+    // Decodifica o payload do JWT (parte do meio, base64)
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expirationTime = payload.exp * 1000; // exp vem em segundos, converte pra ms
+    return Date.now() >= expirationTime;
+  } catch {
+    return true; // Se não conseguir decodificar, considera expirado
+  }
+}
 
   getToken(): string | null {
     return localStorage.getItem('matia_token');

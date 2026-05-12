@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -9,6 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 // Importe o serviço e os modelos que criamos
 import { ChatService } from '../../../../core/services/chat-service';
 import { ChatSource, ChatResponse } from '../../../../shared/models/chat.models';
+import { AudioRecordingService } from '../../../../core/services/audio-recording-service';
 
 interface ConsultaItem {
   id: number;
@@ -36,6 +37,8 @@ export class Chat implements OnInit {
 
   // Injeção do serviço real
   private chatService = inject(ChatService);
+  public audioService = inject(AudioRecordingService);
+
 
   loading = true;
   chatIniciado = false;
@@ -43,13 +46,13 @@ export class Chat implements OnInit {
   pergunta = '';
   mensagens: Mensagem[] = [];
 
+  currentConversationId = signal<string | null>(null);
+  isLoading = signal<boolean>(false);
+
   recentes: ConsultaItem[] = [];
   frequentes: ConsultaItem[] = [];
   recomendados: ConsultaItem[] = [];
 
-  // Variáveis para o microfone
-  isRecording = false;
-  private recognition: any;
 
   ngOnInit() {
     this.carregarDados();
@@ -138,45 +141,34 @@ export class Chat implements OnInit {
     }, 50);
   }
 
-// Máquina de reconhecimento de voz
-toggleGravacao() {
- if (this.isRecording) {
-    this.recognition?.stop();
-    return;
+  async toggleRecording() {
+  if (this.audioService.isRecording()) {
+    const audioBlob = await this.audioService.stopRecording();
+    this.enviarAudio(audioBlob);
+  } else {
+    await this.audioService.startRecording();
   }
-
-  // Tenta pegar a API padrão OU a versão do Chrome/Edge/Safari
-  const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-  
-  if (!SpeechRecognition) {
-    alert('Seu navegador não suporta reconhecimento de voz. Tente usar o Google Chrome ou Edge.');
-    return;
-  }
-
-  this.recognition = new SpeechRecognition();
-  this.recognition.lang = 'pt-BR'; // Português
-  this.recognition.interimResults = false; // Pega só a frase final concluída
-  this.recognition.maxAlternatives = 1;
-
-  this.recognition.onstart = () => {
-    this.isRecording = true;
-  };
-
-  this.recognition.onresult = (event: any) => {
-    const transcricao = event.results[0][0].transcript;
-    // Adiciona o que foi falado no input, com um espaço se já houver texto
-    this.pergunta += (this.pergunta.length > 0 ? ' ' : '') + transcricao;
-  };
-
-  this.recognition.onerror = (event: any) => {
-    console.error('Erro no microfone:', event.error);
-    this.isRecording = false;
-  };
-
-  this.recognition.onend = () => {
-    this.isRecording = false;
-  };
-
-  this.recognition.start();
 }
+
+enviarAudio(blob: Blob) {
+  this.isLoading.set(true); // Ativa o SKELETON que vamos fazer
+
+  const formData = new FormData();
+  formData.append('file', blob, 'audio-juridico.webm');
+  
+  // Se já tiver uma conversa aberta, anexa o ID
+  if (this.currentConversationId()) {
+    formData.append('conversations_id', this.currentConversationId()!);
+  }
+
+  this.chatService.sendAudio(formData).subscribe({
+    next: (res) => {
+      // Aqui você adiciona a mensagem transcrita no seu array de mensagens
+      // E desativa o skeleton
+      this.isLoading.set(false);
+    },
+    error: () => this.isLoading.set(false)
+  });
+}
+
 }
