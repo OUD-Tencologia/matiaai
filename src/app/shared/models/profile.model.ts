@@ -14,8 +14,14 @@ export interface ProfileData {
   area_juridica?: string;
   status: ProfileStatus;
   avatar_url?: string;
-  empresa_id: string; // O backend devolve para sabermos a qual empresa pertence
+  empresa_id: string; 
   created_at?: string;
+  total_consultas?: number;
+  total_tokens?: number;
+  total_custo_brl?: number;
+  two_factor_enabled?: boolean;
+  ultimo_acesso?: string;
+  primeiro_acesso?: boolean;
 }
 
 // O modelo que ENVIAMOS para o backend criar (POST) 

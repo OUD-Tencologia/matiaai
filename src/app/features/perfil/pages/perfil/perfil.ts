@@ -354,6 +354,24 @@ export class Perfil implements OnInit {
       }
     });
   }
+
+  // Calcula a quantidade de dias desde a criação do perfil
+  get diasAtivo(): number {
+    // Se o perfil ainda não carregou a data de criação, retorna 0
+    if (!this.userProfile?.creation_time) return 0;
+    
+    const dataCriacao = new Date(this.userProfile.creation_time);
+    const dataAtual = new Date();
+    
+    // Calcula a diferença de tempo em milissegundos
+    const diferencaMilissegundos = dataAtual.getTime() - dataCriacao.getTime();
+    
+    // Converte os milissegundos para dias inteiros
+    const dias = Math.floor(diferencaMilissegundos / (1000 * 60 * 60 * 24));
+    
+    // Retorna os dias (garantindo que nunca seja negativo)
+    return dias >= 0 ? dias : 0;
+  }
   private mostrarToast(severity: 'success' | 'info' | 'warn' | 'error', summary: string, detail: string) {
     this.messageService.add({ severity, summary, detail, life: 4000 });
   }

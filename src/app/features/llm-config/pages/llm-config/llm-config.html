@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="llm-page">
 
   <!-- TOPBAR -->
@@ -98,11 +99,12 @@
               <span class="field-hint">Criptografada</span>
             </div>
             <div class="api-key-wrap">
+              <!-- ✅ Ajustado para api_key -->
               <input
                 pInputText
                 [type]="showApiKey ? 'text' : 'password'"
                 class="field-input api-key-input"
-                [(ngModel)]="selectedModelo.apiKey"
+                [(ngModel)]="selectedModelo.api_key" 
                 placeholder="sk-..."/>
               <button class="toggle-vis" (click)="showApiKey = !showApiKey">
                 <i class="pi" [class.pi-eye]="!showApiKey" [class.pi-eye-slash]="showApiKey"></i>
@@ -134,14 +136,16 @@
           <!-- LIMITE DE CUSTO -->
           <div class="field-group">
             <label class="field-label">Limite de custo mensal (R$)</label>
-            <input pInputText type="number" class="field-input" [(ngModel)]="selectedModelo.limiteCusto" placeholder="Ex: 250"/>
+            <!-- ✅ Ajustado para limite_custo -->
+            <input pInputText type="number" class="field-input" [(ngModel)]="selectedModelo.limite_custo" placeholder="Ex: 250"/>
           </div>
 
           <!-- TOKENS -->
           <div class="field-group">
             <label class="field-label">Máx. tokens por consulta</label>
-            <div class="slider-value">{{ selectedModelo.maxTokens.toLocaleString('pt-BR') }} tokens</div>
-            <input type="range" class="slider" min="512" max="32768" step="512" [(ngModel)]="selectedModelo.maxTokens"/>
+            <!-- ✅ Ajustado para max_tokens -->
+            <div class="slider-value">{{ selectedModelo.max_tokens.toLocaleString('pt-BR') }} tokens</div>
+            <input type="range" class="slider" min="512" max="32768" step="512" [(ngModel)]="selectedModelo.max_tokens"/>
             <div class="slider-labels"><span>512</span><span>32.768</span></div>
           </div>
 
@@ -160,10 +164,14 @@
               styleClass="btn-success"
               [fluid]="true"
               (onClick)="testarConexao()"/>
+            
+            <!-- ✅ Adicionado onClick e o loading do PrimeNG -->
             <p-button
               label="💾 Salvar Configurações"
               styleClass="btn-primary"
-              [fluid]="true"/>
+              [fluid]="true"
+              [loading]="isSaving"
+              (onClick)="salvarChave()"/>
           </div>
 
         </div>

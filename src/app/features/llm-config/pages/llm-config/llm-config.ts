@@ -1,78 +1,95 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api'; 
 
-interface Modelo {
-  id: number;
-  nome: string;
-  provider: string;
-  logoClass: string;
-  logoText: string;
-  padrao: boolean;
-  ativo: boolean;
-  custoPorToken: string;
-  usoMes: string;
-  custoAcumulado: string;
-  apiKey: string;
-  limiteCusto: number;
-  maxTokens: number;
-  temperatura: number;
-}
+import { LlmConfigService } from '../../../../core/services/llm-config.service';
+import { LlmConfigModel, LlmProvider } from '../../../../shared/models/LlmConfig.model';
 
 @Component({
   selector: 'app-llm-config',
-  imports: [FormsModule, ButtonModule, InputTextModule, SkeletonModule],
+  imports: [FormsModule, ButtonModule, InputTextModule, SkeletonModule, ToastModule], 
+  providers: [MessageService], // ✅ Adicionado para o Toast funcionar corretamente
   templateUrl: './llm-config.html',
   styleUrl: './llm-config.scss',
 })
-export class LlmConfig {
+export class LlmConfig implements OnInit {
+  isLoading = true;
+  modelos: LlmConfigModel[] = []; 
+  
+  selectedId: string | null = null;
+  selectedModelo: LlmConfigModel | null = null; 
 
-  selectedId: number | null = 1;
   showApiKey = false;
-  connectionStatus = 'ok';
-  connectionMsg = '✅ Conexão verificada com sucesso';
+  connectionStatus = 'idle';
+  connectionMsg = '○ Conexão não testada'; // ✅ Adicionado de volta
+  isSaving = false;
 
   costCards = [
-    { icon: '💰', iconClass: 'icon-gold',  label: 'Custo Total (mês)',  value: 'R$ 318,40' },
-    { icon: '⚡', iconClass: 'icon-green', label: 'Tokens Consumidos',  value: '4,2M'      },
-    { icon: '🔗', iconClass: 'icon-blue',  label: 'Modelos Ativos',     value: '3 / 4'     },
+    { icon: '💰', iconClass: 'icon-gold',  label: 'Custo Total (mês)',  value: 'R$ 0,00' },
+    { icon: '⚡', iconClass: 'icon-green', label: 'Tokens Consumidos',  value: '0'      },
+    { icon: '🔗', iconClass: 'icon-blue',  label: 'Modelos Ativos',     value: '0 / 0'  },
   ];
 
-  modelos: Modelo[] = [
-    {
-      id: 1, nome: 'GPT-4o', provider: 'OpenAI',
-      logoClass: 'logo-openai', logoText: 'GPT',
-      padrao: true, ativo: true,
-      custoPorToken: 'R$ 0,027', usoMes: '2,1M tokens', custoAcumulado: 'R$ 186,20',
-      apiKey: 'sk-proj-••••••••••••••••', limiteCusto: 250, maxTokens: 4096, temperatura: 0.3
-    },
-    {
-      id: 2, nome: 'Claude Sonnet 4', provider: 'Anthropic',
-      logoClass: 'logo-anthropic', logoText: 'Cl',
-      padrao: false, ativo: true,
-      custoPorToken: 'R$ 0,018', usoMes: '1,4M tokens', custoAcumulado: 'R$ 84,60',
-      apiKey: 'sk-ant-••••••••••••••••', limiteCusto: 200, maxTokens: 8192, temperatura: 0.5
-    },
-    {
-      id: 3, nome: 'Gemini 1.5 Pro', provider: 'Google',
-      logoClass: 'logo-google', logoText: 'G',
-      padrao: false, ativo: true,
-      custoPorToken: 'R$ 0,022', usoMes: '700K tokens', custoAcumulado: 'R$ 47,60',
-      apiKey: 'AIza••••••••••••••••••••', limiteCusto: 150, maxTokens: 16384, temperatura: 0.7
-    },
-    {
-      id: 4, nome: 'Mistral Large', provider: 'Mistral AI',
-      logoClass: 'logo-mistral', logoText: 'Mi',
-      padrao: false, ativo: false,
-      custoPorToken: 'R$ 0,014', usoMes: '—', custoAcumulado: 'R$ 0,00',
-      apiKey: '', limiteCusto: 100, maxTokens: 4096, temperatura: 0.3
-    },
-  ];
+  // Injeção de Dependência
+  llmService = inject(LlmConfigService);
+  messageService = inject(MessageService);
 
-  selectedModelo: Modelo | null = this.modelos[0];
+  ngOnInit(): void {
+    this.carregarModelos();
+  }
 
+  carregarModelos() {
+    this.isLoading = true;
+    this.llmService.listarModelos().subscribe({
+      next: (res) => {
+        this.modelos = res.data.map(m => this.aplicarEstilosVisuais(m));
+        
+        const ativos = this.modelos.filter(m => m.ativo).length;
+        this.costCards[2].value = `${ativos} / ${this.modelos.length}`;
+        
+        const modeloPadrao = this.modelos.find(m => m.padrao) || this.modelos[0];
+        if (modeloPadrao) {
+          this.selecionarModelo(modeloPadrao);
+        }
+        
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar modelos LLM', err);
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Erro', 
+          detail: 'Falha ao carregar as IAs do servidor.' 
+        });
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private aplicarEstilosVisuais(modelo: LlmConfigModel): LlmConfigModel {
+    const estilos: Record<LlmProvider, { logoClass: string, logoText: string }> = {
+      'openai': { logoClass: 'logo-openai', logoText: 'GPT' },
+      'anthropic': { logoClass: 'logo-anthropic', logoText: 'Cl' },
+      'gemini': { logoClass: 'logo-google', logoText: 'G' }
+    };
+
+    const estilo = estilos[modelo.provider] || { logoClass: 'logo-default', logoText: 'IA' };
+    
+    return {
+      ...modelo,
+      logoClass: estilo.logoClass,
+      logoText: estilo.logoText,
+      custoPorToken: '—', 
+      usoMes: '—',
+      custoAcumulado: '—'
+    };
+  }
+
+  // ✅ Adicionado de volta para o slider de temperatura funcionar
   get tempLabel(): string {
     const v = this.selectedModelo?.temperatura ?? 0;
     if (v <= 0.3) return 'Conservador';
@@ -81,27 +98,84 @@ export class LlmConfig {
     return 'Muito Criativo';
   }
 
-  selecionarModelo(m: Modelo) {
+  selecionarModelo(m: LlmConfigModel) {
     this.selectedId = m.id;
-    this.selectedModelo = { ...m };
-    this.connectionStatus = m.apiKey ? 'ok' : 'idle';
-    this.connectionMsg = m.apiKey ? '✅ Conexão verificada com sucesso' : '○ Conexão não testada';
+    this.selectedModelo = { ...m }; 
+    this.connectionStatus = m.api_key ? 'ok' : 'idle';
+    this.connectionMsg = m.api_key ? '✅ Conexão verificada com sucesso' : '○ Conexão não testada';
     this.showApiKey = false;
   }
 
-  testarConexao() {
-    this.connectionStatus = 'idle';
-    this.connectionMsg = '⏳ Testando conexão...';
-    setTimeout(() => {
-      const ok = Math.random() > 0.2;
-      this.connectionStatus = ok ? 'ok' : 'error';
-      this.connectionMsg = ok
-        ? '✅ Conexão verificada com sucesso'
-        : '❌ Falha na conexão — verifique a chave de API';
-    }, 1800);
+  salvarChave() {
+    if (!this.selectedModelo || !this.selectedId) return;
+
+    this.isSaving = true;
+    
+    // ✅ Agora enviamos o objeto completo (this.selectedModelo) 
+    // para salvar também tokens, temperatura, padrão e ativo.
+    this.llmService.atualizarModelo(this.selectedId, this.selectedModelo).subscribe({
+      next: () => {
+        this.connectionStatus = 'ok';
+        this.connectionMsg = '✅ Configurações salvas com sucesso';
+        this.isSaving = false;
+        
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: 'Sucesso!', 
+          detail: `Configurações do ${this.selectedModelo?.nome} salvas com sucesso.` 
+        });
+        
+        // Atualiza a lista lateral com os novos dados
+        const index = this.modelos.findIndex(m => m.id === this.selectedId);
+        if (index !== -1) {
+          this.modelos[index] = { ...this.modelos[index], ...this.selectedModelo };
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao salvar', err);
+        this.connectionStatus = 'error';
+        this.connectionMsg = '❌ Erro ao salvar configurações';
+        this.isSaving = false;
+
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Falha', 
+          detail: 'Ocorreu um erro ao tentar salvar no servidor.' 
+        });
+      }
+    });
   }
 
+  testarConexao() {
+    if (!this.selectedModelo?.api_key) {
+      this.messageService.add({ 
+        severity: 'warn', 
+        summary: 'Atenção', 
+        detail: 'Por favor, insira uma chave antes de testar.' 
+      });
+      this.connectionStatus = 'error';
+      this.connectionMsg = '❌ Insira uma chave válida';
+      return;
+    }
+
+    this.connectionStatus = 'idle';
+    this.connectionMsg = '⏳ Salvando e testando conexão...';
+    
+    this.messageService.add({ 
+      severity: 'info', 
+      summary: 'Testando', 
+      detail: 'Validando conexão com o provedor...' 
+    });
+    
+    this.salvarChave(); 
+  }
+
+  // ✅ Adicionado de volta para o botão superior direito não quebrar
   novoModelo() {
-    // TODO: abrir modal de novo modelo
+    this.messageService.add({ 
+      severity: 'info', 
+      summary: 'Em breve', 
+      detail: 'Modal de criação de modelo será aberto aqui.' 
+    });
   }
 }

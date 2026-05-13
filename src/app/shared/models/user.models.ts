@@ -30,6 +30,9 @@ export interface UserProfile {
   ultimo_acesso: string | Date | null;
   permissoes: any | null; 
   two_factor_enabled: boolean;
+  total_consultas?: number;
+  total_tokens?: number;
+  total_custo_brl?: number;
 }
 
 // O que enviamos ao salvar o formulário de "Dados Pessoais"

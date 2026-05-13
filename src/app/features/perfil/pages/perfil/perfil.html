@@ -24,19 +24,19 @@
 
           <div class="profile-stats">
             <div class="profile-stat">
-              <div class="stat-val">1.284</div>
+              <div class="stat-val">{{ (userProfile?.total_consultas || 0) | number:'1.0-0' }}</div>
               <div class="stat-lbl">Consultas</div>
             </div>
             <div class="profile-stat">
-              <div class="stat-val">43</div>
+              <div class="stat-val">{{ diasAtivo }}</div>
               <div class="stat-lbl">Dias ativo</div>
             </div>
             <div class="profile-stat">
-              <div class="stat-val">2,1M</div>
+              <div class="stat-val">{{ (userProfile?.total_tokens || 0) | number:'1.0-0' }}</div>
               <div class="stat-lbl">Tokens</div>
             </div>
             <div class="profile-stat">
-              <div class="stat-val">{{ 186 | brlCurrency }}</div>
+              <div class="stat-val">{{ (userProfile?.total_custo_brl || 0) | brlCurrency }}</div>
               <div class="stat-lbl">Custo</div>
             </div>
           </div>
@@ -46,8 +46,7 @@
           <div class="profile-meta-item">🏛 Área: <span>{{ userProfile?.area_juridica || 'Não definida' }}</span></div>
           <div class="profile-meta-item">📅 Desde: <span>{{ (userProfile?.creation_time ?? '') | brDate }}</span></div>
           <div class="profile-meta-item">🕐 Último acesso:
-            <span>{{ userProfile?.ultimo_acesso ? (userProfile?.ultimo_acesso | date: 'dd/MM/yyyy HH:mm') : 'Primeiro
-              acesso' }}</span>
+            <span>{{ userProfile?.ultimo_acesso ? (userProfile?.ultimo_acesso | date: 'dd/MM/yyyy HH:mm') : 'Primeiro acesso' }}</span>
           </div>
           <div class="profile-meta-item">🔐 2FA:
             <span [style.color]="is2FAEnabled ? '#10b981' : '#ef4444'" style="font-weight: bold;">
