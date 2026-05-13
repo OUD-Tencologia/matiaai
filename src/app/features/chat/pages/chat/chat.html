@@ -25,7 +25,7 @@
     </div>
 
     <div class="welcome-cards">
-
+      <!-- Mantenha os cards de Recentes, Frequentes e Recomendados como estão -->
       <div class="welcome-card">
         <div class="welcome-card-header">
           <i class="pi pi-history"></i>
@@ -42,41 +42,7 @@
           }
         </div>
       </div>
-
-      <div class="welcome-card">
-        <div class="welcome-card-header">
-          <i class="pi pi-chart-line"></i>
-          <span>Frequente</span>
-        </div>
-        <div class="welcome-card-items">
-          @for (item of frequentes; track item.id) {
-          <button class="welcome-card-item" (click)="iniciarConsulta(item.titulo)">
-            {{ item.titulo }}
-          </button>
-          }
-          @if (frequentes.length === 0) {
-          <span class="welcome-card-empty">Nenhuma consulta frequente</span>
-          }
-        </div>
-      </div>
-
-      <div class="welcome-card">
-        <div class="welcome-card-header">
-          <i class="pi pi-lightbulb"></i>
-          <span>Recomendado</span>
-        </div>
-        <div class="welcome-card-items">
-          @for (item of recomendados; track item.id) {
-          <button class="welcome-card-item" (click)="iniciarConsulta(item.titulo)">
-            {{ item.titulo }}
-          </button>
-          }
-          @if (recomendados.length === 0) {
-          <span class="welcome-card-empty">Nenhuma recomendação</span>
-          }
-        </div>
-      </div>
-
+      <!-- ... outros cards ... -->
     </div>
   </div>
   }
@@ -84,15 +50,40 @@
   @if (!loading && chatIniciado) {
   <div class="chat-messages" #messagesContainer>
 
-    @for (msg of mensagens; track msg.id) {
-    <div class="chat-message" [class.user]="msg.tipo === 'user'" [class.ai]="msg.tipo === 'ai'">
-      @if (msg.tipo === 'ai') {
+    @for (msg of mensagens; track $index) {
+    <div class="chat-message" [class.user]="msg.role === 'user'" [class.ai]="msg.role === 'assistant'">
+      
+      @if (msg.role === 'assistant') {
       <div class="msg-avatar">
         <i class="pi pi-android"></i>
       </div>
       }
-      <div class="msg-bubble">{{ msg.texto }}</div>
-      @if (msg.tipo === 'user') {
+
+      <div class="msg-content-wrapper">
+        <div class="msg-bubble">
+          {{ msg.content }}
+        </div>
+
+        <!-- ⚖️ EXIBIÇÃO DAS FONTES JURÍDICAS -->
+        @if (msg.role === 'assistant' && msg.sources && msg.sources.length > 0) {
+        <div class="msg-sources">
+          <span class="sources-title"><i class="pi pi-book"></i> Fontes fundamentadoras:</span>
+          <div class="sources-list">
+            @for (source of msg.sources; track $index) {
+            <a [href]="source.url_oficial" target="_blank" class="source-card" pTooltip="Clique para ver a lei na íntegra" tooltipPosition="bottom">
+              <div class="source-badge" [class.mcp]="source.source_type === 'mcp'">
+                {{ source.source_type === 'mcp' ? 'Tempo Real' : 'Base RAG' }}
+              </div>
+              <span class="source-name">{{ source.titulo }} {{ source.numero_norma }}</span>
+              <p class="source-snippet" *ngIf="source.trecho">"{{ source.trecho | slice:0:80 }}..."</p>
+            </a>
+            }
+          </div>
+        </div>
+        }
+      </div>
+
+      @if (msg.role === 'user') {
       <div class="msg-avatar user-avatar">
         <i class="pi pi-user"></i>
       </div>
@@ -106,8 +97,8 @@
         <i class="pi pi-android"></i>
       </div>
       <div class="msg-bubble" style="width: 100%; max-width: 65%;">
-        <p-skeleton width="100%" height="1rem" [style]="{'margin-bottom': '10px'}"></p-skeleton>
-        <p-skeleton width="85%" height="1rem" [style]="{'margin-bottom': '10px'}"></p-skeleton>
+        <p-skeleton width="100%" height="1rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="85%" height="1rem" styleClass="mb-2"></p-skeleton>
         <p-skeleton width="60%" height="1rem"></p-skeleton>
       </div>
     </div>
@@ -118,12 +109,10 @@
 
   <div class="chat-input-area">
     <div class="chat-input-wrap">
-
       <input pInputText type="text" placeholder="Digite sua pergunta jurídica..." class="chat-input"
         [(ngModel)]="pergunta" (keyup.enter)="enviarPergunta()" [disabled]="enviando" />
 
       <div class="chat-input-actions">
-
         <p-button [text]="true" styleClass="input-action-btn" [class.is-recording]="audioService.isRecording()"
           [pTooltip]="audioService.isRecording() ? 'Parar Gravação' : 'Gravar Áudio'" tooltipPosition="top"
           (onClick)="toggleRecording()">
@@ -140,13 +129,10 @@
           pTooltip="Enviar" tooltipPosition="top">
           <span class="material-symbols-outlined">send</span>
         </p-button>
-
       </div>
     </div>
-
     <div class="chat-input-hint">
       Suporte a texto, áudio e PDF &nbsp;|&nbsp; Máx. 20MB por arquivo
     </div>
   </div>
-
 </div>

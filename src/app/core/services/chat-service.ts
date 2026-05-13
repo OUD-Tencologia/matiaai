@@ -2,32 +2,45 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { ChatResponse } from '../../shared/models/chat.models';
+import { ChatResponse, AskQuestionDTO } from '../../shared/models/chat.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
- 
-  // 1. Apontamos a URL apenas para a raiz da sua API
+
+  // URL base por variável de ambiente
   private readonly BASE_URL = `${environment.apiUrl}/api`;
+
+  // Injectamos o HttpClient
   private http = inject(HttpClient);
 
-  
-   //Rota tradicional de texto (integração RAG/Python)
-  ask(question: string): Observable<ChatResponse> {
-    const payload = {
-      question: question
+  /**
+   * Envia uma pergunta para o Matia Legal AI (RAG Jurídico)
+   * @param question Texto da pergunta
+   * @param conversationId Opcional: ID da conversa atual para manter o contexto
+   * @param style Opcional: Estilo da resposta
+   */
+  ask(
+    question: string,
+    conversationId?: string,
+    style: 'objetiva' | 'equilibrada' | 'detalhada' = 'equilibrada'
+  ): Observable<ChatResponse> {
+
+    // Montamos o payload seguindo o nosso DTO do Backend
+    const payload: AskQuestionDTO = {
+      question: question,
+      conversation_id: conversationId,
+      response_style: style
     };
-    // 2. Completamos o caminho aqui
+
     return this.http.post<ChatResponse>(`${this.BASE_URL}/matia/ask`, payload);
   }
-  
-  
-  // Nova rota de áudio (Gemini Node)
+
+  /**
+   * Envia um áudio para processamento (Gemini Multimodal)
+   */
   sendAudio(formData: FormData): Observable<any> {
-    // 3. Completamos o caminho para a rota de áudio que criamos hoje no Fastify
     return this.http.post(`${this.BASE_URL}/chat/audio`, formData);
   }
-  
 }

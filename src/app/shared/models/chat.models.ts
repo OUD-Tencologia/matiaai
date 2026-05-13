@@ -1,5 +1,4 @@
-
-// A fonte da lei que a IA encontrou
+// 1. A fonte da lei (RAG ou MCP)
 export interface ChatSource {
   titulo: string;
   numero_norma: string;
@@ -7,20 +6,34 @@ export interface ChatSource {
   url_oficial: string;
   trecho: string;
   ano_norma?: number;
+  source_type?: 'rag' | 'mcp'; // Adicionado para sabermos se veio do banco ou do agente externo
+  score?: number | null;
 }
 
-// A resposta crua que vem do seu Backend Node
+// 2. A resposta completa do Backend (DTO)
 export interface ChatResponse {
   answer: string;
   sources: ChatSource[];
   interaction_id: string;
+  conversation_id: string; // 🚀 ESSENCIAL: Para manter o histórico no Angular
+  confidence?: number;
+  risk_level?: string;
+  usage?: any;
 }
 
-// O modelo que vai alimentar o HTML do seu chat
+// 3. O que o Angular exibe na tela (Bolhas de Chat)
 export interface ChatMessage {
   id?: string;
   role: 'user' | 'assistant';
   content: string;
   sources?: ChatSource[];
   createdAt?: Date;
+  interaction_id?: string;
+}
+
+// 4. O que o Angular envia para o Backend
+export interface AskQuestionDTO {
+  question: string;
+  conversation_id?: string; // Se for nulo, o backend cria uma conversa nova
+  response_style?: 'objetiva' | 'equilibrada' | 'detalhada';
 }

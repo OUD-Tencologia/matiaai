@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-
+import { provideHttpClient } from '@angular/common/http';
 import { ChatService } from './chat-service';
 
 describe('ChatService', () => {
-  let service: ChatService;
-
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ChatService);
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient()]
+    });
   });
 
   it('should be created', () => {
+    const service = TestBed.inject(ChatService);
     expect(service).toBeTruthy();
   });
 });

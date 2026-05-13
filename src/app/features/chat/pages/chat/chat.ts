@@ -5,10 +5,10 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CommonModule } from '@angular/common';
 
-// Importe o serviço e os modelos que criamos
 import { ChatService } from '../../../../core/services/chat-service';
-import { ChatSource, ChatResponse } from '../../../../shared/models/chat.models';
+import { ChatMessage, ChatResponse } from '../../../../shared/models/chat.models';
 import { AudioRecordingService } from '../../../../core/services/audio-recording-service';
 
 interface ConsultaItem {
@@ -16,18 +16,17 @@ interface ConsultaItem {
   titulo: string;
 }
 
-// Atualizamos a interface para receber as fontes (leis) da Matia
-interface Mensagem {
-  id: number;
-  tipo: 'user' | 'ai';
-  texto: string;
-  sources?: ChatSource[];
-}
-
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule, ButtonModule, InputTextModule,
-    SkeletonModule, TooltipModule, ProgressSpinnerModule],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    ButtonModule, 
+    InputTextModule,
+    SkeletonModule, 
+    TooltipModule, 
+    ProgressSpinnerModule
+  ],
   templateUrl: './chat.html',
   styleUrl: './chat.scss',
 })
@@ -35,17 +34,19 @@ export class Chat implements OnInit {
 
   @ViewChild('messagesContainer') messagesContainer!: ElementRef;
 
-  // Injeção do serviço real
+  // Injetamos as dependências 
   private chatService = inject(ChatService);
   public audioService = inject(AudioRecordingService);
-
 
   loading = true;
   chatIniciado = false;
   enviando = false;
   pergunta = '';
-  mensagens: Mensagem[] = [];
+  
+  // Usamos agora o modelo oficial para as bolhas de chat
+  mensagens: ChatMessage[] = [];
 
+  // Controle de estado com Signals
   currentConversationId = signal<string | null>(null);
   isLoading = signal<boolean>(false);
 
@@ -53,30 +54,16 @@ export class Chat implements OnInit {
   frequentes: ConsultaItem[] = [];
   recomendados: ConsultaItem[] = [];
 
-
   ngOnInit() {
     this.carregarDados();
   }
 
   carregarDados() {
     this.loading = true;
-    // Isso aqui podemos manter como mock por enquanto, 
-    // até termos a rota de histórico real no backend
     setTimeout(() => {
       this.recentes = [
         { id: 1, titulo: 'Lei 14.129/2021 - Governo Digital' },
         { id: 2, titulo: 'Recurso Especial - Direito Tributário' },
-        { id: 3, titulo: 'Petição Inicial - Ação de Cobrança' },
-      ];
-      this.frequentes = [
-        { id: 1, titulo: 'Consulta Lei Geral de Proteção de Dados' },
-        { id: 2, titulo: 'Modelos de contratos comerciais' },
-        { id: 3, titulo: 'Jurisprudência STF e STJ' },
-      ];
-      this.recomendados = [
-        { id: 1, titulo: 'Nova Lei 14.230/2021 - Improbidade' },
-        { id: 2, titulo: 'Marco Legal das Startups' },
-        { id: 3, titulo: 'Reforma do CPC - Atualizações' },
       ];
       this.loading = false;
     }, 800);
@@ -91,6 +78,7 @@ export class Chat implements OnInit {
     this.chatIniciado = false;
     this.mensagens = [];
     this.pergunta = '';
+    this.currentConversationId.set(null); // Limpa o ID para começar uma do zero no banco
   }
 
   enviarPergunta() {
@@ -98,33 +86,45 @@ export class Chat implements OnInit {
 
     const texto = this.pergunta.trim();
     this.chatIniciado = true;
-    this.enviando = true; // Trava o input e mostra o spinner
+    this.enviando = true;
 
-    // 1. Adiciona a pergunta do usuário na tela
-    this.mensagens.push({ id: Date.now(), tipo: 'user', texto });
+    // 1. Adiciona a bolha do usuário
+    this.mensagens.push({ 
+      role: 'user', 
+      content: texto, 
+      createdAt: new Date() 
+    });
+    
     this.pergunta = '';
     this.scrollParaBaixo();
 
-    // 2. Chama a API real da Matia pelo serviço
-    this.chatService.ask(texto).subscribe({
+    // 2. Chama a API enviando o ID da conversa atual (se houver)
+    this.chatService.ask(texto, this.currentConversationId() || undefined).subscribe({
       next: (response: ChatResponse) => {
-        // 3. Adiciona a resposta da IA junto com as fontes
+        
+        // 3. Guarda o ID da conversa para as próximas perguntas
+        if (response.conversation_id) {
+          this.currentConversationId.set(response.conversation_id);
+        }
+
+        // 4. Adiciona a bolha da Matia com as fontes
         this.mensagens.push({
-          id: Date.now(),
-          tipo: 'ai',
-          texto: response.answer,
-          sources: response.sources
+          role: 'assistant',
+          content: response.answer,
+          sources: response.sources,
+          interaction_id: response.interaction_id,
+          createdAt: new Date()
         });
+
         this.enviando = false;
         this.scrollParaBaixo();
       },
       error: (err) => {
-        console.error('Erro ao consultar a API Matia:', err);
-        // Tratamento de erro elegante para o usuário não ficar travado
+        console.error('Erro na Matia:', err);
         this.mensagens.push({
-          id: Date.now(),
-          tipo: 'ai',
-          texto: 'Desculpe, ocorreu um erro ao consultar a base jurídica. Por favor, tente novamente.'
+          role: 'assistant',
+          content: 'Desculpe, Francisco. Tive um problema técnico ao acessar a base jurídica. Pode repetir?',
+          createdAt: new Date()
         });
         this.enviando = false;
         this.scrollParaBaixo();
@@ -135,40 +135,46 @@ export class Chat implements OnInit {
   private scrollParaBaixo() {
     setTimeout(() => {
       if (this.messagesContainer) {
-        const el = this.messagesContainer.nativeElement;
-        el.scrollTop = el.scrollHeight;
+        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
       }
     }, 50);
   }
 
   async toggleRecording() {
-  if (this.audioService.isRecording()) {
-    const audioBlob = await this.audioService.stopRecording();
-    this.enviarAudio(audioBlob);
-  } else {
-    await this.audioService.startRecording();
-  }
-}
-
-enviarAudio(blob: Blob) {
-  this.isLoading.set(true); // Ativa o SKELETON que vamos fazer
-
-  const formData = new FormData();
-  formData.append('file', blob, 'audio-juridico.webm');
-  
-  // Se já tiver uma conversa aberta, anexa o ID
-  if (this.currentConversationId()) {
-    formData.append('conversations_id', this.currentConversationId()!);
+    if (this.audioService.isRecording()) {
+      const audioBlob = await this.audioService.stopRecording();
+      this.enviarAudio(audioBlob);
+    } else {
+      await this.audioService.startRecording();
+    }
   }
 
-  this.chatService.sendAudio(formData).subscribe({
-    next: (res) => {
-      // Aqui você adiciona a mensagem transcrita no seu array de mensagens
-      // E desativa o skeleton
-      this.isLoading.set(false);
-    },
-    error: () => this.isLoading.set(false)
-  });
-}
+  enviarAudio(blob: Blob) {
+    this.enviando = true;
+    this.chatIniciado = true;
 
+    const formData = new FormData();
+    formData.append('file', blob, 'audio-juridico.webm');
+    
+    if (this.currentConversationId()) {
+      formData.append('conversations_id', this.currentConversationId()!);
+    }
+
+    this.chatService.sendAudio(formData).subscribe({
+      next: (res) => {
+        // Se o áudio transcreveu e respondeu, adicionamos as duas bolhas
+        if(res.transcription) {
+          this.mensagens.push({ role: 'user', content: res.transcription });
+        }
+        this.mensagens.push({ 
+          role: 'assistant', 
+          content: res.answer,
+          sources: res.sources 
+        });
+        this.enviando = false;
+        this.scrollParaBaixo();
+      },
+      error: () => this.enviando = false
+    });
+  }
 }
