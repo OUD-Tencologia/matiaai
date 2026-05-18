@@ -2,6 +2,7 @@
 
 .login-wrapper {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   font-family: $font-body;
   overflow: hidden;
@@ -391,6 +392,7 @@
   .login-wrapper {
     flex-direction: column;
     overflow: auto;
+    min-height: 100dvh;
   }
 
   .left-panel {
@@ -401,7 +403,7 @@
 
   .right-panel {
     width: 100%;
-    padding: 0 0 56px;
+    padding: 0 0 calc(56px + env(safe-area-inset-bottom));
   }
 
   .brand-title     { font-size: 4.5rem; }
@@ -431,7 +433,7 @@
   }
 
   .right-panel {
-    padding: 0 0 48px;
+    padding: 0 0 calc(48px + env(safe-area-inset-bottom));
   }
 
   .brand-title     { font-size: 3.8rem; letter-spacing: 0.08em; }

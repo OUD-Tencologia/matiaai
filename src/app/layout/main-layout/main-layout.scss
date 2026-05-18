@@ -3,7 +3,7 @@
 .main-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: $gradient-navy;
 }
@@ -39,17 +39,23 @@
 
 .main-outlet {
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
   padding: 28px;
   background-color: $cream;
-  
+
   /* Ajuste bônus: diminui o padding no mobile para o chat ter mais espaço */
   @media screen and (max-width: 992px) {
     padding: 16px;
   }
 
-  &::-webkit-scrollbar { width: 5px; }
-  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   &::-webkit-scrollbar-thumb {
     background: $gold-border;
     border-radius: 4px;
