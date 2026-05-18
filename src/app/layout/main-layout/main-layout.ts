@@ -15,12 +15,15 @@ import { DrawerModule } from 'primeng/drawer';
 })
 export class MainLayout {
   sidebarVisible = false;
+  isChat = false;
 
-  constructor(private router: Router) {
+ constructor(private router: Router) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
+      .subscribe((event: NavigationEnd) => {
         this.sidebarVisible = false;
+        this.isChat = event.urlAfterRedirects.includes('matia/chat');
       });
   }
 }
+

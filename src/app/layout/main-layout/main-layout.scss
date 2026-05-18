@@ -39,13 +39,15 @@
 
 .main-outlet {
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
   padding: 28px;
   background-color: $cream;
 
   /* Ajuste bônus: diminui o padding no mobile para o chat ter mais espaço */
   @media screen and (max-width: 992px) {
     padding: 16px;
+    display: flex;       
+    flex-direction: column;  
   }
 
   &::-webkit-scrollbar {

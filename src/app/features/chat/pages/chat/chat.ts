@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
@@ -57,6 +59,8 @@ export class Chat implements OnInit {
   ngOnInit() {
     this.carregarDados();
   }
+
+  
 
   carregarDados() {
     this.loading = true;

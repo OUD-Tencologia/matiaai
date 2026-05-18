@@ -3,7 +3,7 @@
 .chat-page {
   display: flex;
   flex-direction: column;
-  height: 100dvh; // dvh = dynamic viewport height, respeita a barra do browser no mobile
+  height: 100%; 
   font-family: $font-body;
   overflow: hidden;
 }

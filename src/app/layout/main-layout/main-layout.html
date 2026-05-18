@@ -18,7 +18,7 @@
     <app-sidebar class="main-sidebar hidden lg:block"></app-sidebar>
 
     <div class="main-content">
-      <main class="main-outlet">
+      <main class="main-outlet" [class.chat-mode]="isChat">
         <router-outlet></router-outlet>
       </main>
     </div>
