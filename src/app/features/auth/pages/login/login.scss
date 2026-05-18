@@ -1,11 +1,9 @@
 @use 'variables' as *;
 
 .login-wrapper {
-  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   font-family: $font-body;
-  overflow: hidden;
 }
 
 // ── PAINEL ESQUERDO ────────────────────────────────────
@@ -29,10 +27,6 @@
   }
 }
 
-.field-label {
-  // ... seus outros estilos
-  font-family: Arial, sans-serif !important; 
-}
 .geo-lines {
   position: absolute;
   inset: 0;
@@ -100,7 +94,7 @@
   justify-content: center;
   background: $cream;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .login-card {
@@ -135,6 +129,7 @@
   color: $text-gray;
   font-weight: 400;
 }
+
 // ── CAMPOS ─────────────────────────────────────────────
 .field {
   margin-bottom: 20px;
@@ -156,14 +151,13 @@
   display: flex;
   align-items: center;
 
-  // Ajuste para Ícones (tanto PrimeIcons quanto Google Material)
   .pi, .material-symbols-outlined.icon-left {
     position: absolute;
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
     color: $navy;
-    z-index: 10; // Subi o z-index para garantir visibilidade
+    z-index: 10;
     transition: color 0.3s ease;
     pointer-events: none;
     font-size: 1.2rem;
@@ -189,16 +183,13 @@
     align-items: center;
     transition: color 0.2s ease;
 
-    &:hover {
-      color: $navy;
-    }
+    &:hover { color: $navy; }
 
-    // Garante que o ícone do Google dentro do botão herde o estilo
     .material-symbols-outlined {
       font-size: 1.2rem;
       pointer-events: none;
     }
-    
+
     .pi {
       position: static;
       transform: none;
@@ -220,10 +211,7 @@
   background: $white !important;
   border: 1.5px solid $navy !important;
   border-radius: 10px !important;
-  
-  // Padding ajustado: 44px na esquerda (cadeado) e 44px na direita (olho)
-  padding: 14px 44px 14px 44px !important; 
-  
+  padding: 14px 44px 14px 44px !important;
   font-family: $font-body !important;
   font-size: 0.9rem !important;
   font-weight: 300 !important;
@@ -231,15 +219,14 @@
   letter-spacing: 0.02em !important;
   transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
 
-  &::placeholder {
-    color: $text-gray !important;
-  }
+  &::placeholder { color: $text-gray !important; }
 
   &:focus {
     border-color: $navy-mid !important;
     box-shadow: 0 0 0 3px rgba(0,80,157,0.12) !important;
   }
 }
+
 // ── ESQUECEU A SENHA ───────────────────────────────────
 .forgot-row {
   display: flex;
@@ -283,9 +270,7 @@
     transform: translateY(-1px);
   }
 
-  &:active {
-    transform: translateY(0);
-  }
+  &:active { transform: translateY(0); }
 }
 
 // ── DIVIDER ────────────────────────────────────────────
@@ -354,104 +339,92 @@
 
 // ── RESPONSIVO ─────────────────────────────────────────
 
-// Large desktops (1440px+): aumenta levemente o painel esquerdo
 @media (min-width: 1440px) {
-  .brand-title { font-size: 7.5rem; }
-  .robot-icon  { width: 160px; }
+  .brand-title     { font-size: 7.5rem; }
+  .robot-icon      { width: 160px; }
   .brand-underline { width: 340px; }
-  .login-card  { max-width: 480px; padding: 60px 56px; }
+  .login-card      { max-width: 480px; padding: 60px 56px; }
 }
 
-// Notebooks / tablets landscape (1024px – 1279px)
 @media (max-width: 1279px) {
-  .left-panel  { width: 42%; }
-  .right-panel { width: 58%; }
-  .brand-title { font-size: 5.5rem; }
+  .left-panel      { width: 42%; }
+  .right-panel     { width: 58%; }
+  .brand-title     { font-size: 5.5rem; }
   .brand-underline { width: 260px; }
-  .login-card  { padding: 48px 40px; }
-  .card-title  { font-size: 1.8rem; }
-  .eyebrow     { font-size: 1.1rem; }
+  .login-card      { padding: 48px 40px; }
+  .card-title      { font-size: 1.8rem; }
+  .eyebrow         { font-size: 1.1rem; }
 }
 
-// Tablets portrait / small laptops (768px – 1023px)
 @media (max-width: 1023px) {
-  .left-panel  { width: 40%; padding: 0 24px; }
-  .right-panel { width: 60%; }
-  .brand-title { font-size: 4.8rem; }
-  .robot-icon  { width: 110px; margin-bottom: 20px; }
+  .left-panel      { width: 40%; padding: 0 24px; }
+  .right-panel     { width: 60%; }
+  .brand-title     { font-size: 4.8rem; }
+  .robot-icon      { width: 110px; margin-bottom: 20px; }
   .brand-underline { width: 230px; }
-  .brand-tagline { font-size: 1.1rem; }
-  .login-card  { padding: 44px 32px; }
-  .card-title  { font-size: 1.7rem; }
-  .eyebrow     { font-size: 1rem; }
-  .card-header { margin-bottom: 32px; }
+  .brand-tagline   { font-size: 1.1rem; }
+  .login-card      { padding: 44px 32px; }
+  .card-title      { font-size: 1.7rem; }
+  .eyebrow         { font-size: 1rem; }
+  .card-header     { margin-bottom: 32px; }
 }
 
-// Mobile landscape e tablets pequenos (481px – 767px)
 @media (max-width: 767px) {
   .login-wrapper {
     flex-direction: column;
-    overflow: auto;
-    min-height: 100dvh;
   }
 
   .left-panel {
     width: 100%;
-    padding: 48px 24px 36px;
-    min-height: 38vh;
+    padding: 40px 24px 32px;
+    min-height: auto;
+    flex-shrink: 0;
   }
 
   .right-panel {
     width: 100%;
-    padding: 0 0 calc(56px + env(safe-area-inset-bottom));
+    flex: 1;
+    align-items: flex-start;
+    padding: 0;
+    overflow-y: visible;
+  }
+
+  .login-card {
+    padding: 32px 24px calc(40px + env(safe-area-inset-bottom));
+    max-width: 100%;
   }
 
   .brand-title     { font-size: 4.5rem; }
   .brand-underline { width: 220px; }
   .brand-tagline   { font-size: 1.05rem; }
   .robot-icon      { width: 100px; margin-bottom: 16px; }
-
-  .login-card {
-    padding: 36px 28px;
-    max-width: 100%;
-  }
-
-  .card-title  { font-size: 1.6rem; }
-  .eyebrow     { font-size: 0.95rem; }
-  .card-header { margin-bottom: 28px; }
+  .card-title      { font-size: 1.6rem; }
+  .eyebrow         { font-size: 0.95rem; }
+  .card-header     { margin-bottom: 28px; }
 
   .forgot-btn.p-button.p-button-text {
     font-size: 0.9rem !important;
   }
 }
 
-// Mobile portrait (até 480px)
 @media (max-width: 480px) {
   .left-panel {
-    padding: 40px 20px 28px;
-    min-height: 32vh;
+    padding: 32px 20px 24px;
   }
 
-  .right-panel {
-    padding: 0 0 calc(48px + env(safe-area-inset-bottom));
+  .login-card {
+    padding: 28px 20px calc(32px + env(safe-area-inset-bottom));
   }
 
   .brand-title     { font-size: 3.8rem; letter-spacing: 0.08em; }
   .brand-underline { width: 190px; }
   .brand-tagline   { font-size: 0.95rem; }
   .robot-icon      { width: 84px; margin-bottom: 14px; }
-
-  .login-card {
-    padding: 28px 20px;
-  }
-
-  .card-title  { font-size: 1.45rem; }
-  .eyebrow     { font-size: 0.88rem; }
-  .card-header { margin-bottom: 24px; }
-
-  .field       { margin-bottom: 16px; }
-
-  .forgot-row  { margin-bottom: 24px; }
+  .card-title      { font-size: 1.45rem; }
+  .eyebrow         { font-size: 0.88rem; }
+  .card-header     { margin-bottom: 24px; }
+  .field           { margin-bottom: 16px; }
+  .forgot-row      { margin-bottom: 24px; }
 
   .custom-input.p-inputtext {
     font-size: 0.875rem !important;
@@ -472,16 +445,14 @@
   .divider {
     margin-bottom: 18px;
     gap: 12px;
-
     span { font-size: 0.78rem; }
   }
 }
 
-// Mobile muito pequeno (até 360px — ex: Galaxy S8)
 @media (max-width: 360px) {
   .brand-title  { font-size: 3.2rem; }
   .robot-icon   { width: 72px; }
-  .login-card   { padding: 24px 16px; }
+  .login-card   { padding: 24px 16px calc(24px + env(safe-area-inset-bottom)); }
   .card-title   { font-size: 1.3rem; }
   .eyebrow      { font-size: 0.82rem; }
 }
