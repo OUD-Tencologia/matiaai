@@ -7,10 +7,6 @@ export const authGuard: CanActivateFn & CanActivateChildFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  console.log('🛡️ Guard acionado:', state.url);
-  console.log('🔑 Token expirado?', authService.isTokenExpired());
-  console.log('✅ Está logado?', authService.isLoggedIn());
-
   const FIRST_ACCESS = '/first-access';
   const CHAT = '/matia/chat';
   const currentUrl = state.url.split('?')[0].split('#')[0];

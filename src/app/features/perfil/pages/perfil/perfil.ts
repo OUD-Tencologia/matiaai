@@ -129,20 +129,23 @@ export class Perfil implements OnInit {
   }
 
   carregarDadosDoUsuario() {
-    this.userService.getProfile().subscribe({
-      next: (user: UserProfile) => {
-        if (user.data_nascimento) {
-          user.data_nascimento = new Date(user.data_nascimento).toISOString().split('T')[0];
-        }
-        this.userProfile = user;
-        this.is2FAEnabled = user.two_factor_enabled;
-      },
-      error: (err) => {
-        console.error('Erro 400 detalhado:', err);
-        this.mostrarToast('error', 'Erro', 'Não foi possível carregar os dados.');
+  this.userService.getProfile().subscribe({
+    next: (user: UserProfile) => {
+      if (user.data_nascimento) {
+        user.data_nascimento = new Date(user.data_nascimento).toISOString().split('T')[0];
       }
-    });
-  }
+      this.userProfile = {
+        ...user,
+        empresa_id: user.empresa_id || this.userProfile?.empresa_id || null,
+      };
+      this.is2FAEnabled = user.two_factor_enabled;
+    },
+    error: (err) => {
+      console.error('Erro 400 detalhado:', err);
+      this.mostrarToast('error', 'Erro', 'Não foi possível carregar os dados.');
+    }
+  });
+}
 
   // Função para carregar as empresas
   carregarEmpresas() {

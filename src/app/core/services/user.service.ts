@@ -23,13 +23,7 @@ export class UserService {
   
   //Busca os dados completos do usuário logado
  getProfile(): Observable<UserProfile> {
-  console.log('Chamando backend em:', `${this.API_URL}/me`);
-  
-  return this.http.get<UserProfile>(`${this.API_URL}/me`).pipe(
-    tap((dados) => {
-      console.log('Dados que chegaram no Service:', dados);
-    })
-  );
+  return this.http.get<UserProfile>(`${this.API_URL}/me`);
 }
 
   

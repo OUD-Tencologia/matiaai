@@ -194,3 +194,24 @@
   text-align: center;
   vertical-align: middle;
 }
+
+// ── RESPONSIVIDADE MOBILE ──────────────────────────────
+@media (max-width: 768px) {
+  .matia-sidebar {
+    height: 100dvh;     
+    max-height: 100dvh;
+    overflow-y: auto;     
+  }
+
+  .sidebar-scrollable {
+    max-height: 120px;    
+  }
+
+  .sidebar-footer {
+    position: sticky;     
+    bottom: 0;
+    background: linear-gradient(180deg, $navy-deep 0%, #0d1a30 100%);
+    z-index: 10;
+    padding-bottom: 20px;  
+  }
+}
