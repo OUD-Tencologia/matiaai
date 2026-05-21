@@ -127,12 +127,11 @@
               <button class="icon-btn" (click)="editarEmpresa(empresa, $event)" pTooltip="Editar" tooltipPosition="top">
                 <span class="material-symbols-outlined" style="font-size: 20px; color: #1e293b;">edit</span>
               </button>
-              
+
               <button class="icon-btn" [class.warning]="empresa.active" (click)="toggleStatus(empresa, $event)"
                 pTooltip="{{ empresa.active ? 'Desativar' : 'Ativar' }}" tooltipPosition="top">
-                <span class="material-symbols-outlined" 
-                      [style.color]="empresa.active ? '#ef4444' : '#22c55e'" 
-                      style="font-size: 20px;">
+                <span class="material-symbols-outlined" [style.color]="empresa.active ? '#ef4444' : '#22c55e'"
+                  style="font-size: 20px;">
                   {{ empresa.active ? 'block' : 'check_circle' }}
                 </span>
               </button>
@@ -198,13 +197,8 @@
         <div class="detail-actions">
           <p-button label="✏️ Editar Empresa" styleClass="btn-primary" [fluid]="true"
             (onClick)="editarEmpresa(emp, $event)" />
-          <p-button 
-  label="🗑️ Excluir Empresa" 
-  styleClass="p-button-danger" 
-  [outlined]="true" 
-  [fluid]="true"
-  (onClick)="excluir(emp.id)" 
-/>
+          <p-button label="🗑️ Excluir Empresa" styleClass="p-button-danger" [outlined]="true" [fluid]="true"
+            (onClick)="excluir(emp.id)" />
         </div>
       </div>
       }
@@ -307,7 +301,8 @@
 
           <div class="field-group">
             <label class="field-label required">Data de Nascimento</label>
-            <input pInputText type="date" class="field-input" [(ngModel)]="novoAdmin.data_nascimento" />
+            <p-inputMask mask="99/99/9999" [(ngModel)]="novoAdmin.data_nascimento" placeholder="DD/MM/AAAA"
+              styleClass="field-input"></p-inputMask>
           </div>
 
           <div class="field-group span2">
