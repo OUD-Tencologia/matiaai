@@ -256,7 +256,7 @@ getIniciais(nome?: string): string {
       company: { ...this.novaEmpresa as CompanyData },
       admin: { 
         ...this.novoAdmin as AdminData, 
-        data_nascimento: this.novoAdmin.data_nascimento || '' 
+        data_nascimento: this.formatarDataParaBanco(this.novoAdmin.data_nascimento || '')
       }
     };
 
