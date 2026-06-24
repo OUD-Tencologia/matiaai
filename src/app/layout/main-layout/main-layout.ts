@@ -5,11 +5,12 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { DrawerModule } from 'primeng/drawer';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, Header, Sidebar, DrawerModule],
+  imports: [RouterOutlet, Header, Sidebar, DrawerModule, ConfirmDialogModule],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })

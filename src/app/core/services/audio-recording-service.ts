@@ -38,8 +38,11 @@ export class AudioRecordingService {
   
    //Para a gravação e retorna o arquivo (Blob)
   stopRecording(): Promise<Blob> {
-    return new Promise((resolve) => {
-      if (!this.mediaRecorder) return;
+  return new Promise((resolve, reject) => {
+    if (!this.mediaRecorder) {
+      reject(new Error('Nenhuma gravação em andamento.'));
+      return;
+    }
 
       this.mediaRecorder.onstop = () => {
         const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
@@ -65,5 +68,6 @@ export class AudioRecordingService {
 
   private stopTimer() {
     clearInterval(this.timerInterval);
+    this.recordingTime.set(0);
   }
 }

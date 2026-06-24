@@ -232,7 +232,7 @@ getIniciais(nome?: string): string {
     // 1.1 Verifica se os campos obrigatórios da Empresa estão preenchidos
     if (!this.novaEmpresa.name || !this.novaEmpresa.cnpj || !this.novaEmpresa.email || !this.novaEmpresa.phone || !this.novaEmpresa.plano) {
       this.messageService.add({ severity: 'warn', summary: 'Atenção', detail: 'Preencha todos os campos obrigatórios da Empresa (*).' });
-      return; // 🛑 Para a execução aqui, não vai pro backend!
+      return;
     }
 
     // 1.2 Verifica se o CNPJ tem 14 dígitos (removendo pontos e barras da máscara)
