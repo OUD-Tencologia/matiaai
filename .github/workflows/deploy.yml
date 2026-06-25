@@ -10,43 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do código
+        uses: actions/checkout@v4
 
-      - name: Instalar dependências
-        run: npm install
-
-      - name: Gerar build
-        run: npm run build
-
-      - name: Enviar arquivos para VPS
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: 42501
-          source: "."
-          target: "/home/${{ secrets.VPS_USER }}/apps/matiaai"
-
-      - name: Atualizar container
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: 42501
+          port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /home/${{ secrets.VPS_USER }}/apps/matiaai
+            cd ~/matia/frontend
 
-            docker build --no-cache -t matia-frontend-img .
+            echo "🔄 Atualizando código..."
+            git reset --hard
+            git pull origin main
 
-            docker stop matia-app || true
-            docker rm matia-app || true
+            echo "🐳 Rebuild e restart do frontend..."
+            cd ~/matia
+            docker compose up -d --build frontend
 
-            docker run -d \
-              --name matia-app \
-              --restart always \
-              -p 80:80 \
-              matia-frontend-img
-
+            echo "🧹 Limpando imagens antigas..."
             docker image prune -f
+
+            echo "✅ Deploy concluído!"
