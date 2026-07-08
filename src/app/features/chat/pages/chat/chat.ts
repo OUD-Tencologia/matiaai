@@ -203,6 +203,7 @@ export class Chat implements OnInit {
     if (!files?.length) return;
 
     const file = files[0];
+    console.log('Tipo do arquivo:', file.type, 'Nome:', file.name); // temporário
     this.processarArquivo(file);
   }
 
