@@ -92,6 +92,10 @@ export class Chat implements OnInit {
 
   ngOnInit() {
     this.carregarDados();
+
+    // Previne o browser de abrir arquivos arrastados
+  document.addEventListener('dragover', (e) => e.preventDefault());
+  document.addEventListener('drop', (e) => e.preventDefault());
   }
 
   carregarDados() {
