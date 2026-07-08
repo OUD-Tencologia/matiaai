@@ -1,4 +1,19 @@
-<div class="chat-page" [class.sidebar-open]="sidebarAberta()">
+<p-toast position="top-right" />
+
+<div class="chat-page" [class.sidebar-open]="sidebarAberta()"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)">
+
+  <!-- ── DRAG OVERLAY ─────────────────────────────── -->
+  @if (isDragOver()) {
+    <div class="drag-overlay">
+      <div class="drag-overlay-content">
+        <span class="material-symbols-outlined">upload_file</span>
+        <p>Solte o arquivo aqui</p>
+      </div>
+    </div>
+  }
 
   <!-- ── SIDEBAR DE HISTÓRICO ─────────────────────── -->
   <div class="chat-sidebar" [class.open]="sidebarAberta()">
@@ -108,7 +123,13 @@
           }
 
           <div class="msg-content-wrapper">
-            <div class="msg-bubble">{{ msg.content }}</div>
+            <div class="msg-bubble">
+              @if (msg.role === 'assistant') {
+                <div class="msg-markdown" [innerHTML]="msg.content | markdown"></div>
+              } @else {
+                {{ msg.content }}
+              }
+            </div>
 
             @if (msg.role === 'assistant' && msg.sources && msg.sources.length > 0) {
               <div class="msg-sources">
@@ -139,15 +160,22 @@
         </div>
       }
 
+      <!-- Skeleton de espera -->
       @if (enviando) {
         <div class="chat-message ai">
           <div class="msg-avatar">
             <i class="pi pi-android"></i>
           </div>
-          <div class="msg-bubble" style="width: 100%; max-width: 65%;">
-            <p-skeleton width="100%" height="1rem" styleClass="mb-2" />
-            <p-skeleton width="85%" height="1rem" styleClass="mb-2" />
-            <p-skeleton width="60%" height="1rem" />
+          <div class="msg-content-wrapper">
+            <div class="msg-bubble waiting-bubble">
+              <div class="waiting-text">
+                <i class="pi pi-spin pi-spinner"></i>
+                {{ mensagemEspera() }}
+              </div>
+              <p-skeleton width="100%" height="0.8rem" styleClass="mb-2 mt-2" />
+              <p-skeleton width="85%" height="0.8rem" styleClass="mb-2" />
+              <p-skeleton width="60%" height="0.8rem" />
+            </div>
           </div>
         </div>
       }
@@ -181,7 +209,7 @@
       </div>
     }
 
-    <div class="chat-input-wrap">
+    <div class="chat-input-wrap" [class.drag-active]="isDragOver()">
       <!-- Input de arquivo oculto -->
       <input #fileInput type="file" hidden accept=".pdf,.txt,.png,.jpg,.jpeg"
         (change)="onArquivoSelecionado($event)" />
@@ -203,7 +231,7 @@
 
         <!-- Botão de anexar -->
         <p-button [text]="true" styleClass="input-action-btn"
-          [pTooltip]="uploadEmAndamento() ? 'Enviando documento...' : 'Anexar documento'"
+          [pTooltip]="uploadEmAndamento() ? 'Enviando documento...' : 'Arrastar ou anexar documento'"
           tooltipPosition="top" (onClick)="abrirSeletorArquivo()" [disabled]="uploadEmAndamento()">
           <span class="material-symbols-outlined">attach_file</span>
         </p-button>
@@ -218,7 +246,8 @@
     </div>
 
     <div class="chat-input-hint">
-      Suporte a texto, áudio e PDF &nbsp;|&nbsp; Máx. 20MB por arquivo
+      Suporte a texto, áudio e PDF &nbsp;|&nbsp; Máx. 20MB por arquivo &nbsp;|&nbsp;
+      <span class="drag-hint"><span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">upload_file</span> Arraste um arquivo para enviar</span>
     </div>
   </div>
 
