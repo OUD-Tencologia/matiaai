@@ -15,10 +15,11 @@ export interface ChatResponse {
   answer: string;
   sources: ChatSource[];
   interaction_id: string;
-  conversation_id: string; // 🚀 ESSENCIAL: Para manter o histórico no Angular
+  conversation_id: string; //Para manter o histórico no Angular
   confidence?: number;
   risk_level?: string;
   usage?: any;
+  pdf_url?: string | null;
 }
 
 // 3. O que o Angular exibe na tela (Bolhas de Chat)
@@ -29,6 +30,7 @@ export interface ChatMessage {
   sources?: ChatSource[];
   createdAt?: Date;
   interaction_id?: string;
+  pdf_url?: string | null;
 }
 
 // 4. O que o Angular envia para o Backend

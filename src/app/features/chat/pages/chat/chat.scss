@@ -859,3 +859,33 @@
   gap: 4px;
   color: $text-gray;
 }
+
+// ── PDF DOWNLOAD ──────────────────────────────────────
+.msg-pdf-download {
+  margin-top: 8px;
+}
+
+.pdf-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(0, 41, 107, 0.06);
+  border: 1px solid rgba(0, 41, 107, 0.2);
+  border-radius: 8px;
+  color: $navy-deep;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+
+  .material-symbols-outlined {
+    font-size: 18px;
+    color: $gold;
+  }
+
+  &:hover {
+    background: rgba(0, 41, 107, 0.12);
+    border-color: $navy;
+  }
+}

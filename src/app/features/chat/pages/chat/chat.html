@@ -1,18 +1,16 @@
 <p-toast position="top-right" />
 
-<div class="chat-page" [class.sidebar-open]="sidebarAberta()"
-  (dragover)="onDragOver($event)"
-  (dragleave)="onDragLeave($event)"
-  (drop)="onDrop($event)">
+<div class="chat-page" [class.sidebar-open]="sidebarAberta()" (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
 
   <!-- ── DRAG OVERLAY ─────────────────────────────── -->
   @if (isDragOver()) {
-    <div class="drag-overlay">
-      <div class="drag-overlay-content">
-        <span class="material-symbols-outlined">upload_file</span>
-        <p>Solte o arquivo aqui</p>
-      </div>
+  <div class="drag-overlay">
+    <div class="drag-overlay-content">
+      <span class="material-symbols-outlined">upload_file</span>
+      <p>Solte o arquivo aqui</p>
     </div>
+  </div>
   }
 
   <!-- ── SIDEBAR DE HISTÓRICO ─────────────────────── -->
@@ -26,34 +24,34 @@
 
     <div class="sidebar-body">
       @if (carregandoConversas) {
-        <div class="sidebar-loading">
-          <p-skeleton width="100%" height="2.5rem" styleClass="mb-2" />
-          <p-skeleton width="100%" height="2.5rem" styleClass="mb-2" />
-          <p-skeleton width="100%" height="2.5rem" styleClass="mb-2" />
-        </div>
+      <div class="sidebar-loading">
+        <p-skeleton width="100%" height="2.5rem" styleClass="mb-2" />
+        <p-skeleton width="100%" height="2.5rem" styleClass="mb-2" />
+        <p-skeleton width="100%" height="2.5rem" styleClass="mb-2" />
+      </div>
       }
 
       @if (!carregandoConversas && conversas.length === 0) {
-        <p class="sidebar-empty">Nenhuma conversa anterior encontrada.</p>
+      <p class="sidebar-empty">Nenhuma conversa anterior encontrada.</p>
       }
 
       @if (!carregandoConversas && conversas.length > 0) {
-        <div class="sidebar-list">
-          @for (conversa of conversas; track conversa.id) {
-            <button class="sidebar-item" (click)="abrirConversa(conversa)"
-              [class.active]="conversa.id === currentConversationId()">
-              <span class="sidebar-item-title">{{ conversa.title }}</span>
-              <span class="sidebar-item-date">{{ formatarData(conversa.last_message_at || conversa.created_at) }}</span>
-            </button>
-          }
-        </div>
+      <div class="sidebar-list">
+        @for (conversa of conversas; track conversa.id) {
+        <button class="sidebar-item" (click)="abrirConversa(conversa)"
+          [class.active]="conversa.id === currentConversationId()">
+          <span class="sidebar-item-title">{{ conversa.title }}</span>
+          <span class="sidebar-item-date">{{ formatarData(conversa.last_message_at || conversa.created_at) }}</span>
+        </button>
+        }
+      </div>
       }
     </div>
   </div>
 
   <!-- ── OVERLAY DA SIDEBAR ───────────────────────── -->
   @if (sidebarAberta()) {
-    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
   }
 
   <!-- ── TOPBAR ────────────────────────────────────── -->
@@ -75,112 +73,121 @@
 
   <!-- ── LOADING ───────────────────────────────────── -->
   @if (loading) {
-    <div class="chat-loading">
-      <p-progressSpinner styleClass="gold-spinner" strokeWidth="3" />
-    </div>
+  <div class="chat-loading">
+    <p-progressSpinner styleClass="gold-spinner" strokeWidth="3" />
+  </div>
   }
 
   <!-- ── BOAS VINDAS ───────────────────────────────── -->
   @if (!loading && !chatIniciado) {
-    <div class="chat-welcome">
-      <div class="welcome-hero">
-        <h1 class="welcome-title"><strong>Como posso ajudar hoje?</strong></h1>
-        <p class="welcome-subtitle">Faça uma pergunta, envie um documento ou escolha um dos atalhos abaixo</p>
-      </div>
+  <div class="chat-welcome">
+    <div class="welcome-hero">
+      <h1 class="welcome-title"><strong>Como posso ajudar hoje?</strong></h1>
+      <p class="welcome-subtitle">Faça uma pergunta, envie um documento ou escolha um dos atalhos abaixo</p>
+    </div>
 
-      <div class="welcome-cards">
-        <div class="welcome-card">
-          <div class="welcome-card-header">
-            <i class="pi pi-history"></i>
-            <span>Recentes</span>
-          </div>
-          <div class="welcome-card-items">
-            @for (item of recentes; track item.id) {
-              <button class="welcome-card-item" (click)="iniciarConsulta(item)">
-                {{ item.titulo }}
-              </button>
-            }
-            @if (recentes.length === 0) {
-              <span class="welcome-card-empty">Nenhuma consulta recente</span>
-            }
-          </div>
+    <div class="welcome-cards">
+      <div class="welcome-card">
+        <div class="welcome-card-header">
+          <i class="pi pi-history"></i>
+          <span>Recentes</span>
+        </div>
+        <div class="welcome-card-items">
+          @for (item of recentes; track item.id) {
+          <button class="welcome-card-item" (click)="iniciarConsulta(item)">
+            {{ item.titulo }}
+          </button>
+          }
+          @if (recentes.length === 0) {
+          <span class="welcome-card-empty">Nenhuma consulta recente</span>
+          }
         </div>
       </div>
     </div>
+  </div>
   }
 
   <!-- ── MENSAGENS ─────────────────────────────────── -->
   @if (!loading && chatIniciado) {
-    <div class="chat-messages" #messagesContainer>
+  <div class="chat-messages" #messagesContainer>
 
-      @for (msg of mensagens; track $index) {
-        <div class="chat-message" [class.user]="msg.role === 'user'" [class.ai]="msg.role === 'assistant'">
+    @for (msg of mensagens; track $index) {
+    <div class="chat-message" [class.user]="msg.role === 'user'" [class.ai]="msg.role === 'assistant'">
 
+      @if (msg.role === 'assistant') {
+      <div class="msg-avatar">
+        <i class="pi pi-android"></i>
+      </div>
+      }
+
+      <div class="msg-content-wrapper">
+        <div class="msg-bubble">
           @if (msg.role === 'assistant') {
-            <div class="msg-avatar">
-              <i class="pi pi-android"></i>
-            </div>
+          <div class="msg-markdown" [innerHTML]="msg.content | markdown"></div>
+          } @else {
+          {{ msg.content }}
           }
+        </div>
 
-          <div class="msg-content-wrapper">
-            <div class="msg-bubble">
-              @if (msg.role === 'assistant') {
-                <div class="msg-markdown" [innerHTML]="msg.content | markdown"></div>
-              } @else {
-                {{ msg.content }}
-              }
-            </div>
+        @if (msg.role === 'assistant' && msg.pdf_url) {
+        <div class="msg-pdf-download">
+          <a [href]="msg.pdf_url" target="_blank" download class="pdf-download-btn">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            Baixar documento
+          </a>
+        </div>
+        }
 
-            @if (msg.role === 'assistant' && msg.sources && msg.sources.length > 0) {
-              <div class="msg-sources">
-                <span class="sources-title"><i class="pi pi-book"></i> Fontes fundamentadoras:</span>
-                <div class="sources-list">
-                  @for (source of msg.sources; track $index) {
-                    <a [href]="source.url_oficial" target="_blank" class="source-card"
-                      pTooltip="Clique para ver a lei na íntegra" tooltipPosition="bottom">
-                      <div class="source-badge" [class.mcp]="source.source_type === 'mcp'">
-                        {{ source.source_type === 'mcp' ? 'Tempo Real' : 'Base RAG' }}
-                      </div>
-                      <span class="source-name">{{ source.titulo }} {{ source.numero_norma }}</span>
-                      @if (source.trecho) {
-                        <p class="source-snippet">"{{ source.trecho | slice:0:80 }}..."</p>
-                      }
-                    </a>
-                  }
-                </div>
+        @if (msg.role === 'assistant' && msg.sources && msg.sources.length > 0) {
+        <div class="msg-sources">
+          <span class="sources-title"><i class="pi pi-book"></i> Fontes fundamentadoras:</span>
+          <div class="sources-list">
+            @for (source of msg.sources; track $index) {
+            <a [href]="source.url_oficial" target="_blank" class="source-card"
+              pTooltip="Clique para ver a lei na íntegra" tooltipPosition="bottom">
+              <div class="source-badge" [class.mcp]="source.source_type === 'mcp'">
+                {{ source.source_type === 'mcp' ? 'Tempo Real' : 'Base RAG' }}
               </div>
+              <span class="source-name">{{ source.titulo }} {{ source.numero_norma }}</span>
+              @if (source.trecho) {
+              <p class="source-snippet">"{{ source.trecho | slice:0:80 }}..."</p>
+              }
+            </a>
             }
           </div>
-
-          @if (msg.role === 'user') {
-            <div class="msg-avatar user-avatar">
-              <i class="pi pi-user"></i>
-            </div>
-          }
         </div>
-      }
+        }
+      </div>
 
-      <!-- Skeleton de espera -->
-      @if (enviando) {
-        <div class="chat-message ai">
-          <div class="msg-avatar">
-            <i class="pi pi-android"></i>
-          </div>
-          <div class="msg-content-wrapper">
-            <div class="msg-bubble waiting-bubble">
-              <div class="waiting-text">
-                <i class="pi pi-spin pi-spinner"></i>
-                {{ mensagemEspera() }}
-              </div>
-              <p-skeleton width="100%" height="0.8rem" styleClass="mb-2 mt-2" />
-              <p-skeleton width="85%" height="0.8rem" styleClass="mb-2" />
-              <p-skeleton width="60%" height="0.8rem" />
-            </div>
-          </div>
-        </div>
+      @if (msg.role === 'user') {
+      <div class="msg-avatar user-avatar">
+        <i class="pi pi-user"></i>
+      </div>
       }
-
     </div>
+    }
+
+    <!-- Skeleton de espera -->
+    @if (enviando) {
+    <div class="chat-message ai">
+      <div class="msg-avatar">
+        <i class="pi pi-android"></i>
+      </div>
+      <div class="msg-content-wrapper">
+        <div class="msg-bubble waiting-bubble">
+          <div class="waiting-text">
+            <i class="pi pi-spin pi-spinner"></i>
+            {{ mensagemEspera() }}
+          </div>
+          <p-skeleton width="100%" height="0.8rem" styleClass="mb-2 mt-2" />
+          <p-skeleton width="85%" height="0.8rem" styleClass="mb-2" />
+          <p-skeleton width="60%" height="0.8rem" />
+        </div>
+      </div>
+    </div>
+    }
+
+  </div>
   }
 
   <!-- ── INPUT ─────────────────────────────────────── -->
@@ -188,31 +195,30 @@
 
     <!-- Chips de documentos anexados -->
     @if (documentosAnexados().length > 0) {
-      <div class="chat-attachments">
-        @for (doc of documentosAnexados(); track doc.filename) {
-          <div class="attachment-chip" [class.completo]="doc.status === 'completo'"
-            [class.enviando]="doc.status === 'enviando'" [class.erro]="doc.status === 'erro'">
-            <span class="material-symbols-outlined attachment-icon">
-              {{ doc.status === 'completo' ? 'check_circle' : doc.status === 'erro' ? 'error' : 'upload' }}
-            </span>
-            <span class="attachment-name">{{ doc.filename }}</span>
-            @if (doc.status === 'completo') {
-              <button class="attachment-remove" (click)="removerDocumento(doc)">
-                <span class="material-symbols-outlined">close</span>
-              </button>
-            }
-            @if (doc.status === 'enviando') {
-              <p-progressSpinner styleClass="chip-spinner" strokeWidth="4" [style]="{ width: '14px', height: '14px' }" />
-            }
-          </div>
+    <div class="chat-attachments">
+      @for (doc of documentosAnexados(); track doc.filename) {
+      <div class="attachment-chip" [class.completo]="doc.status === 'completo'"
+        [class.enviando]="doc.status === 'enviando'" [class.erro]="doc.status === 'erro'">
+        <span class="material-symbols-outlined attachment-icon">
+          {{ doc.status === 'completo' ? 'check_circle' : doc.status === 'erro' ? 'error' : 'upload' }}
+        </span>
+        <span class="attachment-name">{{ doc.filename }}</span>
+        @if (doc.status === 'completo') {
+        <button class="attachment-remove" (click)="removerDocumento(doc)">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        }
+        @if (doc.status === 'enviando') {
+        <p-progressSpinner styleClass="chip-spinner" strokeWidth="4" [style]="{ width: '14px', height: '14px' }" />
         }
       </div>
+      }
+    </div>
     }
 
     <div class="chat-input-wrap" [class.drag-active]="isDragOver()">
       <!-- Input de arquivo oculto -->
-      <input #fileInput type="file" hidden accept=".pdf,.txt,.png,.jpg,.jpeg"
-        (change)="onArquivoSelecionado($event)" />
+      <input #fileInput type="file" hidden accept=".pdf,.txt,.png,.jpg,.jpeg" (change)="onArquivoSelecionado($event)" />
 
       <input pInputText type="text"
         [placeholder]="temDocumentosCompletos ? 'Pergunte sobre o documento...' : 'Digite sua pergunta jurídica...'"
@@ -238,16 +244,16 @@
 
         <!-- Botão enviar -->
         <p-button styleClass="input-send-btn" (click)="enviarPergunta()"
-          [disabled]="!pergunta.trim() || enviando || uploadEmAndamento()"
-          pTooltip="Enviar" tooltipPosition="top">
+          [disabled]="!pergunta.trim() || enviando || uploadEmAndamento()" pTooltip="Enviar" tooltipPosition="top">
           <span class="material-symbols-outlined">send</span>
         </p-button>
       </div>
     </div>
 
     <div class="chat-input-hint">
-      Suporte a texto, áudio e PDF &nbsp;|&nbsp; Máx. 80 páginas por arquivo &nbsp;|&nbsp;
-      <span class="drag-hint"><span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">upload_file</span> Arraste um arquivo para enviar</span>
+      Suporte a texto e PDF &nbsp;|&nbsp; Máx. 50MB por arquivo
+      <span class="drag-hint"><span class="material-symbols-outlined"
+          style="font-size: 14px; vertical-align: middle;">upload_file</span> Arraste um arquivo para enviar</span>
     </div>
   </div>
 

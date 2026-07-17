@@ -220,7 +220,7 @@ export class Chat implements OnInit {
 
   private processarArquivo(file: File) {
     const tiposPermitidos = ['application/pdf', 'text/plain', 'image/png', 'image/jpeg'];
-    const tamanhoMaximo = 20 * 1024 * 1024; // 20MB
+    const tamanhoMaximo = 50 * 1024 * 1024; // 50MB
 
     if (!tiposPermitidos.includes(file.type)) {
       this.messageService.add({
@@ -236,7 +236,7 @@ export class Chat implements OnInit {
       this.messageService.add({
         severity: 'error',
         summary: 'Arquivo muito grande',
-        detail: 'O arquivo deve ter no máximo 20MB.',
+        detail: 'O arquivo deve ter no máximo 50MB.',
         life: 4000,
       });
       return;
@@ -376,7 +376,7 @@ export class Chat implements OnInit {
         next: (res) => {
           const data = (res as any).data || res;
           if (data.conversation_id) this.currentConversationId.set(data.conversation_id);
-          this.mensagens.push({ role: 'assistant', content: data.answer, createdAt: new Date() });
+          this.mensagens.push({ role: 'assistant', content: data.answer, pdf_url: data.pdf_url, createdAt: new Date() });
           this.pararMensagensEspera();
           this.enviando = false;
           this.scrollParaBaixo();
@@ -407,6 +407,7 @@ export class Chat implements OnInit {
             content: response.answer,
             sources: response.sources,
             interaction_id: response.interaction_id,
+            pdf_url: response.pdf_url,
             createdAt: new Date()
           });
           this.pararMensagensEspera();
