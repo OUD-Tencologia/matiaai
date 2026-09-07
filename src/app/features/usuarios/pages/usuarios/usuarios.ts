@@ -199,10 +199,23 @@ export class Usuarios {
       accept: () => {
         this._profileService.deleteProfile(id).subscribe({
           next: () => {
-            this.mostrarMensagem('success', 'Excluído', 'Usuário removido com sucesso.');
-            this.perfis.update(lista => lista.filter(u => u.id !== id));
-            this.aplicarFiltros();
-            this.selectedUser.set(null); // Limpa o painel lateral
+        
+  this.mostrarMensagem('success', 'Excluído', 'Usuário removido com sucesso.');
+
+  console.log('--- DEBUG EXCLUSÃO ---');
+  console.log('ID recebido:', id, '| tipo:', typeof id);
+  console.log('Lista perfis ANTES:', this.perfis().map(u => ({ id: u.id, nome: u.nome })));
+
+  this.perfis.update(lista => lista.filter(u => u.id !== id));
+
+  console.log('Lista perfis DEPOIS:', this.perfis().map(u => ({ id: u.id, nome: u.nome })));
+  console.log('filteredUsers DEPOIS do filtro:', this.filteredUsers().map(u => ({ id: u.id, nome: u.nome })));
+
+  this.aplicarFiltros();
+
+  console.log('filteredUsers APÓS aplicarFiltros:', this.filteredUsers().map(u => ({ id: u.id, nome: u.nome })));
+
+  this.selectedUser.set(null);// Limpa o painel lateral
           },
           error: () => this.mostrarMensagem('error', 'Erro', 'Não foi possível remover o usuário.')
         });
