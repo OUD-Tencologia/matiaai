@@ -200,7 +200,8 @@ export class Usuarios {
         this._profileService.deleteProfile(id).subscribe({
           next: () => {
             this.mostrarMensagem('success', 'Excluído', 'Usuário removido com sucesso.');
-            this.carregarPerfis();
+            this.perfis.update(lista => lista.filter(u => u.id !== id));
+            this.aplicarFiltros();
             this.selectedUser.set(null); // Limpa o painel lateral
           },
           error: () => this.mostrarMensagem('error', 'Erro', 'Não foi possível remover o usuário.')

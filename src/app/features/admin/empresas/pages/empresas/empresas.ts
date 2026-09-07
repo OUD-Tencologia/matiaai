@@ -226,7 +226,7 @@ getIniciais(nome?: string): string {
     // ➕ Criação
 
     // =========================================================
-    // 🛡️ PASSO 1: VALIDAÇÃO DE FRONT-END (GUARDA-COSTAS)
+    // PASSO 1: VALIDAÇÃO DE FRONT-END (GUARDA-COSTAS)
     // =========================================================
 
     // 1.1 Verifica se os campos obrigatórios da Empresa estão preenchidos
@@ -239,17 +239,17 @@ getIniciais(nome?: string): string {
     const cnpjLimpo = this.novaEmpresa.cnpj.replace(/\D/g, ''); 
     if (cnpjLimpo.length < 14) {
       this.messageService.add({ severity: 'warn', summary: 'CNPJ Incompleto', detail: 'O CNPJ digitado não possui os 14 números.' });
-      return; // 🛑 Para a execução aqui!
+      return; 
     }
 
     // 1.3 Verifica se os campos obrigatórios do Admin estão preenchidos
     if (!this.novoAdmin.nome || !this.novoAdmin.cpf || !this.novoAdmin.email || !this.novaEmpresa.phone || !this.novoAdmin.profile_password) {
       this.messageService.add({ severity: 'warn', summary: 'Atenção', detail: 'Preencha todos os campos obrigatórios do Administrador (*).' });
-      return; // 🛑 Para a execução aqui!
+      return; 
     }
 
     // =========================================================
-    // 🚀 PASSO 2: MONTAGEM E ENVIO (Se passou pelas validações)
+    // PASSO 2: MONTAGEM E ENVIO (Se passou pelas validações)
     // =========================================================
 
     const payload: RegisterCompanyRequest = {
